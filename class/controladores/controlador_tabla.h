@@ -39,6 +39,8 @@ class Controlador_tabla:public Controlador_base
 		{}
 	}info_zoom;
 
+	bool mostrar_numeros;
+
 	///////////////
 	//Métodos internos.
 

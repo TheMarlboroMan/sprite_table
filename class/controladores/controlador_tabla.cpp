@@ -21,7 +21,8 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 		rep_mensaje_actual(p.acc_renderer(), DLibV::Gestor_superficies::obtener(Recursos_graficos::RS_FUENTE_BASE), ""),
 		caja_fondo(Herramientas_SDL::nuevo_sdl_rect(0, p.acc_h()-64, p.acc_w(), 64), 0,0,0),
 //		linea_absurda(0, 0, 0, 0, 255, 0, 0),
-		info_zoom(1, cw, ch)
+		info_zoom(1, cw, ch),
+		mostrar_numeros(true)
 {
 	int wa=rep_imagen.acc_posicion().w, wb=p.acc_w();
 	int ha=rep_imagen.acc_posicion().h, hb=p.acc_h();
@@ -76,6 +77,7 @@ void Controlador_tabla::loop(Input_base& input, float delta)
 		}
 
 		if(input.es_input_down(Input::I_TAB)) ciclo_estado();
+		if(input.es_input_down(Input::I_ESPACIO)) mostrar_numeros=!mostrar_numeros;
 
 		if(input.es_input_pulsado(Input::I_PASO))
 		{
@@ -119,7 +121,7 @@ void Controlador_tabla::loop(Input_base& input, float delta)
 void Controlador_tabla::ciclo_zoom()
 {
 	++info_zoom.zoom;
-	if(info_zoom.zoom==4) info_zoom.zoom=1;
+	if(info_zoom.zoom==6) info_zoom.zoom=1;
 	camara.mut_enfoque(info_zoom.w / info_zoom.zoom, info_zoom.h / info_zoom.zoom);
 }
 
@@ -153,7 +155,7 @@ void Controlador_tabla::dibujar_frame(Pantalla& pantalla, Frame& f, bool actual)
 
 	f.color_caja(actual);
 	f.acc_caja().volcar(pantalla, camara);
-	f.acc_txt().volcar(pantalla, camara);
+	if(mostrar_numeros) f.acc_txt().volcar(pantalla, camara);
 }
 
 /*

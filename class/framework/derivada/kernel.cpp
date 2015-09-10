@@ -77,6 +77,7 @@ void Kernel_app::inicializar()
 "ESC -> Salir\n"
 "Cursores -> Mover\n"
 "TAB -> Cambiar modo (cámara, mover, redimensionar)\n"
+"ESPACIO -> Ocultar / mostrar índices\n"
 "RE.PAG -> Ir a frame anterior\n"
 "AV.PAG -> Ir a frame siguiente\n"
 "DEL -> Eliminar frame seleccionado\n"
