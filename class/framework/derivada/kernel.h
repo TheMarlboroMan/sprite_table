@@ -34,9 +34,7 @@ class Kernel_app:public Kernel_base
 
 	private:
 
-	static std::string obtener_ruta_fichero_de_argumento(const std::string& tipo, const std::vector<std::string>& args);
-	static std::string obtener_valor_argumento(const std::string& tipo, const std::vector<std::string>& args);
-	void obtener_resolucion(const std::vector<std::string>& args);
+	void obtener_resolucion();
 
 	public:
 
