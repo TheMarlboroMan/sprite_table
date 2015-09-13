@@ -17,6 +17,7 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 		camara(0, 0, cw, ch, 0, 0),
 		rep_imagen(Gestor_texturas::obtener(Recursos_graficos::RT_IMAGEN)),
 		rep_icono(Gestor_texturas::obtener(Recursos_graficos::RT_ICONOS)),
+		rep_centrar(Gestor_texturas::obtener(Recursos_graficos::RT_ICONOS)),
 		rep_status_actual(p.acc_renderer(), DLibV::Gestor_superficies::obtener(Recursos_graficos::RS_FUENTE_BASE), ""),
 		rep_mensaje_actual(p.acc_renderer(), DLibV::Gestor_superficies::obtener(Recursos_graficos::RS_FUENTE_BASE), ""),
 		caja_fondo(Herramientas_SDL::nuevo_sdl_rect(0, p.acc_h()-64, p.acc_w(), 64), 0,0,0),
@@ -31,8 +32,14 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 	rep_icono.establecer_posicion(cw-64, 32, 32, 32);
 	rep_icono.establecer_recorte(0, 0, 32, 32);
 
+	rep_centrar.establecer_posicion(0, 0, 0, 0);
+	rep_centrar.establecer_recorte(128, 0, 32, 32);
+	rep_centrar.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
+
 	rep_status_actual.establecer_posicion(32, ch-48);
 	rep_mensaje_actual.establecer_posicion(32, ch-16);
+
+
 
 	caja_fondo.establecer_alpha(128);
 
@@ -140,13 +147,18 @@ void Controlador_tabla::dibujar(Pantalla& pantalla)
 
 	std::stringstream ss;
 	ss<<"["<<camara.acc_x()<<","<<camara.acc_y()<<"] ";
-	if(actual) ss<<actual->acc_id()<<" : "<<actual->acc_x()<<","<<actual->acc_y()<<" ["<<actual->acc_w()<<","<<actual->acc_h()<<"]";
+	if(actual) ss<<actual->acc_id()<<" : "<<actual->acc_x()<<","<<actual->acc_y()<<" ["<<actual->acc_w()<<","<<actual->acc_h()<<"] ["<<actual->acc_desp_x()<<","<<actual->acc_desp_y()<<"]";
 	rep_status_actual.asignar(ss.str());
 	caja_fondo.volcar(pantalla);
 	rep_status_actual.volcar(pantalla);
 	rep_mensaje_actual.volcar(pantalla);
 	rep_icono.volcar(pantalla);
-	//linea_absurda.volcar(pantalla);
+
+	if(estado==t_estados::CENTRAR && actual)
+	{
+		rep_centrar.establecer_posicion(actual->acc_x()+actual->acc_desp_x(), actual->acc_y()+actual->acc_desp_y(), 32, 32);
+		rep_centrar.volcar(pantalla, camara);
+	}
 }
 
 void Controlador_tabla::dibujar_frame(Pantalla& pantalla, Frame& f, bool actual)
@@ -172,7 +184,8 @@ void Controlador_tabla::ciclo_estado()
 	{
 		case t_estados::CAMARA: estado=t_estados::MOVER; break;
 		case t_estados::MOVER: estado=t_estados::REDIMENSIONAR; break;
-		case t_estados::REDIMENSIONAR: estado=t_estados::CAMARA; break;
+		case t_estados::REDIMENSIONAR: estado=t_estados::CENTRAR; break;
+		case t_estados::CENTRAR: estado=t_estados::CAMARA; break;
 	}
 
 	unsigned int x=0;
@@ -182,6 +195,7 @@ void Controlador_tabla::ciclo_estado()
 		case t_estados::CAMARA: x=0; break;
 		case t_estados::MOVER: x=32; break;
 		case t_estados::REDIMENSIONAR: x=64; break;
+		case t_estados::CENTRAR: x=96; break;
 	}	
 
 	rep_icono.establecer_recorte(x, 0, 32, 32);
@@ -194,6 +208,7 @@ void Controlador_tabla::procesar_input(int x, int y)
 		case t_estados::CAMARA: camara.movimiento_relativo(x, y); break;
 		case t_estados::MOVER: mover_actual(x, y); break;
 		case t_estados::REDIMENSIONAR: redimensionar_actual(x, y); break;
+		case t_estados::CENTRAR: centrar_actual(x, y); break;
 	}
 }
 
@@ -292,6 +307,12 @@ void Controlador_tabla::mover_actual(int x, int y)
 {
 	if(!actual) return;
 	actual->mover(x, y);
+}
+
+void Controlador_tabla::centrar_actual(int x, int y)
+{
+	if(!actual) return;
+	actual->centrar(x, y);
 }
 
 void Controlador_tabla::redimensionar_actual(int x, int y)

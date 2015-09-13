@@ -11,7 +11,7 @@ class Controlador_tabla:public Controlador_base
 	//Definiciones
 	private:
 
-	enum class t_estados {CAMARA, MOVER, REDIMENSIONAR};
+	enum class t_estados {CAMARA, MOVER, REDIMENSIONAR, CENTRAR};
 
 	//////////////
 	//Propiedades
@@ -23,6 +23,7 @@ class Controlador_tabla:public Controlador_base
 	DLibV::Camara camara;
 	DLibV::Representacion_bitmap_dinamica rep_imagen;
 	DLibV::Representacion_bitmap_estatica rep_icono;
+	DLibV::Representacion_bitmap_estatica rep_centrar;
 	DLibV::Representacion_texto_auto_estatica rep_status_actual;
 	DLibV::Representacion_texto_auto_estatica rep_mensaje_actual;
 	DLibV::Representacion_primitiva_caja_dinamica caja_fondo;
@@ -49,6 +50,7 @@ class Controlador_tabla:public Controlador_base
 	void procesar_input(int x, int y);
 	void mover_actual(int x, int y);
 	void redimensionar_actual(int x, int y);
+	void centrar_actual(int x, int y);
 	void insertar_nuevo();
 	void ciclo_estado();
 	void ciclo_frames(int dir);

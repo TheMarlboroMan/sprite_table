@@ -101,6 +101,12 @@ class Frame
 		actualizar_representacion();
 	}
 
+	void centrar(int px, int py)
+	{
+		desp_x+=px;
+		desp_y+=py;
+	}
+
 	void generar_representacion(const SDL_Renderer * r, const DLibV::Superficie * superf);
 	void color_caja(bool seleccion);
 	void actualizar_representacion();	
