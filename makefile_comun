@@ -15,7 +15,6 @@ $(EJECUTABLE) \
 
 $(EJECUTABLE): \
 $(DEP_CLASES_APP) \
-$(DEP_HERRAMIENTAS_PROYECTO) \
 $(DEP_FRAMEWORK_BASE) \
 $(DEP_FRAMEWORK_DERIVADA) \
 $(DEP_CONTROLADORES) \
@@ -28,7 +27,6 @@ clean:
 
 include _makefile_controladores
 include _makefile_clases_app
-include _makefile_herramientas
 include _makefile_framework
 
 $(DIR_O)bootstrap_aplicacion.o :\

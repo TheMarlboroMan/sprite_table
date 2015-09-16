@@ -1,6 +1,3 @@
-DEP_HERRAMIENTAS_PROYECTO=$(DIR_O)tabla_sprites.o \
-$(DIR_O)generador_numeros.o \
-
 DEP_CLASES_APP=$(DIR_O)frame.o \
 $(DIR_O)cola_mensajes.o \
 
