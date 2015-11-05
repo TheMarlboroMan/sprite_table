@@ -4,6 +4,7 @@
 #include "../framework/interface_controlador.h"
 #include "director_estados.h"
 #include "../app/cola_mensajes.h"
+#include <capa_compatibilidad_representaciones_libdansdl2.h>
 
 class Controlador_base:public Interface_controlador
 {

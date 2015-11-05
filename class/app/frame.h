@@ -7,6 +7,7 @@
 #include <memory>
 
 #include <libDan2.h>
+#include <capa_compatibilidad_representaciones_libdansdl2.h>
 
 //namespace Aplicacion
 //{

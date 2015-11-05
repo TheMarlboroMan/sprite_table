@@ -71,7 +71,7 @@ void Controlador_presentacion::dibujar(DLibV::Pantalla& pantalla)
 	//id ya lo hemos preparado antes.
 
 	Representacion_bitmap_dinamica rep_bmp(Gestor_texturas::obtener(Recursos_graficos::RT_IMAGEN));
-	Representacion_primitiva_lineas_caja_dinamica rep_caja(Herramientas_SDL::nuevo_sdl_rect(0,0,0), 255, 255, 255);
+	Representacion_primitiva_caja_lineas_dinamica rep_caja(Herramientas_SDL::nuevo_sdl_rect(0,0,0), 255, 255, 255);
 
 	for(auto& i : info_presentacion)
 	{

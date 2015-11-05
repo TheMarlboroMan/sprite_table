@@ -16,7 +16,7 @@ void Frame::generar_representacion(const SDL_Renderer * renderer, const DLibV::S
 {
 	if(!rep_txt_id && !rep_caja)
 	{
-		rep_txt_id=std::unique_ptr<Representacion_texto_auto_dinamica>(new Representacion_texto_auto_dinamica(renderer, superf, std::to_string(id) ));
+		rep_txt_id=std::unique_ptr<Representacion_texto_auto_dinamica>(new Representacion_texto_auto_dinamica(superf, std::to_string(id) ));
 		rep_txt_id->establecer_posicion(x+3, y+3);
 
 		rep_caja=std::unique_ptr<Representacion_primitiva_caja_dinamica>(new Representacion_primitiva_caja_dinamica(DLibH::Herramientas_SDL::nuevo_sdl_rect(x, y, w, h), 255, 64, 64));
