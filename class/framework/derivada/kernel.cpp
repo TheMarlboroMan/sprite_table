@@ -1,6 +1,6 @@
 #include "kernel.h"
 
-Kernel_app::Kernel_app(DLibH::Controlador_argumentos& carg)
+Kernel_app::Kernel_app(Herramientas_proyecto::Controlador_argumentos& carg)
 	:Kernel_base(carg), w(0), h(0), ruta_destino("")
 {
 }
@@ -12,10 +12,12 @@ Kernel_app::~Kernel_app()
 
 void Kernel_app::obtener_resolucion()
 {
+	using namespace Herramientas_proyecto;
+
 	try
 	{
 		auto val_res=acc_controlador_argumentos().valor_argumento("res");
-		auto ex=DLibH::Herramientas::explotar(val_res, 'x');
+		auto ex=explotar(val_res, 'x');
 
 		if(ex.size()!=2)
 		{

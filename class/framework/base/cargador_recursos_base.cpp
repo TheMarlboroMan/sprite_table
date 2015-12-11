@@ -13,10 +13,11 @@ Cargador_recursos_base::~Cargador_recursos_base()
 
 void Cargador_recursos_base::procesar(const std::vector<std::string>& entradas, void (Cargador_recursos_base::*procesar_valores)(const std::vector<std::string>&))
 {
+	using namespace Herramientas_proyecto;
 	const char separador='\t';
 	for(auto& linea : entradas)
 	{
-		(this->*procesar_valores)(DLibH::Herramientas::explotar(linea, separador));
+		(this->*procesar_valores)(explotar(linea, separador));
 	}
 }
 
@@ -26,7 +27,6 @@ void Cargador_recursos_base::generar_recursos_texturas(DLibV::Pantalla &p)
 	pantalla=&p;
 	try
 	{
-
 		procesar(obtener_entradas_texturas(), &Cargador_recursos_base::procesar_entrada_textura);
 	}
 	catch(Excepcion_carga_recursos& e)
@@ -183,7 +183,8 @@ void Cargador_recursos_base::procesar_entrada_musica(const std::vector<std::stri
 
 std::vector<std::string> Cargador_recursos_base::obtener_entradas_desde_ruta(const std::string& ruta) const
 {	
-	DLibH::Lector_txt L(ruta, '#');
+	using namespace Herramientas_proyecto;
+	Lector_txt L(ruta, '#');
 	std::vector<std::string> resultado;
 
 	if(!L)
