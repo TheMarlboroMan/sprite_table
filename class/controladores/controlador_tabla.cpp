@@ -29,6 +29,7 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 	int ha=rep_imagen.acc_posicion().h, hb=p.acc_h();
 
 	camara.establecer_limites(0, 0, std::max(wa, wb), std::max(ha, hb)); 
+
 	rep_icono.establecer_posicion(cw-64, 32, 32, 32);
 	rep_icono.establecer_recorte(0, 0, 32, 32);
 
@@ -38,8 +39,6 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 
 	rep_status_actual.establecer_posicion(32, ch-48);
 	rep_mensaje_actual.establecer_posicion(32, ch-16);
-
-
 
 	caja_fondo.establecer_alpha(128);
 
@@ -129,7 +128,17 @@ void Controlador_tabla::ciclo_zoom()
 {
 	++info_zoom.zoom;
 	if(info_zoom.zoom==6) info_zoom.zoom=1;
-	camara.mut_enfoque(info_zoom.w / info_zoom.zoom, info_zoom.h / info_zoom.zoom);
+
+	switch(info_zoom.zoom)
+	{
+		case 1:	camara.mut_zoom(1.0); break;
+		case 2: camara.mut_zoom(0.8); break;
+		case 3: camara.mut_zoom(0.6); break;
+		case 4: camara.mut_zoom(0.4); break;
+		case 5: camara.mut_zoom(0.2); break;
+	}
+
+//	camara.mut_enfoque(info_zoom.w / info_zoom.zoom, info_zoom.h / info_zoom.zoom);
 }
 
 void Controlador_tabla::dibujar(Pantalla& pantalla)
@@ -141,10 +150,16 @@ void Controlador_tabla::dibujar(Pantalla& pantalla)
 	pantalla.limpiar(0, 0, 0, 255);
 
 	rep_imagen.volcar(pantalla, camara);
-
 	for(auto& f : frames.frames)
 		dibujar_frame(pantalla, f, actual && actual->acc_id()==f.acc_id());
+/*
+	const std::vector<DLibV::Representacion_primitiva_poligono::punto>& puntos={
+		{0,0}, {32, 0}, {32, 32}, {0, 32}	
+	};
 
+	DLibV::Representacion_primitiva_poligono poli(puntos, 255, 0, 0);
+	poli.volcar(pantalla, camara);
+*/
 	std::stringstream ss;
 	ss<<"["<<camara.acc_x()<<","<<camara.acc_y()<<"] ";
 	if(actual) ss<<actual->acc_id()<<" : "<<actual->acc_x()<<","<<actual->acc_y()<<" ["<<actual->acc_w()<<","<<actual->acc_h()<<"] ["<<actual->acc_desp_x()<<","<<actual->acc_desp_y()<<"]";

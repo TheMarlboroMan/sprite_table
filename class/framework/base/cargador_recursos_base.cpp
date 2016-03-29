@@ -1,4 +1,5 @@
 #include "cargador_recursos_base.h"
+#include <class/lector_txt.h>
 
 Cargador_recursos_base::Cargador_recursos_base()
 	:pantalla(nullptr)
@@ -183,7 +184,7 @@ void Cargador_recursos_base::procesar_entrada_musica(const std::vector<std::stri
 
 std::vector<std::string> Cargador_recursos_base::obtener_entradas_desde_ruta(const std::string& ruta) const
 {	
-	DLibH::Lector_txt L(ruta, '#');
+	Herramientas_proyecto::Lector_txt L(ruta, '#');
 	std::vector<std::string> resultado;
 
 	if(!L)

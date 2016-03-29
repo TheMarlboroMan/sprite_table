@@ -1,6 +1,6 @@
 #include "kernel.h"
 
-Kernel_app::Kernel_app(DLibH::Controlador_argumentos& carg)
+Kernel_app::Kernel_app(Herramientas_proyecto::Controlador_argumentos& carg)
 	:Kernel_base(carg), w(0), h(0), ruta_destino("")
 {
 }
@@ -27,7 +27,7 @@ void Kernel_app::obtener_resolucion()
 			h=std::atoi(ex[1].c_str());
 		}
 	}
-	catch(Controlador_argumentos_exception& e)
+	catch(Herramientas_proyecto::Controlador_argumentos_exception& e)
 	{
 		w=800;
 		h=600;
