@@ -1,8 +1,10 @@
-DEP_HERRAMIENTAS_PROYECTO=\
-$(DIR_O_HERRAMIENTAS_PROYECTO)controlador_argumentos.o\
-$(DIR_O_HERRAMIENTAS_PROYECTO)lector_txt.o\
-$(DIR_O_HERRAMIENTAS_PROYECTO)localizador_base.o\
-$(DIR_O_HERRAMIENTAS_PROYECTO)string_utilidades.o\
+DEP_HERRAMIENTAS_PROYECTO=$(DIR_HERRAMIENTAS_PROYECTO)/objects/lector_txt.o\
+$(DIR_HERRAMIENTAS_PROYECTO)/objects/controlador_argumentos.o\
+$(DIR_HERRAMIENTAS_PROYECTO)/objects/string_utilidades.o\
+$(DIR_HERRAMIENTAS_PROYECTO)/objects/localizador_base.o\
+
+
+
 
 DEP_CLASES_APP=$(DIR_O)frame.o \
 $(DIR_O)cola_mensajes.o \

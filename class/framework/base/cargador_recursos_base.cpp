@@ -14,10 +14,11 @@ Cargador_recursos_base::~Cargador_recursos_base()
 
 void Cargador_recursos_base::procesar(const std::vector<std::string>& entradas, void (Cargador_recursos_base::*procesar_valores)(const std::vector<std::string>&))
 {
+	using namespace Herramientas_proyecto;
 	const char separador='\t';
 	for(auto& linea : entradas)
 	{
-		(this->*procesar_valores)(DLibH::Herramientas::explotar(linea, separador));
+		(this->*procesar_valores)(explotar(linea, separador));
 	}
 }
 
@@ -27,7 +28,6 @@ void Cargador_recursos_base::generar_recursos_texturas(DLibV::Pantalla &p)
 	pantalla=&p;
 	try
 	{
-
 		procesar(obtener_entradas_texturas(), &Cargador_recursos_base::procesar_entrada_textura);
 	}
 	catch(Excepcion_carga_recursos& e)
