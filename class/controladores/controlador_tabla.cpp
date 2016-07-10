@@ -35,12 +35,6 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 	rep_icono.establecer_recorte({0, 0, 32, 32});
 	rep_icono.establecer_modo_blend(DLibV::Representacion::blends::alpha);
 
-auto pos=rep_icono.acc_posicion();
-auto rec=rep_icono.acc_recorte();
-std::cout<<"pos:"<<pos.x<<","<<pos.y<<" "<<pos.w<<"x"<<pos.h<<std::endl;
-std::cout<<"rec:"<<rec.x<<","<<rec.y<<" "<<rec.w<<"x"<<rec.h<<std::endl;
-
-
 	rep_centrar.ir_a(0, 0);
 	rep_centrar.establecer_recorte({128, 0, 32, 32});
 	rep_centrar.establecer_modo_blend(DLibV::Representacion::blends::alpha);
@@ -137,7 +131,6 @@ void Controlador_tabla::ciclo_zoom()
 	++info_zoom.zoom;
 	if(info_zoom.zoom==6) info_zoom.zoom=1;
 	camara.mut_zoom(info_zoom.zoom);
-//	camara.mut_enfoque(info_zoom.w / info_zoom.zoom, info_zoom.h / info_zoom.zoom);
 }
 
 void Controlador_tabla::dibujar(Pantalla& pantalla)
@@ -149,7 +142,6 @@ void Controlador_tabla::dibujar(Pantalla& pantalla)
 	pantalla.limpiar(DLibV::rgba8(0, 0, 0, 255));
 
 	rep_imagen.volcar(pantalla, camara);
-
 	for(auto& f : frames.frames)
 		dibujar_frame(pantalla, f, actual && actual->acc_id()==f.acc_id());
 

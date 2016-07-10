@@ -29,7 +29,7 @@ void Kernel_app::obtener_resolucion()
 			h=std::atoi(ex[1].c_str());
 		}
 	}
-	catch(Controlador_argumentos_exception& e)
+	catch(Herramientas_proyecto::Controlador_argumentos_exception& e)
 	{
 		w=800;
 		h=600;
