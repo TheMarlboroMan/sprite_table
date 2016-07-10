@@ -7,7 +7,6 @@
 #include <memory>
 
 #include <libDan2.h>
-#include <capa_compatibilidad_representaciones_libdansdl2.h>
 
 //namespace Aplicacion
 //{
@@ -21,27 +20,31 @@ class Frame
 {
 	private:
 
+	DLibV::Fuente_TTF const *		fuente;
+
 	unsigned int id, x, y, w, h;
 	int desp_x, desp_y;
 
-	std::unique_ptr<DLibV::Representacion_texto_auto_dinamica> rep_txt_id;
-	std::unique_ptr<DLibV::Representacion_primitiva_caja_dinamica> rep_caja;
+	std::unique_ptr<DLibV::Representacion_TTF> rep_txt_id;
+	std::unique_ptr<DLibV::Representacion_primitiva_caja> rep_caja;
 
 	public:
 
-	Frame():
+	Frame(const DLibV::Fuente_TTF& f)
+		:fuente(&f),
 		id(0), x(0), y(0), w(0), h(0),
 		desp_x(0), desp_y(0), rep_txt_id(nullptr), rep_caja(nullptr)
 	{}
 
-	Frame(unsigned int pid, unsigned int px, unsigned int py, unsigned int pw, unsigned int ph, int dx, int dy):
-		id(pid), x(px), y(py), w(pw), h(ph), desp_x(dx), desp_y(dy), rep_txt_id(nullptr), rep_caja(nullptr)
+	Frame(const DLibV::Fuente_TTF& f, unsigned int pid, unsigned int px, unsigned int py, unsigned int pw, unsigned int ph, int dx, int dy)
+		:fuente(&f), id(pid), x(px), y(py), w(pw), h(ph), desp_x(dx), desp_y(dy), rep_txt_id(nullptr), rep_caja(nullptr)
 	{}
 
 	Frame(const Frame&)=delete;
 	Frame& operator=(const Frame&)=delete;
 
 	Frame(Frame&& f):
+		fuente(f.fuente),
 		id(f.id), x(f.x), y(f.y), w(f.w), h(f.h),
 		desp_x(f.desp_x), desp_y(f.desp_y), 
 		rep_txt_id(std::move(f.rep_txt_id)), 
@@ -50,6 +53,7 @@ class Frame
 
 	Frame& operator=(Frame&& f)
 	{
+		fuente=f.fuente;
 		id=f.id;
 		x=f.x;
 		y=f.y;
@@ -69,8 +73,8 @@ class Frame
 	unsigned int acc_h() const {return h;}
 	int acc_desp_x() const {return desp_x;}
 	int acc_desp_y() const {return desp_y;}
-	DLibV::Representacion_texto_auto_dinamica& acc_txt() {return *rep_txt_id;}
-	DLibV::Representacion_primitiva_caja_dinamica& acc_caja() {return *rep_caja;}
+	DLibV::Representacion_TTF& acc_txt() {return *rep_txt_id;}
+	DLibV::Representacion_primitiva_caja& acc_caja() {return *rep_caja;}
 
 	void mut_id(unsigned int v) {id=v; actualizar_representacion();}
 	void mut_desp_x(int v) {desp_x=v;}
@@ -108,7 +112,7 @@ class Frame
 		desp_y+=py;
 	}
 
-	void generar_representacion(const SDL_Renderer * r, const DLibV::Superficie * superf);
+	void generar_representacion();
 	void color_caja(bool seleccion);
 	void actualizar_representacion();	
 

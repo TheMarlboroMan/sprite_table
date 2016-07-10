@@ -79,38 +79,25 @@ void Cargador_recursos_base::generar_recursos_musica()
 
 void Cargador_recursos_base::procesar_entrada_textura(const std::vector<std::string>& valores)
 {
-	if(valores.size()!=6) LOG<<"ERROR: No hay 6 parametros para recursos textura, en su lugar "<<valores.size()<<std::endl;
-	else 
+	//There's no more colorkeying anymore. Long live to alpha channels!!!.
+	if(valores.size()!=2) throw std::runtime_error("ERROR: No hay 2 parametros para recursos textura sino "+std::to_string(valores.size()));
+
+	unsigned int indice=std::atoi(valores[0].c_str());
+	std::string ruta=valores[1];
+
+	DLibV::Imagen img(ruta);
+	if(!img.acc_superficie())
 	{
-		unsigned int indice=std::atoi(valores[0].c_str());
-		std::string ruta=valores[1];
-		unsigned int transparencia=std::atoi(valores[2].c_str());
-
-		SDL_Surface * superficie=DLibV::Utilidades_graficas_SDL::cargar_imagen(ruta.c_str(), pantalla->acc_ventana());
-
-		if(!superficie)
+		throw std::runtime_error("ERROR: Imposible cargar imagen "+ruta);
+	}
+	else
+	{
+		DLibV::Textura * t=new DLibV::Textura(img);
+		if(DLibV::Gestor_texturas::insertar(indice, t)==-1)
 		{
-			LOG<<"ERROR: Cargador recursos base no se ha podido cargar superficie para textura en "<<ruta<<std::endl;
+			throw std::runtime_error("ERROR: No se ha podido insertar textura "+ruta);
 		}
-		else
-		{
-			if(transparencia)
-			{
-				unsigned int r=std::atoi(valores[3].c_str());
-				unsigned int g=std::atoi(valores[4].c_str());
-				unsigned int b=std::atoi(valores[5].c_str());
-
-				SDL_SetColorKey(superficie, SDL_TRUE, SDL_MapRGB(superficie->format, r, g, b));
-			}
-			
-			DLibV::Textura * t=new DLibV::Textura(pantalla->acc_renderer(), superficie);
-
-			if(DLibV::Gestor_texturas::insertar(indice, t)==-1)
-			{
-				LOG<<"ERROR: No se ha podido insertar textura "<<indice<<" en "<<ruta<<std::endl;
-			}	
-		}
-	}			
+	}
 }
 
 void Cargador_recursos_base::procesar_entrada_superficie(const std::vector<std::string>& valores)

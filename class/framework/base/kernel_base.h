@@ -7,7 +7,6 @@
 #include "audio_base.h"
 #include "cargador_recursos_base.h"
 #include "../interface_controlador.h"
-#include <capa_compatibilidad_representaciones_libdansdl2.h>
 #include <class/controlador_argumentos.h>
 
 class Kernel_base

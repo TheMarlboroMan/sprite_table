@@ -38,5 +38,5 @@ void Controlador_exportar::loop(Input_base& input, float delta)
 
 void Controlador_exportar::dibujar(DLibV::Pantalla& pantalla)
 {
-	pantalla.limpiar(128, 128, 128, 255);
+	pantalla.limpiar(DLibV::rgba8(128, 128, 128, 255));
 }

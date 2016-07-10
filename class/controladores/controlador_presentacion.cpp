@@ -5,7 +5,7 @@ using namespace DLibH;
 
 Controlador_presentacion::Controlador_presentacion(Director_estados &d, Cola_mensajes& cm, Frames& f, unsigned int pw, unsigned int ph)
 	:Controlador_base(d, cm), frames(f), 
-	camara(0, 0, pw, ph)
+	camara({0, 0, pw, ph}, {0,0})
 {
 
 }
@@ -36,7 +36,7 @@ void Controlador_presentacion::preparar_presentacion()
 		}
 
 		//Colocar id del en el márgen inferior.
-		f.acc_txt().establecer_posicion(x, y+h+2);
+		f.acc_txt().ir_a(x, y+h+2);
 
 		//Rellenar info presentación con el puntero al frame.
 		info_presentacion.push_back(Info_presentacion(x, y, w, h, f));
@@ -65,17 +65,16 @@ void Controlador_presentacion::loop(Input_base& input, float delta)
 
 void Controlador_presentacion::dibujar(DLibV::Pantalla& pantalla)
 {
-	pantalla.limpiar(0, 0, 0, 255);
+	pantalla.limpiar(DLibV::rgba8(0, 0, 0, 255));
 
 	//Recorrer la representación interna de los frames. El texto con el 
 	//id ya lo hemos preparado antes.
 
-	Representacion_bitmap_dinamica rep_bmp(Gestor_texturas::obtener(Recursos_graficos::RT_IMAGEN));
-	Representacion_primitiva_caja_lineas_dinamica rep_caja(Herramientas_SDL::nuevo_sdl_rect(0,0,0), 255, 255, 255);
+	Representacion_bitmap rep_bmp(Gestor_texturas::obtener(Recursos_graficos::RT_IMAGEN));
 
 	for(auto& i : info_presentacion)
 	{
-		rep_caja.establecer_posicion(i.x-1, i.y-1, i.w+2, i.h+2);
+		Representacion_primitiva_caja rep_caja(Representacion_primitiva_poligono::tipo::relleno, {i.x-1, i.y-1, (unsigned int)i.w+2, (unsigned int)i.h+2}, rgba8(255, 255, 255, 255));
 		rep_caja.volcar(pantalla, camara);
 
 		rep_bmp.establecer_posicion(i.x, i.y, i.w, i.h);

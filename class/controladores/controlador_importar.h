@@ -14,6 +14,7 @@ class Controlador_importar:public Controlador_base
 	//Propiedades
 	private:
 
+	const DLibV::Fuente_TTF&	fuente;
 	Frames& frames;
 	std::string ruta;
 
@@ -26,7 +27,7 @@ class Controlador_importar:public Controlador_base
 	//Interface pública.
 	public:
 	
-	Controlador_importar(Director_estados &DI, Cola_mensajes& CM, Frames& f, const std::string& ruta);
+	Controlador_importar(Director_estados &DI, Cola_mensajes& CM, Frames& f, const DLibV::Fuente_TTF&, const std::string& ruta);
 	~Controlador_importar();
 
 	virtual void preloop(Input_base& input, float delta) {}

@@ -25,8 +25,8 @@ class Cargador_recursos:public Cargador_recursos_base
 
 	std::vector<std::string> obtener_entradas_texturas() const
 	{
-		std::string linea1 {"1	data/graficos/iconos.png	1	0	0	0"};
-		std::string linea2 {"10	"+textura+"	0	0	0	0"};
+		std::string linea1 {"1	data/graficos/iconos.png"};
+		std::string linea2 {"10	"+textura};
 		std::vector<std::string> resultado {linea1, linea2};
 		return resultado;
 	}

@@ -1,4 +1,5 @@
 #include "frame.h"
+#include <templates/parches_compat.h>
 
 using namespace std;
 using namespace DLibV;
@@ -7,30 +8,31 @@ using namespace DLibH;
 
 void Frame::actualizar_representacion()
 {
-	rep_caja->establecer_posicion(x, y, w, h);
-	rep_txt_id->establecer_posicion(x+3, y+3);
-	rep_txt_id->asignar(std::to_string(id));
+	rep_caja.reset(new Representacion_primitiva_caja(Representacion_primitiva_poligono::tipo::relleno, DLibV::Rect{(int)x, (int)y, w, h}, DLibV::rgba8(255, 64, 64,64)));
+	rep_caja->establecer_modo_blend(Representacion::blends::alpha);
+
+	rep_txt_id->ir_a(x+3, y+3);
+	rep_txt_id->asignar(compat::to_string(id));
 }
 
-void Frame::generar_representacion(const SDL_Renderer * renderer, const DLibV::Superficie * superf)
+void Frame::generar_representacion()
 {
 	if(!rep_txt_id && !rep_caja)
 	{
-		rep_txt_id=std::unique_ptr<Representacion_texto_auto_dinamica>(new Representacion_texto_auto_dinamica(superf, std::to_string(id) ));
-		rep_txt_id->establecer_posicion(x+3, y+3);
+		rep_txt_id=std::unique_ptr<Representacion_TTF>(new Representacion_TTF(*fuente, DLibV::rgba8(255,255,255,255), compat::to_string(id) ));
+		rep_txt_id->ir_a(x+3, y+3);
 
-		rep_caja=std::unique_ptr<Representacion_primitiva_caja_dinamica>(new Representacion_primitiva_caja_dinamica(DLibH::Herramientas_SDL::nuevo_sdl_rect(x, y, w, h), 255, 64, 64));
-		rep_caja->establecer_alpha(128);
+		rep_caja.reset(new Representacion_primitiva_caja(Representacion_primitiva_poligono::tipo::relleno, DLibV::Rect{(int)x, (int)y, w, h}, DLibV::rgba8(255,64, 64,64)));
+		rep_caja->establecer_modo_blend(Representacion::blends::alpha);
 	}
 }
 
 void Frame::color_caja(bool seleccionada)
 {
-	if(seleccionada) rep_caja->mut_rgb(64, 64, 255);
-	else rep_caja->mut_rgb(255, 64, 64);
+	if(seleccionada) rep_caja->mut_rgba(DLibV::rgba8(0, 0, 255, 64));
+	else rep_caja->mut_rgba(DLibV::rgba8(255, 0, 64, 64));
 }
 
-//std::ostream& operator<<(std::ostream& stream, const Aplicacion::Frame& f)
 std::ostream& operator<<(std::ostream& stream, const Frame& f)
 {
 	stream<<f.id<<"\t"<<f.x<<"\t"<<f.y<<"\t"<<f.w<<"\t"<<f.h<<"\t"<<f.desp_x<<"\t"<<f.desp_y<<std::endl;

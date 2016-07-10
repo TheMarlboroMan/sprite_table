@@ -119,14 +119,6 @@ bool Kernel_base::loop(Interface_controlador& IC)
 
 	IC.dibujar(pantalla);
 
-	if(mostrar_fps)
-	{
-		std::string fps="FPS:"+std::to_string(controlador_fps.acc_frames_contados())+"\n"+IC.acc_debug();
-		DLibV::Representacion_texto_auto_estatica txt(DLibV::Gestor_superficies::obtener(acc_recurso_fps()), fps);
-		txt.establecer_posicion(pantalla.acc_w()-128, 6);
-		txt.volcar(pantalla);
-	}	
-
 	pantalla.actualizar();
 
 	return !IC.es_abandonar_aplicacion();

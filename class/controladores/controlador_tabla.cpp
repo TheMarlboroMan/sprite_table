@@ -9,18 +9,20 @@ using namespace DLibH;
 Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 	Pantalla& p, 
 	Frames& f,
+	const DLibV::Fuente_TTF& fuente,
 	unsigned int cw, unsigned int ch):
 	Controlador_base(DI, CM),
+		fuente(fuente),
 		actual(nullptr),
 		estado(t_estados::CAMARA),
 		frames(f),
-		camara(0, 0, cw, ch, 0, 0),
+		camara({0, 0, cw, ch}, {0, 0}),
 		rep_imagen(Gestor_texturas::obtener(Recursos_graficos::RT_IMAGEN)),
-		rep_icono(Gestor_texturas::obtener(Recursos_graficos::RT_ICONOS)),
-		rep_centrar(Gestor_texturas::obtener(Recursos_graficos::RT_ICONOS)),
-		rep_status_actual(DLibV::Gestor_superficies::obtener(Recursos_graficos::RS_FUENTE_BASE), ""),
-		rep_mensaje_actual(DLibV::Gestor_superficies::obtener(Recursos_graficos::RS_FUENTE_BASE), ""),
-		caja_fondo(Herramientas_SDL::nuevo_sdl_rect(0, p.acc_h()-64, p.acc_w(), 64), 0,0,0),
+		rep_icono(Gestor_texturas::obtener(Recursos_graficos::RT_ICONOS), {0,0,32,32}),
+		rep_centrar(Gestor_texturas::obtener(Recursos_graficos::RT_ICONOS), {0,0,32,32}),
+		rep_status_actual(fuente, DLibV::rgba8(255,255,255,255), ""),
+		rep_mensaje_actual(fuente, DLibV::rgba8(255,255,255,255), ""),
+		caja_fondo(Representacion_primitiva_poligono::tipo::relleno, {0, (int)p.acc_h()-64, p.acc_w(), 64}, DLibV::rgba8(0,0,0,255)),
 //		linea_absurda(0, 0, 0, 0, 255, 0, 0),
 		info_zoom(1, cw, ch),
 		mostrar_numeros(true)
@@ -29,17 +31,22 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 	int ha=rep_imagen.acc_posicion().h, hb=p.acc_h();
 
 	camara.establecer_limites(0, 0, std::max(wa, wb), std::max(ha, hb)); 
-	rep_icono.establecer_posicion(cw-64, 32, 32, 32);
-	rep_icono.establecer_recorte(0, 0, 32, 32);
+	rep_icono.ir_a(64, 32);	
+	rep_icono.establecer_recorte({0, 0, 32, 32});
+	rep_icono.establecer_modo_blend(DLibV::Representacion::blends::alpha);
 
-	rep_centrar.establecer_posicion(0, 0, 0, 0);
-	rep_centrar.establecer_recorte(128, 0, 32, 32);
-	rep_centrar.establecer_modo_blend(DLibV::Representacion::BLEND_ALPHA);
-
-	rep_status_actual.establecer_posicion(32, ch-48);
-	rep_mensaje_actual.establecer_posicion(32, ch-16);
+auto pos=rep_icono.acc_posicion();
+auto rec=rep_icono.acc_recorte();
+std::cout<<"pos:"<<pos.x<<","<<pos.y<<" "<<pos.w<<"x"<<pos.h<<std::endl;
+std::cout<<"rec:"<<rec.x<<","<<rec.y<<" "<<rec.w<<"x"<<rec.h<<std::endl;
 
 
+	rep_centrar.ir_a(0, 0);
+	rep_centrar.establecer_recorte({128, 0, 32, 32});
+	rep_centrar.establecer_modo_blend(DLibV::Representacion::blends::alpha);
+
+	rep_status_actual.ir_a(32, ch-48);
+	rep_mensaje_actual.ir_a(32, ch-16);
 
 	caja_fondo.establecer_alpha(128);
 
@@ -108,7 +115,7 @@ void Controlador_tabla::loop(Input_base& input, float delta)
 		if(input.es_input_down(Input::I_CLICK_I))
 		{
 			auto pos=input.acc_posicion_raton();
-			camara.transformar_posicion_raton(pos.x, pos.y);
+			camara.transformar_posicion_raton({pos.x, pos.y});
 
 //			linea_absurda.establecer_puntos(0, 0, pos.x, pos.y);
 
@@ -129,7 +136,8 @@ void Controlador_tabla::ciclo_zoom()
 {
 	++info_zoom.zoom;
 	if(info_zoom.zoom==6) info_zoom.zoom=1;
-	camara.mut_enfoque(info_zoom.w / info_zoom.zoom, info_zoom.h / info_zoom.zoom);
+	camara.mut_zoom(info_zoom.zoom);
+//	camara.mut_enfoque(info_zoom.w / info_zoom.zoom, info_zoom.h / info_zoom.zoom);
 }
 
 void Controlador_tabla::dibujar(Pantalla& pantalla)
@@ -138,20 +146,22 @@ void Controlador_tabla::dibujar(Pantalla& pantalla)
 	//ya no son útiles para determinar lo que cae dentro y lo que no. 
 	//SDL_RenderSetScale(pantalla.acc_renderer(), info_zoom.zoom, info_zoom.zoom);
 
-	pantalla.limpiar(0, 0, 0, 255);
+	pantalla.limpiar(DLibV::rgba8(0, 0, 0, 255));
 
 	rep_imagen.volcar(pantalla, camara);
 
 	for(auto& f : frames.frames)
 		dibujar_frame(pantalla, f, actual && actual->acc_id()==f.acc_id());
 
+	caja_fondo.volcar(pantalla);
+
 	std::stringstream ss;
 	ss<<"["<<camara.acc_x()<<","<<camara.acc_y()<<"] ";
 	if(actual) ss<<actual->acc_id()<<" : "<<actual->acc_x()<<","<<actual->acc_y()<<" ["<<actual->acc_w()<<","<<actual->acc_h()<<"] ["<<actual->acc_desp_x()<<","<<actual->acc_desp_y()<<"]";
 	rep_status_actual.asignar(ss.str());
-	caja_fondo.volcar(pantalla);
 	rep_status_actual.volcar(pantalla);
 	rep_mensaje_actual.volcar(pantalla);
+
 	rep_icono.volcar(pantalla);
 
 	if(estado==t_estados::CENTRAR && actual)
@@ -163,8 +173,7 @@ void Controlador_tabla::dibujar(Pantalla& pantalla)
 
 void Controlador_tabla::dibujar_frame(Pantalla& pantalla, Frame& f, bool actual)
 {
-	f.generar_representacion(pantalla.acc_renderer(), DLibV::Gestor_superficies::obtener(Recursos_graficos::RS_FUENTE_BASE)); //Sólo lo hará si es necesario.
-
+	f.generar_representacion(); //Sólo lo hará si es necesario.
 	f.color_caja(actual);
 	f.acc_caja().volcar(pantalla, camara);
 	if(mostrar_numeros) f.acc_txt().volcar(pantalla, camara);
@@ -188,7 +197,7 @@ void Controlador_tabla::ciclo_estado()
 		case t_estados::CENTRAR: estado=t_estados::CAMARA; break;
 	}
 
-	unsigned int x=0;
+	int x=0;
 
 	switch(estado)
 	{
@@ -198,7 +207,7 @@ void Controlador_tabla::ciclo_estado()
 		case t_estados::CENTRAR: x=96; break;
 	}	
 
-	rep_icono.establecer_recorte(x, 0, 32, 32);
+	rep_icono.establecer_recorte({x, 0, 32, 32});
 }
 
 void Controlador_tabla::procesar_input(int x, int y)
@@ -218,7 +227,7 @@ void Controlador_tabla::insertar_nuevo()
 	unsigned int x=static_cast<unsigned int>(camara.acc_x());
 	unsigned int y=static_cast<unsigned int>(camara.acc_y());
 
-	frames.push_back(Frame(id, x, y ,32 ,32 , 0, 0));
+	frames.push_back(Frame(fuente, id, x, y ,32 ,32 , 0, 0));
 
 	auto it=std::find_if(std::begin(frames.frames), std::end(frames.frames), [id](const Frame& f) {return f.acc_id()==id;});
 
@@ -235,7 +244,7 @@ void Controlador_tabla::duplicar()
 	if(actual)
 	{
 		unsigned int id=frames.nuevo_id();
-		frames.push_back(Frame{id, actual->acc_x(), actual->acc_y(), actual->acc_w(), actual->acc_h(), 0, 0});
+		frames.push_back(Frame{fuente, id, actual->acc_x(), actual->acc_y(), actual->acc_w(), actual->acc_h(), 0, 0});
 		actual=&*(frames.frames.rbegin());
 		insertar_mensaje("Se ha creado el frame "+std::to_string(actual->acc_id()));
 	}

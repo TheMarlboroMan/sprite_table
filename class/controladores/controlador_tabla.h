@@ -7,6 +7,22 @@
 
 class Controlador_tabla:public Controlador_base
 {
+	///////////////
+	//Interface pública.
+	public:
+	
+	Controlador_tabla(Director_estados &DI, Cola_mensajes& CM, DLibV::Pantalla& pantalla, Frames& f, const DLibV::Fuente_TTF&, unsigned int cw, unsigned int ch); //, DLibV::Pantalla&);
+	~Controlador_tabla();
+
+	virtual void preloop(Input_base& input, float delta) {}
+	virtual void postloop(Input_base& input, float delta) {}
+	virtual void loop(Input_base& input, float delta);
+	virtual void dibujar(DLibV::Pantalla& pantalla);
+
+	void reset_actual();
+	void restaurar_posicion_ids();
+	void asignar_mensaje(const std::string& m);
+
 	//////////////
 	//Definiciones
 	private:
@@ -17,16 +33,17 @@ class Controlador_tabla:public Controlador_base
 	//Propiedades
 	private:
 
+	const DLibV::Fuente_TTF& fuente;
 	Frame * actual;
 	t_estados estado;
 	Frames& frames;
 	DLibV::Camara camara;
-	DLibV::Representacion_bitmap_dinamica rep_imagen;
-	DLibV::Representacion_bitmap_estatica rep_icono;
-	DLibV::Representacion_bitmap_estatica rep_centrar;
-	DLibV::Representacion_texto_auto_estatica rep_status_actual;
-	DLibV::Representacion_texto_auto_estatica rep_mensaje_actual;
-	DLibV::Representacion_primitiva_caja_dinamica caja_fondo;
+	DLibV::Representacion_bitmap rep_imagen;
+	DLibV::Representacion_bitmap rep_icono;
+	DLibV::Representacion_bitmap rep_centrar;
+	DLibV::Representacion_TTF rep_status_actual;
+	DLibV::Representacion_TTF rep_mensaje_actual;
+	DLibV::Representacion_primitiva_caja caja_fondo;
 //	DLibV::Representacion_primitiva_linea_estatica linea_absurda;
 
 	struct Info_zoom
@@ -46,7 +63,7 @@ class Controlador_tabla:public Controlador_base
 	//Métodos internos.
 
 	private:
-
+	
 	void procesar_input(int x, int y);
 	void mover_actual(int x, int y);
 	void redimensionar_actual(int x, int y);
@@ -60,22 +77,6 @@ class Controlador_tabla:public Controlador_base
 	void seleccionar_por_posicion(int x, int y);
 //	void dibujar_caja(DLibV::Pantalla& pantalla, SDL_Rect c, unsigned int r, unsigned int g, unsigned int b);
 	void dibujar_frame(DLibV::Pantalla& pantalla, Frame& f, bool actual);
-
-	///////////////
-	//Interface pública.
-	public:
-	
-	Controlador_tabla(Director_estados &DI, Cola_mensajes& CM, DLibV::Pantalla& pantalla, Frames& f, unsigned int cw, unsigned int ch); //, DLibV::Pantalla&);
-	~Controlador_tabla();
-
-	virtual void preloop(Input_base& input, float delta) {}
-	virtual void postloop(Input_base& input, float delta) {}
-	virtual void loop(Input_base& input, float delta);
-	virtual void dibujar(DLibV::Pantalla& pantalla);
-
-	void reset_actual();
-	void restaurar_posicion_ids();
-	void asignar_mensaje(const std::string& m);
 };
 
 #endif

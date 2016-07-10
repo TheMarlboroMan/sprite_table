@@ -5,9 +5,9 @@ using namespace DLibH;
 
 extern Log_base LOG;
 
-Controlador_importar::Controlador_importar(Director_estados &DI, Cola_mensajes& CM, Frames& f, const std::string& ruta)
+Controlador_importar::Controlador_importar(Director_estados &DI, Cola_mensajes& CM, Frames& f, const DLibV::Fuente_TTF& fuente, const std::string& ruta)
 	:Controlador_base(DI, CM),
-		frames(f), ruta(ruta)
+		fuente(fuente), frames(f), ruta(ruta)
 {
 
 }
@@ -25,7 +25,7 @@ void Controlador_importar::loop(Input_base& input, float delta)
 
 void Controlador_importar::dibujar(DLibV::Pantalla& pantalla)
 {
-	pantalla.limpiar(128, 128, 128, 255);
+	pantalla.limpiar(DLibV::rgba8(128, 128, 128, 255));
 }
 
 void Controlador_importar::importar()
@@ -42,7 +42,7 @@ void Controlador_importar::importar()
 
 		while(true)
 		{
-			Frame f;
+			Frame f(fuente);
 			fichero>>f;
 			if(fichero.eof()) break;
 			frames.push_back(std::move(f));

@@ -44,8 +44,9 @@ void Configuracion_base::cargar()
 
 	while(!archivo.eof())
 	{
-		std::string cadena=DLibH::Herramientas::obtener_siguiente_linea_archivo(archivo);
-
+		std::string cadena;
+		std::getline(archivo, cadena);
+		
 		if(cadena.size())
 		{
 			int pos=cadena.find(SEPARADOR_ARCHIVO);
