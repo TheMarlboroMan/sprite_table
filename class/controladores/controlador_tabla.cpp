@@ -31,7 +31,7 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 	int ha=rep_imagen.acc_posicion().h, hb=p.acc_h();
 
 	camara.establecer_limites(0, 0, std::max(wa, wb), std::max(ha, hb)); 
-	rep_icono.ir_a(64, 32);	
+	rep_icono.ir_a(cw-64, 32);
 	rep_icono.establecer_recorte({0, 0, 32, 32});
 	rep_icono.establecer_modo_blend(DLibV::Representacion::blends::alpha);
 
