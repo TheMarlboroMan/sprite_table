@@ -42,6 +42,8 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 	rep_status_actual.ir_a(32, ch-48);
 	rep_mensaje_actual.ir_a(32, ch-16);
 
+	rep_imagen.recorte_a_medidas_textura();
+
 	caja_fondo.establecer_alpha(128);
 
 	reset_actual();
