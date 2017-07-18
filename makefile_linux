@@ -11,7 +11,7 @@ EJECUTABLE=a.out
 MKDIR=mkdir -p
 LIMPIAR=rm objects/*; rm ./$(EJECUTABLE); touch objects/dummy;
 
-DIR_BASE=/home/dani/programacion/c++/
+DIR_BASE=/home/dani/programacion/
 DIR_LIBDAN2=$(DIR_BASE)libdansdl2
 DIR_HERRAMIENTAS_PROYECTO=$(DIR_BASE)herramientas_proyecto
 
