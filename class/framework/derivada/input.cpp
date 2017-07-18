@@ -24,6 +24,7 @@ void Input::configurar()
 	mapa_teclado.insert(std::make_pair(I_ZOOM, SDL_SCANCODE_Z));
 	mapa_teclado.insert(std::make_pair(I_DUPLICAR, SDL_SCANCODE_D));
 	mapa_teclado.insert(std::make_pair(I_PRESENTACION, SDL_SCANCODE_P));
+	mapa_teclado.insert(std::make_pair(I_SNAP, SDL_SCANCODE_LCTRL));
 
 	mapa_raton.insert(std::make_pair(I_CLICK_I, SDL_BUTTON_LEFT));
 	mapa_raton.insert(std::make_pair(I_CLICK_I, SDL_BUTTON_RIGHT));

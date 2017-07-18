@@ -11,7 +11,7 @@ class Controlador_tabla:public Controlador_base
 	//Interface pública.
 	public:
 	
-	Controlador_tabla(Director_estados &DI, Cola_mensajes& CM, DLibV::Pantalla& pantalla, Frames& f, const DLibV::Fuente_TTF&, unsigned int cw, unsigned int ch); //, DLibV::Pantalla&);
+	Controlador_tabla(Director_estados &DI, Cola_mensajes& CM, DLibV::Pantalla& pantalla, Frames& f, const DLibV::Fuente_TTF&, unsigned int cw, unsigned int ch, int sn); //, DLibV::Pantalla&);
 	~Controlador_tabla();
 
 	virtual void preloop(Input_base& input, float delta) {}
@@ -58,6 +58,7 @@ class Controlador_tabla:public Controlador_base
 	}info_zoom;
 
 	bool mostrar_numeros;
+	int snap;
 
 	///////////////
 	//Métodos internos.
@@ -71,7 +72,7 @@ class Controlador_tabla:public Controlador_base
 	void insertar_nuevo();
 	void ciclo_estado();
 	void ciclo_frames(int dir);
-	void ciclo_zoom();
+	void ciclo_zoom(int);
 	void eliminar();
 	void duplicar();
 	void seleccionar_por_posicion(int x, int y);

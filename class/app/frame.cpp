@@ -8,11 +8,17 @@ using namespace DLibH;
 
 void Frame::actualizar_representacion()
 {
-	rep_caja.reset(new Representacion_primitiva_caja(Representacion_primitiva_poligono::tipo::relleno, DLibV::Rect{(int)x, (int)y, w, h}, DLibV::rgba8(255, 64, 64,64)));
-	rep_caja->establecer_modo_blend(Representacion::blends::alpha);
+	if(rep_caja)
+	{
+		rep_caja.reset(new Representacion_primitiva_caja(Representacion_primitiva_poligono::tipo::relleno, DLibV::Rect{(int)x, (int)y, w, h}, DLibV::rgba8(255, 64, 64,64)));
+		rep_caja->establecer_modo_blend(Representacion::blends::alpha);
+	}
 
-	rep_txt_id->ir_a(x+3, y+3);
-	rep_txt_id->asignar(compat::to_string(id));
+	if(rep_txt_id)
+	{
+		rep_txt_id->ir_a(x+3, y+3);
+		rep_txt_id->asignar(compat::to_string(id));
+	}
 }
 
 void Frame::generar_representacion()

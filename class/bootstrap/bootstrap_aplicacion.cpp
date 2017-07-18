@@ -19,7 +19,7 @@ void App::loop_aplicacion(Kernel_app& kernel)
 
 	DLibV::Fuente_TTF fuente("data/fuentes/akashi.ttf", 16);
 
-	Controlador_tabla C_TABLA(DI, COLA_M, kernel.acc_pantalla(), frames, fuente, kernel.acc_w(), kernel.acc_h());
+	Controlador_tabla C_TABLA(DI, COLA_M, kernel.acc_pantalla(), frames, fuente, kernel.acc_w(), kernel.acc_h(), kernel.acc_snap());
 	Controlador_exportar C_EXPORTAR(DI, COLA_M, frames, kernel.acc_ruta_destino());
 	Controlador_importar C_IMPORTAR(DI, COLA_M, frames, fuente, kernel.acc_ruta_destino());
 	Controlador_presentacion C_PRESENTACION(DI, COLA_M, frames, kernel.acc_w(), kernel.acc_h());

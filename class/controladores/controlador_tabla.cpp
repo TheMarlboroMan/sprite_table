@@ -10,7 +10,7 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 	Pantalla& p, 
 	Frames& f,
 	const DLibV::Fuente_TTF& fuente,
-	unsigned int cw, unsigned int ch):
+	unsigned int cw, unsigned int ch, int psn):
 	Controlador_base(DI, CM),
 		fuente(fuente),
 		actual(nullptr),
@@ -25,7 +25,8 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 		caja_fondo(Representacion_primitiva_poligono::tipo::relleno, {0, (int)p.acc_h()-64, p.acc_w(), 64}, DLibV::rgba8(0,0,0,255)),
 //		linea_absurda(0, 0, 0, 0, 255, 0, 0),
 		info_zoom(1, cw, ch),
-		mostrar_numeros(true)
+		mostrar_numeros(true),
+		snap(psn)
 {
 	int wa=rep_imagen.acc_posicion().w, wb=p.acc_w();
 	int ha=rep_imagen.acc_posicion().h, hb=p.acc_h();
@@ -97,6 +98,14 @@ void Controlador_tabla::loop(Input_base& input, float delta)
 			if(input.es_input_down(Input::I_ARRIBA)) my=-1;
 			else if(input.es_input_down(Input::I_ABAJO)) my=1;
 		}
+		else if(input.es_input_pulsado(Input::I_SNAP))
+		{
+			if(input.es_input_down(Input::I_IZQUIERDA)) mx=-snap;
+			else if(input.es_input_down(Input::I_DERECHA)) mx=snap;
+
+			if(input.es_input_down(Input::I_ARRIBA)) my=-snap;
+			else if(input.es_input_down(Input::I_ABAJO)) my=snap;
+		}
 		else
 		{
 			if(input.es_input_pulsado(Input::I_IZQUIERDA)) mx=-1;
@@ -114,11 +123,10 @@ void Controlador_tabla::loop(Input_base& input, float delta)
 			camara.transformar_posicion_raton({pos.x, pos.y});
 
 //			linea_absurda.establecer_puntos(0, 0, pos.x, pos.y);
-
-			seleccionar_por_posicion(pos.x, pos.y);
+			seleccionar_por_posicion(pos.x / info_zoom.zoom, pos.y / info_zoom.zoom);
 		}
 
-		if(input.es_input_down(Input::I_ZOOM)) ciclo_zoom();
+		if(input.es_input_down(Input::I_ZOOM)) ciclo_zoom(input.es_input_pulsado(Input::I_PASO) ? -1 : 1);
 		if(input.es_input_down(Input::I_DUPLICAR)) duplicar();
 
 		if(input.es_input_down(Input::I_NUEVO)) insertar_nuevo();
@@ -128,10 +136,11 @@ void Controlador_tabla::loop(Input_base& input, float delta)
 	}
 }
 
-void Controlador_tabla::ciclo_zoom()
+void Controlador_tabla::ciclo_zoom(int v)
 {
-	++info_zoom.zoom;
-	if(info_zoom.zoom==6) info_zoom.zoom=1;
+	info_zoom.zoom+=v;
+	if(info_zoom.zoom > 10) info_zoom.zoom=1;
+	else if(info_zoom.zoom < 1) info_zoom.zoom=10;
 	camara.mut_zoom(info_zoom.zoom);
 }
 
@@ -143,7 +152,7 @@ void Controlador_tabla::dibujar(Pantalla& pantalla)
 
 	pantalla.limpiar(DLibV::rgba8(0, 0, 0, 255));
 
-	rep_imagen.volcar(pantalla, camara);
+	rep_imagen.volcar(pantalla, camara, true);
 	for(auto& f : frames.frames)
 		dibujar_frame(pantalla, f, actual && actual->acc_id()==f.acc_id());
 

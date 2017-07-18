@@ -44,7 +44,8 @@ I_CLICK_I,
 I_CLICK_D,
 I_ZOOM,
 I_DUPLICAR,
-I_PRESENTACION
+I_PRESENTACION,
+I_SNAP
 };
 
 	///////////////////

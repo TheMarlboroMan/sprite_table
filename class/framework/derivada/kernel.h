@@ -29,6 +29,7 @@ class Kernel_app:public Kernel_base
 
 	unsigned int w;
 	unsigned int h;
+	int snap;
 
 	std::string ruta_destino;
 
@@ -57,6 +58,7 @@ class Kernel_app:public Kernel_base
 
 	unsigned int acc_w() const {return w;}
 	unsigned int acc_h() const {return h;}
+	int acc_snap() const {return snap;}
 	const std::string& acc_ruta_destino() const {return ruta_destino;}
 };
 
