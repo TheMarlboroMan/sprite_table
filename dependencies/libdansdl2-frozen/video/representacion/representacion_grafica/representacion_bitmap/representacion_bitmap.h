@@ -11,7 +11,7 @@ class Representacion_bitmap:public Representacion_grafica
 	public:
 
 	Representacion_bitmap();
-	Representacion_bitmap(const Textura *, Rect={0,0,0,0}, Rect={0,0,0,0}, sampling=sampling::atlas);
+	Representacion_bitmap(const Textura *, Rect={0,0,0,0}, Rect={0,0,0,0}, sampling=sampling::completo);
 	Representacion_bitmap(const Representacion_bitmap&);
 	Representacion_bitmap& operator=(const Representacion_bitmap &);
 

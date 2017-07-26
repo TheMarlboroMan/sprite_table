@@ -46,8 +46,13 @@ There is no in-application help, so:
 - As of November 5th 2015 the code has been patched with a compatibility layer to support many radical changes to the libdansdl2. Should the code be updated, the compatibility layer will be removed.
 - As of July 2016 the code has been updated to drop SDL2 graphic capabilities and now uses OpenGL. There should be a few glitches here and there.
 - As of July 2017 the code does not compile with the current branches of libdansdl2 and herramientas_proyecto due to translation of code and changes in the core functionality.
+- 26/07/2017: Bugs:
+	- Fixed camera bug: camera was limited to image size when image size was yet unknown.
+	- Fixed stupid zoom bug. Turns out it wasn't opengl. It was me and something about atlas vs complete sampling in libdansdl2.
+
+#Todo.
+
 
 #Bugs
 
-- Due to opengl rendering the zoom function is sketchy and will not give pixel precision. You get used to it... Using linear texture filters in libdansdl2 works, for obvious reasons, but looks ugly.
 - Not a bug, but there are many hacks here and there to compensate for bugs in the old version of libdansdl2.

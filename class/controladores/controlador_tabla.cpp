@@ -28,10 +28,6 @@ Controlador_tabla::Controlador_tabla(Director_estados &DI, Cola_mensajes& CM,
 		mostrar_numeros(true),
 		snap(psn)
 {
-	int wa=rep_imagen.acc_posicion().w, wb=p.acc_w();
-	int ha=rep_imagen.acc_posicion().h, hb=p.acc_h();
-
-	camara.establecer_limites(0, 0, std::max(wa, wb), std::max(ha, hb)); 
 	rep_icono.ir_a(cw-64, 32);
 	rep_icono.establecer_recorte({0, 0, 32, 32});
 	rep_icono.establecer_modo_blend(DLibV::Representacion::blends::alpha);
@@ -142,13 +138,15 @@ void Controlador_tabla::ciclo_zoom(int v)
 	if(info_zoom.zoom > 10) info_zoom.zoom=1;
 	else if(info_zoom.zoom < 1) info_zoom.zoom=10;
 	camara.mut_zoom(info_zoom.zoom);
+
+	insertar_mensaje("Zoom "+std::to_string(info_zoom.zoom));
 }
 
 void Controlador_tabla::dibujar(Pantalla& pantalla)
 {
-	//La alternativa a usar la cámara para el zoom, el problema es que las medidas de la cámara
-	//ya no son útiles para determinar lo que cae dentro y lo que no. 
-	//SDL_RenderSetScale(pantalla.acc_renderer(), info_zoom.zoom, info_zoom.zoom);
+	int wa=rep_imagen.acc_posicion().w, wb=pantalla.acc_w();
+	int ha=rep_imagen.acc_posicion().h, hb=pantalla.acc_h();
+	camara.establecer_limites(0, 0, std::max(wa, wb), std::max(ha, hb)); 
 
 	pantalla.limpiar(DLibV::rgba8(0, 0, 0, 255));
 

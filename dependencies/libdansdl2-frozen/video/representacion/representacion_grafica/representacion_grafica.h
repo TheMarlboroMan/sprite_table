@@ -75,6 +75,7 @@ class Representacion_grafica:public Representacion
 	void 			establecer_recorte(Rect);
 	void 			recorte_a_medidas_textura();
 	void			establecer_tipo_sampling(sampling v) {liberar_calculos(); tipo_sampling=v;}
+	sampling		acc_tipo_sampling() const {return tipo_sampling;}
 
 	Representacion_grafica_transformacion& acc_transformacion() {return transformacion;}
 
