@@ -1,5 +1,0 @@
-#indice ruta
-
-#Sonidos motor... estos no debemos cambiarlos porque se usan en código!
-
-#Sonidos de aplicacion...

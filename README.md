@@ -2,44 +2,21 @@
 
 Graphical interface to create rectangular sections on a sprite sheet. Those rectangular sections are later saved to a text file. The format of said text file is compatible with other tools in these repositories.
 
-Save early, save often. Crashes happen.
-
 #Building
 
-This project depends on libdansdl2.a and herramientas_proyecto, both available on https://github.com/TheMarlboroMan/
+Make sure to have:
 
-In order to compile, the branches master-es of both libdansdl2.a and herramientas_proyecto must be selected and then built. The project can be built next. 
+	libsdl2-dev (plus ttf, image and mixer extensions)
 
-As of today, it would be easier to start from scratch than to try and adapt the code to work with current branches. Since it still works and tools are available to build it, it will remain like this.
+Download, build and install the following repos from github.com/themarlboroman
+
+- libdansdl2
+- libdansdl2-tools
+- tools
+- lm
+- dfw
 
 #Help
-
-Application is invoked from the command line with:
-
-	./a.out img=path_to_image out=path_to_output [res=WxH]
-
-Like this:
-
-	./a.out img=ejemplos/MiniKnightSet.png out=mynewout.dat res=400x400
-
-There is no in-application help, so:
-
-	ESC -> Exit.
-	Cursor keys -> move.
-	TAB -> Change mode (camera, move, resize, adjust origin).
-	SPACE -> Toggle show-hide index.
-	RE.PAG -> Next cut.
-	AV.PAG -> Previous cut.
-	DEL -> Remove selected cut.
-	L SHIFT -> Pixel precision movement.
-	L CTRL -> Move by snap parameter value.
-	N -> New cut.
-	S -> Save (to output).
-	L -> Load (output, if not saved).
-	D -> Duplicate cut.
-	Z -> Zoom in (L SHIFT to zoom out)
-	L SHIFT + Z -> Zoom out.
-	P -> Presentation mode.
 
 #History.
 
@@ -50,9 +27,3 @@ There is no in-application help, so:
 	- Fixed camera bug: camera was limited to image size when image size was yet unknown.
 	- Fixed stupid zoom bug. Turns out it wasn't opengl. It was me and something about atlas vs complete sampling in libdansdl2.
 
-#Todo.
-
-
-#Bugs
-
-- Not a bug, but there are many hacks here and there to compensate for bugs in the old version of libdansdl2.
