@@ -1,0 +1,24 @@
+{
+	"file_browser": [
+		{
+			"id":"title",
+			"type":"ttf",
+			"location":[0, 0],
+			"text":"-",
+			"font":"default_font",
+			"rgba":[255, 255, 255, 255],
+			"order": 100,
+			"visible": true
+		},
+		{
+			"id":"list",
+			"type":"ttf",
+			"location":[0, 20],
+			"text":"-",
+			"font":"default_font",
+			"rgba":[255, 255, 255, 255],
+			"order": 100,
+			"visible": true
+		}
+	]
+}
