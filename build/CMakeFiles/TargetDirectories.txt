@@ -1,9 +1,0 @@
-/home/daniel/devel/tabla_sprites/build/CMakeFiles/rebuild_cache.dir
-/home/daniel/devel/tabla_sprites/build/CMakeFiles/sprite_table.dir
-/home/daniel/devel/tabla_sprites/build/CMakeFiles/edit_cache.dir
-/home/daniel/devel/tabla_sprites/build/src/CMakeFiles/rebuild_cache.dir
-/home/daniel/devel/tabla_sprites/build/src/CMakeFiles/edit_cache.dir
-/home/daniel/devel/tabla_sprites/build/src/controller/CMakeFiles/rebuild_cache.dir
-/home/daniel/devel/tabla_sprites/build/src/controller/CMakeFiles/edit_cache.dir
-/home/daniel/devel/tabla_sprites/build/src/dfwimpl/CMakeFiles/rebuild_cache.dir
-/home/daniel/devel/tabla_sprites/build/src/dfwimpl/CMakeFiles/edit_cache.dir

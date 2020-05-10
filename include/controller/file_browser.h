@@ -29,6 +29,8 @@ class file_browser:
 	virtual void 				slumber(dfw::input& /*input*/) {}
 	virtual bool				can_leave_state() const {return true;}
 
+	void						set_title(const std::string&);
+
 	private:
 
 	//!Fills up "contents" with the contents of the current directory.

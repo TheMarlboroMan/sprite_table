@@ -3,8 +3,13 @@
 #include <tools/json.h>
 #include <tools/file_utils.h>
 
+#include <ldv/ttf_representation.h>
+
 //local
 #include "../../include/input/input.h"
+
+//TODO
+#include <iostream>
 
 using namespace controller;
 
@@ -29,6 +34,7 @@ file_browser::file_browser(
 	layout.parse(root["file_browser"]);
 
 	//Setup data...
+	set_title("file browser: ");
 	extract_entries();
 	refresh_list_view();
 }
@@ -49,8 +55,44 @@ void file_browser::draw(ldv::screen& screen, int /*fps*/) {
 
 void file_browser::extract_entries() {
 
+	contents.clear();
+
+	for(const auto& entry : std::filesystem::directory_iterator(current_directory)) {
+
+		const auto& path=entry.path();
+		std::string filename=path.filename();
+
+		if(std::filesystem::is_directory(path)) {
+
+			contents.push_back(filename+"/");
+		}
+		//TODO: just else??? Is there not a is_file()???	
+		else {
+
+			contents.push_back(filename);
+		}
+	}
 }
 
 void file_browser::refresh_list_view() {
+
+	std::string files;
+	for(const auto& f : contents) {
+		files+=f+"\n";
+	}
+
+	static_cast<ldv::ttf_representation *>(
+		layout.get_by_id("list")
+	)->set_text(files);
+}
+
+void file_browser::set_title(const std::string& _title) {
+
+	std::string final_title{_title};
+	final_title+=" : "+current_directory.parent_path().string();
+
+	static_cast<ldv::ttf_representation *>(
+		layout.get_by_id("title")
+	)->set_text(final_title);
 
 }

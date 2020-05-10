@@ -18,18 +18,18 @@ add_compile_options(-Wall -Wextra -Wundef -Wcast-align -Wwrite-strings -Wlogical
 add_subdirectory("${PROJECT_SOURCE_DIR}/src")
 
 #add the framework dependencies
-add_library(lm STATIC IMPORTED)
-add_library(tools STATIC IMPORTED)
-add_library(ldtools STATIC IMPORTED)
-add_library(dansdl2 STATIC IMPORTED)
-add_library(dfw STATIC IMPORTED)
+add_library(lm SHARED IMPORTED)
+add_library(tools SHARED IMPORTED)
+add_library(ldtools SHARED IMPORTED)
+add_library(dansdl2 SHARED IMPORTED)
+add_library(dfw SHARED IMPORTED)
 
 #If the libraries are not installed, tell them where they are.
-set_target_properties(tools PROPERTIES IMPORTED_LOCATION /usr/local/lib/libtools.a)
-set_target_properties(lm PROPERTIES IMPORTED_LOCATION /usr/local/lib/liblm.a)
-set_target_properties(dansdl2 PROPERTIES IMPORTED_LOCATION /usr/local/lib/libdansdl2.a)
-set_target_properties(ldtools PROPERTIES IMPORTED_LOCATION /usr/local/lib/libldtools.a)
-set_target_properties(dfw PROPERTIES IMPORTED_LOCATION /usr/local/lib/libdfw.a)
+set_target_properties(tools PROPERTIES IMPORTED_LOCATION /usr/local/lib/libtools.so)
+set_target_properties(lm PROPERTIES IMPORTED_LOCATION /usr/local/lib/liblm.so)
+set_target_properties(dansdl2 PROPERTIES IMPORTED_LOCATION /usr/local/lib/libdansdl2.so)
+set_target_properties(ldtools PROPERTIES IMPORTED_LOCATION /usr/local/lib/libldtools.so)
+set_target_properties(dfw PROPERTIES IMPORTED_LOCATION /usr/local/lib/libdfw.so)
 
 #Configure the executable, we want it into the "build directory" and we want all resources copied
 #to the build directory.
