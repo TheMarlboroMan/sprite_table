@@ -33,6 +33,10 @@ class file_browser:
 
 	private:
 
+	struct entry {
+		std::string 			display_name;
+	};
+
 	//!Fills up "contents" with the contents of the current directory.
 	void						extract_entries();
 	//!Refreshes the ttf_representation.
@@ -45,7 +49,9 @@ class file_browser:
 	//properties
 	std::filesystem::path		current_directory;
 	std::string					title;
-	std::vector<std::string>	contents;
+	std::vector<entry>			contents;
+	int							selected_index,
+								first_selection_y;
 
 	//view properties.
 	ldtools::view_composer		layout;

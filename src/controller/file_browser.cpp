@@ -17,10 +17,10 @@ file_browser::file_browser(
 	lm::logger& plog,
 	ldtools::ttf_manager& _ttfman
 ):
-	log(plog),
-	ttf_manager{_ttfman},
-	current_directory{std::filesystem::current_path()}
-	{
+log(plog),
+ttf_manager{_ttfman},
+current_directory{std::filesystem::current_path()},
+selected_index{0} {
 
 	//Mount layout...
 	layout.map_font("default_font", ttf_manager.get("consola-mono", 12));
@@ -31,10 +31,12 @@ file_browser::file_browser(
 		)
 	);
 
+	first_selection_y=layout.get_int("first_selection_y");
+
 	layout.parse(root["file_browser"]);
 
 	//Setup data...
-	set_title("file browser: ");
+	set_title("file browser");
 	extract_entries();
 	refresh_list_view();
 }
@@ -45,6 +47,8 @@ void file_browser::loop(dfw::input& _input, const dfw::loop_iteration_data& /*li
 		set_leave(true);
 		return;
 	}
+
+	//TODO: input moves selection.
 }
 
 void file_browser::draw(ldv::screen& screen, int /*fps*/) {
@@ -57,19 +61,29 @@ void file_browser::extract_entries() {
 
 	contents.clear();
 
-	for(const auto& entry : std::filesystem::directory_iterator(current_directory)) {
+	if(current_directory!=current_directory.parent_path()) {
+		contents.push_back({
+			"[..]"
+		});
+	}
 
-		const auto& path=entry.path();
+	for(const auto& dir_entry : std::filesystem::directory_iterator(current_directory)) {
+
+		const auto& path=dir_entry.path();
 		std::string filename=path.filename();
 
 		if(std::filesystem::is_directory(path)) {
 
-			contents.push_back(filename+"/");
+			contents.push_back({
+				std::string{"["}+filename+"]"
+			});
 		}
-		//TODO: just else??? Is there not a is_file()???	
+		//TODO: just else??? Is there not a is_file()???
 		else {
 
-			contents.push_back(filename);
+			contents.push_back({
+				filename
+			});
 		}
 	}
 }
@@ -77,13 +91,18 @@ void file_browser::extract_entries() {
 void file_browser::refresh_list_view() {
 
 	std::string files;
-	for(const auto& f : contents) {
-		files+=f+"\n";
+	for(const auto& e : contents) {
+		files+=e.display_name+"\n";
 	}
 
 	static_cast<ldv::ttf_representation *>(
 		layout.get_by_id("list")
 	)->set_text(files);
+
+	//TODO: This will go somewhere else...
+	static_cast<ldv::ttf_representation *>(
+		layout.get_by_id("selection")
+	)->go_to({0, first_selection_y});
 }
 
 void file_browser::set_title(const std::string& _title) {
@@ -94,5 +113,4 @@ void file_browser::set_title(const std::string& _title) {
 	static_cast<ldv::ttf_representation *>(
 		layout.get_by_id("title")
 	)->set_text(final_title);
-
 }
