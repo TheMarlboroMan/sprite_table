@@ -31,9 +31,8 @@ selected_index{0} {
 		)
 	);
 
-	first_selection_y=layout.get_int("first_selection_y");
-
 	layout.parse(root["file_browser"]);
+	first_selection_y=layout.get_int("first_selection_y");
 
 	//Setup data...
 	set_title("file browser");
@@ -52,6 +51,7 @@ void file_browser::loop(dfw::input& _input, const dfw::loop_iteration_data& /*li
 }
 
 void file_browser::draw(ldv::screen& screen, int /*fps*/) {
+
 
 	screen.clear(ldv::rgba8(0, 0, 0, 255));
 	layout.draw(screen);
