@@ -8,7 +8,8 @@ escape=0,
 up,
 down,
 left,
-right
+right,
+enter
 };
 
 }
