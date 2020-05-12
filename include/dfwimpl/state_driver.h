@@ -40,7 +40,7 @@ class state_driver:
 	void 						virtualize_input(dfw::input& input);
 
 	//references
-	dfwimpl::config&				config;
+	dfwimpl::config&			config;
 	lm::logger&					log;
 	ldtools::ttf_manager		ttf_manager;
 

@@ -106,7 +106,10 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		register_controller(_i, *_ptr);
 	};
 
-	reg(c_file_browser, controller::t_states::state_file_browser, new controller::file_browser(log, ttf_manager));
+	reg(c_file_browser, 
+		controller::t_states::state_file_browser, 
+		new controller::file_browser(log, ttf_manager, config.int_from_path("video:window_h_logical"))
+	);
 	//[new-controller-mark]
 }
 

@@ -17,12 +17,13 @@ using namespace controller;
 
 file_browser::file_browser(
 	lm::logger& plog,
-	ldtools::ttf_manager& _ttfman
+	ldtools::ttf_manager& _ttfman,
+	int _window_height
 ):
 log(plog),
 ttf_manager{_ttfman},
 current_directory{std::filesystem::current_path()},
-pager{entries_per_page, 0} {
+pager{0, 0} {
 
 	//Mount layout...
 	layout.map_font("default_font", ttf_manager.get("consola-mono", 12));
@@ -36,6 +37,10 @@ pager{entries_per_page, 0} {
 	layout.parse(root["file_browser"]);
 	first_selection_y=layout.get_int("first_selection_y");
 	y_selection_factor=layout.get_int("y_selection_factor");
+
+	//Calculate items per page based on window height...
+	int excess_height=_window_height-first_selection_y;
+	pager.set_items_per_page(excess_height / y_selection_factor);
 
 	//Setup data...
 	set_title("file browser");
@@ -170,7 +175,7 @@ void file_browser::refresh_list_view() {
 	auto begin=it;
 
 	//Read the next N items...
-	for(; it!=std::end(contents) && std::distance(begin, it) < 10; ++it) {
+	for(; it!=std::end(contents) && std::distance(begin, it) < pager.get_items_per_page(); ++it) {
 
 		files+=it->is_dir()
 			? "["+it->path_name+"]\n"
@@ -201,7 +206,8 @@ void file_browser::compose_title() {
 		+std::to_string(pager.get_current_page()+1)
 		+"/"
 		+std::to_string(pager.get_pages_count())
-		+"]";
+		+"] at "
+		+std::to_string(pager.get_items_per_page());
 
 	static_cast<ldv::ttf_representation *>(
 		layout.get_by_id("title")

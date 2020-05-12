@@ -23,7 +23,7 @@ class file_browser:
 
 	public:
 
-	                            file_browser(lm::logger&, ldtools::ttf_manager&);
+	                            file_browser(lm::logger&, ldtools::ttf_manager&, int);
 	virtual void                loop(dfw::input&, const dfw::loop_iteration_data&);
 	virtual void                draw(ldv::screen&, int);
 	virtual void                awake(dfw::input& /*input*/) {}
@@ -69,9 +69,6 @@ class file_browser:
 	//references...
 	lm::logger&                 log;
 	ldtools::ttf_manager&       ttf_manager;
-
-	//constants...
-	std::size_t                 entries_per_page{10};
 
 	//properties
 	std::filesystem::path       current_directory;
