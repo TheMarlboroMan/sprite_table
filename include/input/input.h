@@ -9,7 +9,9 @@ up,
 down,
 left,
 right,
-enter
+enter,
+pageup,
+pagedown
 };
 
 }

@@ -48,33 +48,35 @@ pager{entries_per_page, 0} {
 void file_browser::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
 
 	if(_input().is_exit_signal() || _input.is_input_down(input::escape)) {
+
+		result=false;
+		choice={};
+		//TODO: Nooo.
 		set_leave(true);
 		return;
 	}
 
+	bool check_change=false;
+
 	if(_input.is_input_down(input::down)) {
 
 		pager.cycle_item(decltype(pager)::dir::next);
-
-		if(pager.is_page_turned()) {
-			refresh_list_view();
-		}
-
-		if(pager.is_item_cycled()) {
-			position_selector();
-		}
+		check_change=true;
 	}
 	else if(_input.is_input_down(input::up)) {
 
 		pager.cycle_item(decltype(pager)::dir::previous);
+		check_change=true;
+	}
+	if(_input.is_input_down(input::pagedown)) {
 
-		if(pager.is_page_turned()) {
-			refresh_list_view();
-		}
+		pager.turn_page(decltype(pager)::dir::next);
+		check_change=true;
+	}
+	else if(_input.is_input_down(input::pageup)) {
 
-		if(pager.is_item_cycled()) {
-			position_selector();
-		}
+		pager.turn_page(decltype(pager)::dir::previous);
+		check_change=true;
 	}
 	else if(_input.is_input_down(input::enter)) {
 
@@ -92,7 +94,23 @@ void file_browser::loop(dfw::input& _input, const dfw::loop_iteration_data& /*li
 		}
 		else {
 
-			//TODO: This would finish the controller...
+			result=false;
+			choice=current_directory.string();
+			//TODO: Nooo.
+			set_leave(true);
+			return;
+		}
+	}
+
+	if(check_change) {
+
+		if(pager.is_item_cycled()) {
+			position_selector();
+		}
+
+		if(pager.is_page_turned()) {
+			refresh_list_view();
+			compose_title();
 		}
 	}
 }
@@ -127,8 +145,7 @@ void file_browser::extract_entries() {
 				entry::entry_type::dir
 			});
 		}
-		//TODO: just else??? Is there not a is_file()???
-		else {
+		else if(std::filesystem::is_regular_file(path)){
 
 			contents.push_back({
 				filename,
@@ -181,7 +198,6 @@ void file_browser::compose_title() {
 	final_title+=" : "
 		+current_directory.string()
 		+" ["
-		//TODO: Not really working...
 		+std::to_string(pager.get_current_page()+1)
 		+"/"
 		+std::to_string(pager.get_pages_count())

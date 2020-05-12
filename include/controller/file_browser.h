@@ -23,14 +23,18 @@ class file_browser:
 
 	public:
 
-								file_browser(lm::logger&, ldtools::ttf_manager&);
-	virtual void 				loop(dfw::input&, const dfw::loop_iteration_data&);
-	virtual void 				draw(ldv::screen&, int);
-	virtual void 				awake(dfw::input& /*input*/) {}
-	virtual void 				slumber(dfw::input& /*input*/) {}
-	virtual bool				can_leave_state() const {return true;}
+	                            file_browser(lm::logger&, ldtools::ttf_manager&);
+	virtual void                loop(dfw::input&, const dfw::loop_iteration_data&);
+	virtual void                draw(ldv::screen&, int);
+	virtual void                awake(dfw::input& /*input*/) {}
+	virtual void                slumber(dfw::input& /*input*/) {}
+	virtual bool                can_leave_state() const {return true;}
 
-	void						set_title(const std::string& _title) {title=_title;}
+	void                        set_title(const std::string& _title) {title=_title;}
+	//!Returns if this controller exited with a chosen file.
+	bool                        get_result() const {return result;}
+	//!Returns the file that was chosen.
+	std::string                 get_choice() const {return choice;}
 
 	private:
 
@@ -67,7 +71,7 @@ class file_browser:
 	ldtools::ttf_manager&       ttf_manager;
 
 	//constants...
-	std::size_t                 entries_per_page=10;
+	std::size_t                 entries_per_page{10};
 
 	//properties
 	std::filesystem::path       current_directory;
@@ -75,6 +79,9 @@ class file_browser:
 	std::vector<entry>          contents;
 	int                         first_selection_y,
 	                            y_selection_factor;
+
+	bool                        result{false};
+	std::string                 choice;
 
 	tools::pager                pager;
 
