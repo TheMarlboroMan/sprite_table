@@ -30,6 +30,9 @@ class file_browser:
 	virtual void                slumber(dfw::input& /*input*/) {}
 	virtual bool                can_leave_state() const {return true;}
 
+	//!Sets the allow creation flag, which displays the "create" entry.
+	void                        set_allow_create(bool _v) {allow_create=_v;}
+	//!Sets the title that appears before the current directory.
 	void                        set_title(const std::string& _title) {title=_title;}
 	//!Returns if this controller exited with a chosen file.
 	bool                        get_result() const {return result;}
@@ -38,12 +41,24 @@ class file_browser:
 
 	private:
 
+	enum class working_modes{navigate, create};
+
 	struct entry {
-		enum class entry_type {file, dir};
+		enum class entry_type {file, dir, create};
 		std::string             path_name;
 		entry_type              type;
 		bool                    is_dir() const {return entry_type::dir==type;}
+		bool                    is_new() const {return entry_type::create==type;}
+		bool                    is_file() const {return entry_type::file==type;}
 		bool                    operator<(const entry& _other) const {
+
+			if(_other.is_new() && !is_new()) {
+				return false;
+			}
+
+			if(is_new() && !_other.is_new()) {
+				return true;
+			}
 
 			if(_other.is_dir() && !is_dir()) {
 				return false;
@@ -57,6 +72,10 @@ class file_browser:
 		}
 	};
 
+	//!Does the navigation input.
+	void                        input_navigation(dfw::input&);
+	//!Does the input for new names.
+	void                        input_create(dfw::input&);
 	//!Fills up "contents" with the contents of the current directory.
 	void						extract_entries();
 	//!Refreshes the ttf_representation.
@@ -71,11 +90,13 @@ class file_browser:
 	ldtools::ttf_manager&       ttf_manager;
 
 	//properties
+	working_modes				mode;
 	std::filesystem::path       current_directory;
 	std::string                 title;
 	std::vector<entry>          contents;
 	int                         first_selection_y,
 	                            y_selection_factor;
+	bool                        allow_create{true}; //!< True if it allows the [new] entry.
 
 	bool                        result{false};
 	std::string                 choice;

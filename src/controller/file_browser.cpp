@@ -22,6 +22,7 @@ file_browser::file_browser(
 ):
 log(plog),
 ttf_manager{_ttfman},
+mode{working_modes::navigate},
 current_directory{std::filesystem::current_path()},
 pager{0, 0} {
 
@@ -52,76 +53,23 @@ pager{0, 0} {
 
 void file_browser::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
 
-	if(_input().is_exit_signal() || _input.is_input_down(input::escape)) {
+	if(_input().is_exit_signal()) {
 
-		result=false;
-		choice={};
-		//TODO: Nooo.
 		set_leave(true);
 		return;
 	}
 
-	bool check_change=false;
-
-	if(_input.is_input_down(input::down)) {
-
-		pager.cycle_item(decltype(pager)::dir::next);
-		check_change=true;
-	}
-	else if(_input.is_input_down(input::up)) {
-
-		pager.cycle_item(decltype(pager)::dir::previous);
-		check_change=true;
-	}
-	if(_input.is_input_down(input::pagedown)) {
-
-		pager.turn_page(decltype(pager)::dir::next);
-		check_change=true;
-	}
-	else if(_input.is_input_down(input::pageup)) {
-
-		pager.turn_page(decltype(pager)::dir::previous);
-		check_change=true;
-	}
-	else if(_input.is_input_down(input::enter)) {
-
-		const auto item=contents[pager.get_current_index()];
-
-		if(item.is_dir()) {
-
-			current_directory/={item.path_name};
-			current_directory=current_directory.lexically_normal();
-
-			extract_entries();
-			refresh_list_view();
-			position_selector();
-			compose_title();
-		}
-		else {
-
-			result=false;
-			choice=current_directory.string();
-			//TODO: Nooo.
-			set_leave(true);
-			return;
-		}
-	}
-
-	if(check_change) {
-
-		if(pager.is_item_cycled()) {
-			position_selector();
-		}
-
-		if(pager.is_page_turned()) {
-			refresh_list_view();
-			compose_title();
-		}
+	switch(mode) {
+		case working_modes::navigate:
+			input_navigation(_input);
+		break;
+		case working_modes::create:
+			input_create(_input);
+		break;
 	}
 }
 
 void file_browser::draw(ldv::screen& screen, int /*fps*/) {
-
 
 	screen.clear(ldv::rgba8(0, 0, 0, 255));
 	layout.draw(screen);
@@ -130,6 +78,14 @@ void file_browser::draw(ldv::screen& screen, int /*fps*/) {
 void file_browser::extract_entries() {
 
 	contents.clear();
+
+	if(allow_create) {
+
+		contents.push_back({
+			"new",
+			entry::entry_type::create
+		});
+	}
 
 	if(current_directory!=current_directory.parent_path()) {
 		contents.push_back({
@@ -179,7 +135,9 @@ void file_browser::refresh_list_view() {
 
 		files+=it->is_dir()
 			? "["+it->path_name+"]\n"
-			: it->path_name+"\n";
+			: it->is_new() 
+				? "("+it->path_name+")\n"
+				: it->path_name+"\n";
 	}
 
 	static_cast<ldv::ttf_representation *>(
@@ -212,4 +170,127 @@ void file_browser::compose_title() {
 	static_cast<ldv::ttf_representation *>(
 		layout.get_by_id("title")
 	)->set_text(final_title);
+}
+
+void file_browser::input_navigation(dfw::input& _input) {
+
+	bool check_change=false;
+
+	//Cancelling...
+	if(_input.is_input_down(input::escape)) {
+
+		result=false;
+		choice={};
+		//TODO: change_controller...
+	}
+
+	//Movement...
+	if(_input.is_input_down(input::down)) {
+
+		pager.cycle_item(decltype(pager)::dir::next);
+		check_change=true;
+	}
+	else if(_input.is_input_down(input::up)) {
+
+		pager.cycle_item(decltype(pager)::dir::previous);
+		check_change=true;
+	}
+	else if(_input.is_input_down(input::pagedown)) {
+
+		pager.turn_page(decltype(pager)::dir::next);
+		check_change=true;
+	}
+	else if(_input.is_input_down(input::pageup)) {
+
+		pager.turn_page(decltype(pager)::dir::previous);
+		check_change=true;
+	}
+
+	if(check_change) {
+
+		if(pager.is_item_cycled()) {
+			position_selector();
+		}
+
+		if(pager.is_page_turned()) {
+			refresh_list_view();
+			compose_title();
+		}
+
+		return;
+	}
+
+	if(_input.is_input_down(input::enter)) {
+
+		const auto item=contents[pager.get_current_index()];
+
+		if(item.is_dir()) {
+
+			current_directory/={item.path_name};
+			current_directory=current_directory.lexically_normal();
+
+			extract_entries();
+			refresh_list_view();
+			position_selector();
+			compose_title();
+		}
+		else if(item.is_new()) {
+
+			mode=working_modes::create;
+			contents.front().path_name="";
+			refresh_list_view();
+
+			//TODO: Why is this not a parameter to start_text_input???
+			_input().set_keydown_control_text_filter(true);
+			_input().start_text_input();
+			return;
+		}
+		else {
+
+			result=true;
+			choice=current_directory.string();
+			//TODO: change the controller
+			set_leave(true);
+			return;
+		}
+	}
+}
+
+void file_browser::input_create(dfw::input& _input) {
+
+	if(_input.is_input_down(input::escape)) {
+
+		mode=working_modes::navigate;
+		_input().stop_text_input();
+		_input().clear_text_input();
+
+		//Restore the first item...
+		contents.front().path_name="new";
+		refresh_list_view();
+		return;
+	}
+
+	if(_input().is_event_text()) {
+
+		contents.front().path_name=_input().get_text_input();
+		refresh_list_view();
+	}
+
+	if(_input.is_input_down(input::enter)) {
+
+		if(!_input().get_text_input().size()) {
+			return;
+		}
+
+
+		result=true;
+		auto path=current_directory;
+		path/={_input().get_text_input()};
+		choice=path.string();
+
+		_input().stop_text_input();
+		_input().clear_text_input();
+		//TODO: change the controller
+		set_leave(true);
+	}
 }
