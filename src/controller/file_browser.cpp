@@ -135,7 +135,7 @@ void file_browser::refresh_list_view() {
 
 		files+=it->is_dir()
 			? "["+it->path_name+"]\n"
-			: it->is_new() 
+			: it->is_new()
 				? "("+it->path_name+")\n"
 				: it->path_name+"\n";
 	}
@@ -181,7 +181,8 @@ void file_browser::input_navigation(dfw::input& _input) {
 
 		result=false;
 		choice={};
-		//TODO: change_controller...
+		set_state(previous_controller);
+		return;
 	}
 
 	//Movement...
@@ -248,9 +249,9 @@ void file_browser::input_navigation(dfw::input& _input) {
 		else {
 
 			result=true;
-			choice=current_directory.string();
-			//TODO: change the controller
-			set_leave(true);
+			auto final_path=current_directory/item.path_name;
+			choice=final_path.string();
+			set_state(previous_controller);
 			return;
 		}
 	}
@@ -282,7 +283,6 @@ void file_browser::input_create(dfw::input& _input) {
 			return;
 		}
 
-
 		result=true;
 		auto path=current_directory;
 		path/={_input().get_text_input()};
@@ -290,7 +290,7 @@ void file_browser::input_create(dfw::input& _input) {
 
 		_input().stop_text_input();
 		_input().clear_text_input();
-		//TODO: change the controller
-		set_leave(true);
+		set_state(previous_controller);
+		return;
 	}
 }

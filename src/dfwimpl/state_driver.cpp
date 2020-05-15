@@ -10,7 +10,7 @@
 using namespace dfwimpl;
 
 state_driver::state_driver(dfw::kernel& kernel, dfwimpl::config& c)
-	:state_driver_interface(controller::t_states::state_file_browser),
+	:state_driver_interface(controller::t_states::state_main),
 	config(c), log(kernel.get_log()) {
 
 	lm::log(log, lm::lvl::info)<<"setting state check function..."<<std::endl;
@@ -106,23 +106,63 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		register_controller(_i, *_ptr);
 	};
 
-	reg(c_file_browser, 
-		controller::t_states::state_file_browser, 
-		new controller::file_browser(log, ttf_manager, config.int_from_path("video:window_h_logical"))
+	reg(
+		c_file_browser,
+		controller::t_states::state_file_browser,
+		new controller::file_browser(
+			log,
+			ttf_manager,
+			config.int_from_path("video:window_h_logical")
+		)
+	);
+	reg(
+		c_main,
+		controller::t_states::state_main,
+		new controller::main(
+			log,
+			session_data
+		)
 	);
 	//[new-controller-mark]
 }
 
-void state_driver::prepare_state(int /*next*/, int /*current*/) {
+void state_driver::prepare_state(int _next, int _current) {
 
-/*
-	switch(next) {
-		case t_states::state_placeholder:
-		break;
-		default:
-		break;
+	auto& fbrowser=*(static_cast<controller::file_browser*>(c_file_browser.get()));
+//	auto main=*(static_cast<controller::file_browser*>)(c_main);
+
+	if(_next==controller::t_states::state_file_browser) {
+
+		fbrowser.set_previous_controller(_current);
+
+		switch(_current) {
+			case controller::t_states::state_main:
+				fbrowser.set_allow_create(false);
+			break;
+		}
 	}
-*/
+
+	if(_current==controller::t_states::state_file_browser) {
+
+		switch(_next) {
+
+			case controller::t_states::state_main:
+
+				if(fbrowser.get_result()) {
+
+					try {
+						session_data.set_texture_by_path(fbrowser.get_choice());
+					}
+					catch(std::exception& e) {
+
+						lm::log(log, lm::lvl::warning)<<e.what()<<std::endl;
+						//TODO: Should show some kind of message...
+					}
+				}
+
+			break;
+		}
+	}
 }
 
 void state_driver::common_pre_loop_input(dfw::input& input, float /*delta*/) {

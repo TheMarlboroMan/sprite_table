@@ -30,6 +30,8 @@ class file_browser:
 	virtual void                slumber(dfw::input& /*input*/) {}
 	virtual bool                can_leave_state() const {return true;}
 
+	//!Sets the controller to which return to.
+	void                        set_previous_controller(int _val) {previous_controller=_val;}
 	//!Sets the allow creation flag, which displays the "create" entry.
 	void                        set_allow_create(bool _v) {allow_create=_v;}
 	//!Sets the title that appears before the current directory.
@@ -94,8 +96,9 @@ class file_browser:
 	std::filesystem::path       current_directory;
 	std::string                 title;
 	std::vector<entry>          contents;
-	int                         first_selection_y,
-	                            y_selection_factor;
+	int                         first_selection_y{0},
+	                            y_selection_factor{0},
+	                            previous_controller{0};
 	bool                        allow_create{true}; //!< True if it allows the [new] entry.
 
 	bool                        result{false};

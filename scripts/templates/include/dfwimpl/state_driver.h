@@ -12,6 +12,8 @@
 //Specific app_config
 //#include "../app/placeholder.h"
 
+#include "../sprite_table/session_data.h"
+
 namespace dfwimpl {
 
 class state_driver:
@@ -37,11 +39,14 @@ class state_driver:
 	void 						virtualize_input(dfw::input& input);
 
 	//references
-	dfwimpl::config&				config;
-	lm::logger&					log;
+	dfwimpl::config&            config;
+	lm::logger&                 log;
 
 	typedef std::unique_ptr<dfw::controller_interface>	ptr_controller;
 	//[new-controller-property-mark]
+
+	//application-wide properties
+	sprite_table::session_data  session_data;
 };
 
 }

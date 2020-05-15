@@ -10,6 +10,7 @@
 
 //Controllers.
 #include "../../include/controller/file_browser.h"
+#include "../../include/controller/main.h"
 //[new-controller-header-mark]
 
 //Specific app_config
@@ -40,12 +41,17 @@ class state_driver:
 	void 						virtualize_input(dfw::input& input);
 
 	//references
-	dfwimpl::config&			config;
-	lm::logger&					log;
-	ldtools::ttf_manager		ttf_manager;
+	dfwimpl::config&            config;
+	lm::logger&                 log;
+
+	//Application wide properties...
+	ldtools::ttf_manager        ttf_manager;
+	sprite_table::session_data  session_data;
 
 	typedef std::unique_ptr<dfw::controller_interface>	ptr_controller;
+	//TODO: WTF, NO!!!!!! This should NOT be pointers to the base class!!!
 	ptr_controller					c_file_browser;
+	ptr_controller					c_main;
 	//[new-controller-property-mark]
 };
 
