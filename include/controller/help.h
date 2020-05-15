@@ -26,15 +26,12 @@ class help:
 	virtual void 				slumber(dfw::input& /*input*/) {}
 	virtual bool				can_leave_state() const {return true;}
 
-	void					set_previous_controller(int _v) {previous_controller=_v;}
-
 	private:
 
 	//references...
 	lm::logger&					log;
 
 	//properties
-	int						previous_controller{0};
 };
 
 }

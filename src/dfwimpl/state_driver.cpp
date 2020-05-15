@@ -151,23 +151,17 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 void state_driver::prepare_state(int _next, int _current) {
 
 	auto& fbrowser=*(static_cast<controller::file_browser*>(c_file_browser.get()));
-	auto& help=*(static_cast<controller::help*>(c_help.get()));
+//	auto& help=*(static_cast<controller::help*>(c_help.get()));
 //	auto main=*(static_cast<controller::file_browser*>)(c_main);
 
 	switch(_next) {
 		case controller::t_states::state_file_browser:
-
-			fbrowser.set_previous_controller(_current);
 
 			switch(_current) {
 				case controller::t_states::state_main:
 					fbrowser.set_allow_create(false);
 				break;
 			}
-		break;
-		case controller::t_states::state_help:
-
-			help.set_previous_controller(_current);
 		break;
 	}
 

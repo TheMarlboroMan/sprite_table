@@ -61,7 +61,7 @@ void file_browser::loop(dfw::input& _input, const dfw::loop_iteration_data& /*li
 
 	if(_input.is_input_down(input::help)) {
 
-		set_state(state_help);
+		push_state(state_help);
 	}
 
 	switch(mode) {
@@ -186,7 +186,7 @@ void file_browser::input_navigation(dfw::input& _input) {
 
 		result=false;
 		choice={};
-		set_state(previous_controller);
+		pop_state();
 		return;
 	}
 
@@ -256,7 +256,7 @@ void file_browser::input_navigation(dfw::input& _input) {
 			result=true;
 			auto final_path=current_directory/item.path_name;
 			choice=final_path.string();
-			set_state(previous_controller);
+			pop_state();
 			return;
 		}
 	}
@@ -295,7 +295,7 @@ void file_browser::input_create(dfw::input& _input) {
 
 		_input().stop_text_input();
 		_input().clear_text_input();
-		set_state(previous_controller);
+		pop_state();
 		return;
 	}
 }

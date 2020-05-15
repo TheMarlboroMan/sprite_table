@@ -20,7 +20,7 @@ void help::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
 
 	if(_input.is_input_down(input::escape)) {
 
-		set_state(previous_controller);
+		pop_state();
 		return;
 	}
 

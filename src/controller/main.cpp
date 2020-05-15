@@ -23,7 +23,7 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
 
 	if(_input.is_input_down(input::help)) {
 
-		set_state(state_help);
+		push_state(state_help);
 		return;
 	}
 	
@@ -45,7 +45,7 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
 		*/
 
 
-		set_state(state_file_browser);
+		push_state(state_file_browser);
 	}
 }
 
