@@ -83,6 +83,21 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:enter")), input::enter},
 		{input_description_from_config_token(config.token_from_path("input:pageup")), input::pageup},
 		{input_description_from_config_token(config.token_from_path("input:pagedown")), input::pagedown},
+		{input_description_from_config_token(config.token_from_path("input:help")), input::help},
+		{input_description_from_config_token(config.token_from_path("input:mode_camera")), input::mode_camera},
+		{input_description_from_config_token(config.token_from_path("input:mode_move")), input::mode_move},
+		{input_description_from_config_token(config.token_from_path("input:mode_align")), input::mode_align},
+		{input_description_from_config_token(config.token_from_path("input:mode_presentation")), input::mode_presentation},
+		{input_description_from_config_token(config.token_from_path("input:background_selection")), input::background_selection},
+		{input_description_from_config_token(config.token_from_path("input:save")), input::save},
+		{input_description_from_config_token(config.token_from_path("input:load")), input::load},
+
+
+
+
+
+
+
 	};
 
 	kernel.init_input_system(pairs);
@@ -123,24 +138,39 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 			session_data
 		)
 	);
+	reg(
+		c_help, 
+		controller::t_states::state_help, 
+		new controller::help(
+			log
+		)
+	);
 	//[new-controller-mark]
 }
 
 void state_driver::prepare_state(int _next, int _current) {
 
 	auto& fbrowser=*(static_cast<controller::file_browser*>(c_file_browser.get()));
+	auto& help=*(static_cast<controller::help*>(c_help.get()));
 //	auto main=*(static_cast<controller::file_browser*>)(c_main);
 
-	if(_next==controller::t_states::state_file_browser) {
+	switch(_next) {
+		case controller::t_states::state_file_browser:
 
-		fbrowser.set_previous_controller(_current);
+			fbrowser.set_previous_controller(_current);
 
-		switch(_current) {
-			case controller::t_states::state_main:
-				fbrowser.set_allow_create(false);
-			break;
-		}
+			switch(_current) {
+				case controller::t_states::state_main:
+					fbrowser.set_allow_create(false);
+				break;
+			}
+		break;
+		case controller::t_states::state_help:
+
+			help.set_previous_controller(_current);
+		break;
 	}
+
 
 	if(_current==controller::t_states::state_file_browser) {
 

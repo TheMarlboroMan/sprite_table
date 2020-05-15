@@ -11,7 +11,15 @@ left,
 right,
 enter,
 pageup,
-pagedown
+pagedown,
+help,
+mode_camera,
+mode_move,
+mode_align,
+mode_presentation,
+background_selection,
+save,
+load
 };
 
 }

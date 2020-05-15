@@ -1,0 +1,39 @@
+==HELP==
+
+f1: Shows this help.
+
+== command line parameters ==
+
+-s session_file: opens the session file
+-i image_file: uses background image
+
+== main editor ==
+
+==== mode selection ====
+1: move camera mode
+2: move selection mode
+3: align selection mode
+4: presentation mode
+
+==== file manipulation ====
+
+i: open the background image selector
+s: save the current session
+ctrl+s: save the current session with a new name
+l: load a session
+
+==== workspace ====
+
++/- : zoom in/out
+left click: select frame
+next/prev page: select frame
+delete: remove selected frame
+insert: create new frame
+ctrl+insert: duplicate selected frame
+
+== file selector ==
+
+esc: Go back
+cursors up-down: select file
+next/prev page: select file
+enter: choose option

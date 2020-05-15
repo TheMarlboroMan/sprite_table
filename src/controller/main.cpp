@@ -21,6 +21,12 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
 		return;
 	}
 
+	if(_input.is_input_down(input::help)) {
+
+		set_state(state_help);
+		return;
+	}
+	
 	if(_input.is_input_down(input::enter)) {
 
 		//TODO: We need some scaffolding here...

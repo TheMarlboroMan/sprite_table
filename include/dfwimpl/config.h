@@ -34,7 +34,7 @@ class config:
 
 	private:
 
-	std::string get_file_path() const {return "data/config/config.json";}
+	std::string get_file_path() const {return "data/config.json";}
 };
 
 dfw::input_description          input_description_from_config_token(const rapidjson::Value&);

@@ -59,6 +59,11 @@ void file_browser::loop(dfw::input& _input, const dfw::loop_iteration_data& /*li
 		return;
 	}
 
+	if(_input.is_input_down(input::help)) {
+
+		set_state(state_help);
+	}
+
 	switch(mode) {
 		case working_modes::navigate:
 			input_navigation(_input);

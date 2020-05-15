@@ -14,17 +14,19 @@
 
 namespace controller {
 
-class _template:
+class help:
 	public dfw::controller_interface {
 
 	public:
 
-								_template(lm::logger&);
+								help(lm::logger&);
 	virtual void 				loop(dfw::input&, const dfw::loop_iteration_data&);
 	virtual void 				draw(ldv::screen&, int);
 	virtual void 				awake(dfw::input& /*input*/) {}
 	virtual void 				slumber(dfw::input& /*input*/) {}
 	virtual bool				can_leave_state() const {return true;}
+
+	void					set_previous_controller(int _v) {previous_controller=_v;}
 
 	private:
 
@@ -32,6 +34,7 @@ class _template:
 	lm::logger&					log;
 
 	//properties
+	int						previous_controller{0};
 };
 
 }

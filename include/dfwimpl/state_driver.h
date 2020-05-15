@@ -11,6 +11,7 @@
 //Controllers.
 #include "../../include/controller/file_browser.h"
 #include "../../include/controller/main.h"
+#include "../../include/controller/help.h"
 //[new-controller-header-mark]
 
 //Specific app_config
@@ -52,6 +53,7 @@ class state_driver:
 	//TODO: WTF, NO!!!!!! This should NOT be pointers to the base class!!!
 	ptr_controller					c_file_browser;
 	ptr_controller					c_main;
+	ptr_controller					c_help;
 	//[new-controller-property-mark]
 };
 
