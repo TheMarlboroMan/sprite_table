@@ -23,3 +23,19 @@ void session_data::set_texture_by_path(const std::string& _path) {
 		throw std::runtime_error(std::string{"could not set texture: "}+e.what());
 	}
 }
+
+void session_data::load_sprites_by_path(const std::string& _path) {
+
+	if(!std::filesystem::exists(_path)) {
+
+		throw std::runtime_error("file "+_path+" does not exist");
+	}
+
+	try {
+		table.load(_path); 
+	}
+	catch(std::exception& e) {
+
+		throw std::runtime_error(std::string{"could not load sprites: "}+e.what());
+	}
+}
