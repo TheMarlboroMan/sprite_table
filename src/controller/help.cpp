@@ -1,13 +1,24 @@
 #include "../../include/controller/help.h"
 
+#include <tools/file_utils.h>
+
 //local
 #include "../../include/input/input.h"
 
 using namespace controller;
 
-help::help(lm::logger& plog)
-	:log(plog) {
-
+help::help(
+	lm::logger& plog, 
+	ldtools::ttf_manager& _ttfman
+):
+	log(plog), 
+	help_txt_rep{
+		_ttfman.get("consola-mono", 12),
+		ldv::rgba8(255, 255, 255, 128)
+	}
+{
+	help_txt_rep.set_text(tools::dump_file("data/help.txt"));
+	help_txt_rep.go_to({0,0});
 }
 
 void help::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
@@ -26,7 +37,8 @@ void help::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
 
 }
 
-void help::draw(ldv::screen& screen, int /*fps*/) {
+void help::draw(ldv::screen& _screen, int /*fps*/) {
 
-	screen.clear(ldv::rgba8(64, 64, 64, 255));
+	_screen.clear(ldv::rgba8(64, 64, 64, 255));
+	help_txt_rep.draw(_screen);
 }

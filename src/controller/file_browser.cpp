@@ -169,7 +169,7 @@ void file_browser::compose_title() {
 		+std::to_string(pager.get_current_page()+1)
 		+"/"
 		+std::to_string(pager.get_pages_count())
-		+"] at "
+		+"] ipp: "
 		+std::to_string(pager.get_items_per_page());
 
 	static_cast<ldv::ttf_representation *>(

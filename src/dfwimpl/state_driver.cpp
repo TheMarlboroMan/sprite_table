@@ -142,7 +142,8 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		c_help, 
 		controller::t_states::state_help, 
 		new controller::help(
-			log
+			log,
+			ttf_manager
 		)
 	);
 	//[new-controller-mark]
