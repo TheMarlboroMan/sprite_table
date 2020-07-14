@@ -4,12 +4,13 @@ f1: Shows this help.
 
 == command line parameters ==
 
--s session_file: opens the session file
+-f session_file: opens the session file
 -i image_file: uses background image
 
 == main editor ==
 
 ==== mode selection ====
+
 1: move camera mode
 2: move selection mode
 3: align selection mode
@@ -30,6 +31,33 @@ next/prev page: select frame
 delete: remove selected frame
 insert: create new frame
 ctrl+insert: duplicate selected frame
+/ enter console tool
+
+===== console tool =====
+
+number: an integer value, such as 10 or 5.
+range: a range of integers, lesser to greater as in 5-10.
+
+new [number:index] 
+	creates new, empty frame with the given index
+
+delete [number:index] 
+	deletes the frame with the given index
+
+move [number:from] [number:to] 
+	moves from the index "from" to "to".
+
+move [range:from] [number:to] 
+	moves the range from so its first item has the index "to"
+
+swap [number:a] [number:b] 
+	swaps frames a and b
+
+copy [number:origin] [number:destination] 
+	copies the frame with a new index
+
+exit 
+	back to the regular editing mode.
 
 == file selector ==
 
@@ -37,3 +65,4 @@ esc: Go back
 cursors up-down: select file
 next/prev page: select file
 enter: choose option
+keys: enter new filename after choosing "new".

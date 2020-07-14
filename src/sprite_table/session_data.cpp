@@ -32,6 +32,8 @@ void session_data::load_sprites_by_path(const std::string& _path) {
 	}
 
 	try {
+		//TODO: yeah, no, the table should be created here and then 
+		//EXPORTED into a regulr map we can access.
 		table.load(_path); 
 	}
 	catch(std::exception& e) {

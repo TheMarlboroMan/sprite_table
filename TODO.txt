@@ -1,2 +1,8 @@
-- implement strings as i8n
 - implement everything in the help file (lol)
+- implement strings as i8n
+- allow for more than one message
+- to draw:
+	- since the sprite table is read-only, store the frames in a map when 
+	loading, so they can be manipulated. a 
+	std::map<std::size_t, ldtools::sprite_frame> should suffice.
+	- go nuts.

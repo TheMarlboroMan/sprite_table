@@ -9,9 +9,13 @@
 
 using namespace dfwimpl;
 
-state_driver::state_driver(dfw::kernel& kernel, dfwimpl::config& c)
-	:state_driver_interface(controller::t_states::state_main),
-	config(c), log(kernel.get_log()) {
+state_driver::state_driver(
+	dfw::kernel& kernel, 
+	dfwimpl::config& c
+):
+	state_driver_interface(controller::t_states::state_main),
+	config(c), 
+	log(kernel.get_log()) {
 
 	lm::log(log, lm::lvl::info)<<"setting state check function..."<<std::endl;
 
@@ -33,6 +37,8 @@ state_driver::state_driver(dfw::kernel& kernel, dfwimpl::config& c)
 
 	lm::log(log, lm::lvl::info)<<"registering controllers..."<<std::endl;
 	register_controllers(kernel);
+
+	process_parameters(kernel.get_arg_manager());
 
 	lm::log(log, lm::lvl::info)<<"virtualizing input..."<<std::endl;
 	virtualize_input(kernel.get_input());
@@ -234,5 +240,38 @@ void state_driver::virtualize_input(dfw::input& input) {
 		input().virtualize_joystick_hats(i);
 		input().virtualize_joystick_axis(i, 15000);
 		lm::log(log, lm::lvl::info)<<"Joystick virtualized "<<i<<std::endl;
+	}
+}
+
+void state_driver::process_parameters(const tools::arg_manager& _argman) {
+
+	auto& main=*(static_cast<controller::main*>(c_main.get()));
+
+	if(_argman.exists("-f") && _argman.arg_follows("-f")) {
+
+		const auto& session_file=_argman.get_following("-f");
+		try {
+			session_data.load_sprites_by_path(session_file);
+			main.set_message(std::string{"using session "}+session_file);
+		}
+		catch(std::exception &e) {
+		
+			lm::log(log, lm::lvl::warning)<<"could not load session "<<session_file<<" : "<<e.what()<<std::endl;
+			main.set_message("failed to load command line session");
+		}
+	}
+
+	if(_argman.exists("-i") && _argman.arg_follows("-i")) {
+
+		const auto& image_file=_argman.get_following("-i");
+		try {
+			session_data.set_texture_by_path(image_file);
+			main.set_message(std::string{"using background "}+image_file);
+		}
+		catch(std::exception &e) {
+		
+			lm::log(log, lm::lvl::warning)<<"could not load background "<<image_file<<" : "<<e.what()<<std::endl;
+			main.set_message("failed to load command line background");
+		}
 	}
 }
