@@ -135,31 +135,35 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		controller::t_states::state_main,
 		new controller::main(
 			log,
+			ttf_manager,
 			session_data
 		)
 	);
 	reg(
-		c_help, 
-		controller::t_states::state_help, 
+		c_help,
+		controller::t_states::state_help,
 		new controller::help(
 			log,
 			ttf_manager
 		)
 	);
 	//[new-controller-mark]
+
 }
 
 void state_driver::prepare_state(int _next, int _current) {
 
 	auto& fbrowser=*(static_cast<controller::file_browser*>(c_file_browser.get()));
 //	auto& help=*(static_cast<controller::help*>(c_help.get()));
-//	auto main=*(static_cast<controller::file_browser*>)(c_main);
+	auto& main=*(static_cast<controller::main*>(c_main.get()));
 
 	switch(_next) {
 		case controller::t_states::state_file_browser:
 
 			switch(_current) {
 				case controller::t_states::state_main:
+
+					lm::log(log, lm::lvl::debug)<<"starting file browser in selection mode"<<std::endl;
 					fbrowser.set_allow_create(false);
 				break;
 			}
@@ -176,13 +180,25 @@ void state_driver::prepare_state(int _next, int _current) {
 				if(fbrowser.get_result()) {
 
 					try {
-						session_data.set_texture_by_path(fbrowser.get_choice());
+
+						switch(session_data.get_file_browser_action()) {
+
+							case decltype(session_data)::file_browser_action::background:
+								session_data.set_texture_by_path(fbrowser.get_choice());
+								main.set_message(std::string{"loaded background "}+fbrowser.get_choice());
+							break;
+							case decltype(session_data)::file_browser_action::load:
+								session_data.load_sprites_by_path(fbrowser.get_choice());
+								main.set_message(std::string{"loaded "}+std::to_string(session_data.get_sprites().size())+ " entries from "+fbrowser.get_choice());
+							break;
+						}
 					}
 					catch(std::exception& e) {
 
 						lm::log(log, lm::lvl::warning)<<e.what()<<std::endl;
-						//TODO: Should show some kind of message...
+						main.set_message(std::string{"error : "}+e.what());
 					}
+
 				}
 
 			break;

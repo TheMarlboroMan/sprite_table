@@ -14,7 +14,7 @@ help::help(
 	log(plog), 
 	help_txt_rep{
 		_ttfman.get("consola-mono", 12),
-		ldv::rgba8(255, 255, 255, 128)
+		ldv::rgba8(255, 255, 255, 255)
 	}
 {
 	help_txt_rep.set_text(tools::dump_file("data/help.txt"));
@@ -39,6 +39,6 @@ void help::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
 
 void help::draw(ldv::screen& _screen, int /*fps*/) {
 
-	_screen.clear(ldv::rgba8(64, 64, 64, 255));
+	_screen.clear(ldv::rgba8(0, 0, 0, 255));
 	help_txt_rep.draw(_screen);
 }

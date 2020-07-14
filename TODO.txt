@@ -1,3 +1,2 @@
-- states should be a "stack"
 - implement strings as i8n
-- implement everything in the help file
+- implement everything in the help file (lol)

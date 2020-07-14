@@ -7,14 +7,28 @@
 
 using namespace controller;
 
-main::main(lm::logger& plog, sprite_table::session_data& _sesd)
-:
-	log(plog),
-	session_data(_sesd) {
+main::main(
+	lm::logger& plog,
+	ldtools::ttf_manager& _ttfman,
+	sprite_table::session_data& _sesd
+):
+	log{plog},
+	ttfman{_ttfman},
+	session_data(_sesd),
+	last_message_rep{
+		_ttfman.get("consola-mono", 12),
+		ldv::rgba8(255, 255, 255, 255),
+	} {
 
+	set_message("welcome");
 }
 
-void main::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
+void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
+
+	if(last_message.time > 0.f) {
+
+		last_message.time-=lid.delta;
+	}
 
 	if(_input().is_exit_signal() || _input.is_input_down(input::escape)) {
 		set_leave(true);
@@ -26,32 +40,25 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
 		push_state(state_help);
 		return;
 	}
-	
-	if(_input.is_input_down(input::enter)) {
 
-		//TODO: We need some scaffolding here...
-		/*
-		file_request_type:setbackground
+	if(_input.is_input_down(input::background_selection)) {
 
-		then in the manager:
-			set_new(false)
-
-		when returning:
-			if(ok) {
-				switch(type) {
-					do stuff
-				}
-
-		*/
-
-
+		session_data.set_file_browser_action(sprite_table::session_data::file_browser_action::background);
 		push_state(state_file_browser);
+		return;
+	}
+
+	if(_input.is_input_down(input::load)) {
+
+		session_data.set_file_browser_action(sprite_table::session_data::file_browser_action::load);
+		push_state(state_file_browser);
+		return;
 	}
 }
 
-void main::draw(ldv::screen& screen, int /*fps*/) {
+void main::draw(ldv::screen& _screen, int /*fps*/) {
 
-	screen.clear(ldv::rgba8(0, 0, 0, 255));
+	_screen.clear(ldv::rgba8(0, 0, 0, 255));
 
 	if(nullptr!=session_data.get_texture()) {
 
@@ -63,6 +70,32 @@ void main::draw(ldv::screen& screen, int /*fps*/) {
 			{0, 0, tex.get_w(), tex.get_h()}
 		};
 
-		bgpic.draw(screen);
+		bgpic.draw(_screen);
+	}
+
+	if(last_message.time > 0.f) {
+
+		last_message_rep.align(
+		_screen.get_rect(),
+			ldv::representation_alignment{
+				ldv::representation_alignment::h::center,
+				ldv::representation_alignment::v::inner_bottom
+			}
+		);
+
+		last_message_rep.draw(_screen);
 	}
 }
+
+
+void main::set_message(const std::string& _message) {
+
+	last_message.message=_message;
+	last_message.time=30.0f;
+
+	//TODO: as crazy as it sounds, we should have a "fit to rect" thing for the
+	//strings: this shit is crazy as it is, with long lines.
+
+	last_message_rep.set_text(last_message.message);
+}
+

@@ -30,8 +30,9 @@ class file_browser:
 	virtual void                slumber(dfw::input& /*input*/) {}
 	virtual bool                can_leave_state() const {return true;}
 
-	//!Sets the allow creation flag, which displays the "create" entry.
-	void                        set_allow_create(bool _v) {allow_create=_v;}
+	//!Sets the allow creation flag, which displays the "create" entry
+	//!Reloads the data.
+	void                        set_allow_create(bool _v);
 	//!Sets the title that appears before the current directory.
 	void                        set_title(const std::string& _title) {title=_title;}
 	//!Returns if this controller exited with a chosen file.

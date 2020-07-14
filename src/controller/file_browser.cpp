@@ -10,9 +10,6 @@
 
 #include <algorithm>
 
-//TODO
-#include <iostream>
-
 using namespace controller;
 
 file_browser::file_browser(
@@ -298,4 +295,13 @@ void file_browser::input_create(dfw::input& _input) {
 		pop_state();
 		return;
 	}
+}
+
+void file_browser::set_allow_create(bool _v) {
+	
+	allow_create=_v; 
+	extract_entries();
+	refresh_list_view();
+	position_selector();
+	compose_title();	
 }
