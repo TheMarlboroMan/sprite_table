@@ -11,6 +11,8 @@ class session_data {
 
 	public:
 
+	using container=std::map<std::size_t, ldtools::sprite_frame>;
+
 	enum class file_browser_action {background, load};
 
 	void                                set_texture_by_path(const std::string&);
@@ -23,7 +25,7 @@ class session_data {
 		return texture.get();
 	}
 
-	ldtools::sprite_table&              get_sprites() {
+	container&              get_sprites() {
 
 		return table;
 	}
@@ -33,8 +35,8 @@ class session_data {
 	//!Background texture.
 	std::unique_ptr<ldv::texture>       texture;
 
-	//!Main table container.
-	ldtools::sprite_table               table;
+	//!Main table container: the ldtools::sprite table is read only.
+	container table;
 
 	file_browser_action                 browser_action=file_browser_action::background;
 
