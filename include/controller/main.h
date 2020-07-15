@@ -46,7 +46,8 @@ class main:
 	void                        draw_sprites(ldv::screen&);
 	void                        draw_hud(ldv::screen&);
 
-	sprite_table::session_data::container::const_iterator find_by_position(int, int) const;
+	sprite_table::session_data::container::const_iterator find_by_position(ldt::point_2d<int>) const;
+	ldt::point_2d<int>			get_mouse_position(dfw::input&) const;
 
 	struct {
 		std::string             message;
@@ -61,6 +62,7 @@ class main:
 	//properties
 	ldv::camera                 camera;
 	ldv::ttf_representation     last_message_rep;
+	ldt::point_2d<int>			mouse_pos;
 	int                         selected_index=-1;
 };
 

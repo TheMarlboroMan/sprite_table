@@ -28,12 +28,15 @@ main::main(
 	last_message_rep{
 		_ttfman.get("consola-mono", 12),
 		ldv::rgba8(255, 255, 255, 255),
-	} {
+	},
+	mouse_pos{0,0} {
 
 	set_message("welcome");
 }
 
 void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
+
+	mouse_pos=get_mouse_position(_input);
 
 	if(last_message.time > 0.f) {
 
@@ -78,18 +81,7 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 
 	if(_input.is_input_down(input::left_click)) {
 
-
-		//Of course, the camera position also has something to say...
-		auto pos=_input().get_mouse_position();
-		pos.x+=camera.get_x();
-		pos.y+=camera.get_y();
-
-		//...and so does the camera zoom...
-		//TODO: check this. It does not play nice.
-		pos.x/=camera.get_zoom();
-		pos.y/=camera.get_zoom();
-
-		const auto it=find_by_position(pos.x, pos.y);
+		const auto it=find_by_position(mouse_pos);
 		if(it!=std::end(session_data.get_sprites())) {
 
 			selected_index=it->first;
@@ -251,7 +243,16 @@ void main::draw_sprites(ldv::screen& _screen) {
 
 void main::draw_hud(ldv::screen& _screen) {
 
-	//TODO: Draw hud, current index, total items, mouse pos.
+	ldv::ttf_representation txt_hud{
+		ttfman.get("consola-mono", 12),
+		ldv::rgba8(255, 255, 255, 192),
+		std::to_string(mouse_pos.x)+","+std::to_string(mouse_pos.y)
+	};
+
+	txt_hud.go_to({0,0});
+	txt_hud.draw(_screen);
+
+	//TODO: Draw current index, total items.
 }
 
 void main::draw_messages(ldv::screen& _screen) {
@@ -345,16 +346,16 @@ void main::select_next() {
 	set_message(std::string{"selected (next) index "}+std::to_string(selected_index));
 }
 
-sprite_table::session_data::container::const_iterator main::find_by_position(int _x, int _y) const {
+sprite_table::session_data::container::const_iterator main::find_by_position(ldt::point_2d<int> _pos) const {
 
 	const auto& sprites=session_data.get_sprites();
-
-	ldt::point_2d<int> point{_x, _y};
 
 	return std::find_if(
 		std::begin(sprites),
 		std::end(sprites),
-		[point](const std::pair<size_t, ldtools::sprite_frame> _pair) {
+		[_pos](const std::pair<size_t, ldtools::sprite_frame> _pair) {
+
+//TODO: When zoomed in, something' s wrong.
 
 			ldt::box<int, int> box{ 
 				{_pair.second.x, _pair.second.y},
@@ -362,7 +363,7 @@ sprite_table::session_data::container::const_iterator main::find_by_position(int
 				_pair.second.h
 			};
 
-			return box.point_inside(point);
+			return box.point_inside(_pos);
 		}
 	);
 }
@@ -377,4 +378,16 @@ void main::delete_current() {
 	session_data.get_sprites().erase(selected_index);
 	set_message(std::string{"deleted index "}+std::to_string(selected_index));
 	selected_index=-1;
+}
+
+ldt::point_2d<int> main::get_mouse_position(dfw::input& _input) const {
+
+	auto pos=_input().get_mouse_position();
+	pos.x+=camera.get_x();
+	pos.y+=camera.get_y();
+
+	pos.x/=camera.get_zoom();
+	pos.y/=camera.get_zoom();
+
+	return {pos.x, pos.y};
 }
