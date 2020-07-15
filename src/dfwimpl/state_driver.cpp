@@ -10,11 +10,11 @@
 using namespace dfwimpl;
 
 state_driver::state_driver(
-	dfw::kernel& kernel, 
+	dfw::kernel& kernel,
 	dfwimpl::config& c
 ):
 	state_driver_interface(controller::t_states::state_main),
-	config(c), 
+	config(c),
 	log(kernel.get_log()) {
 
 	lm::log(log, lm::lvl::info)<<"setting state check function..."<<std::endl;
@@ -62,6 +62,7 @@ void state_driver::prepare_video(dfw::kernel& kernel) {
 	screen.set_fullscreen(config.bool_from_path("video:fullscreen"));
 
 	ttf_manager.insert("consola-mono", 12, "data/ttf/consola-mono.ttf");
+	ttf_manager.insert("consola-mono", 14, "data/ttf/consola-mono.ttf");
 }
 
 void state_driver::prepare_audio(dfw::kernel& kernel) {
@@ -87,6 +88,7 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:up")), input::up},
 		{input_description_from_config_token(config.token_from_path("input:down")), input::down},
 		{input_description_from_config_token(config.token_from_path("input:enter")), input::enter},
+		{input_description_from_config_token(config.token_from_path("input:left_control")), input::left_control},
 		{input_description_from_config_token(config.token_from_path("input:pageup")), input::pageup},
 		{input_description_from_config_token(config.token_from_path("input:pagedown")), input::pagedown},
 		{input_description_from_config_token(config.token_from_path("input:help")), input::help},
@@ -97,13 +99,8 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:background_selection")), input::background_selection},
 		{input_description_from_config_token(config.token_from_path("input:save")), input::save},
 		{input_description_from_config_token(config.token_from_path("input:load")), input::load},
-
-
-
-
-
-
-
+		{input_description_from_config_token(config.token_from_path("input:zoom_in")), input::zoom_in},
+		{input_description_from_config_token(config.token_from_path("input:zoom_out")), input::zoom_out}
 	};
 
 	kernel.init_input_system(pairs);
@@ -136,15 +133,19 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 			config.int_from_path("video:window_h_logical")
 		)
 	);
+
 	reg(
 		c_main,
 		controller::t_states::state_main,
 		new controller::main(
 			log,
 			ttf_manager,
-			session_data
+			session_data,
+			config.int_from_path("video:window_w_px"),
+			config.int_from_path("video:window_h_px")
 		)
 	);
+
 	reg(
 		c_help,
 		controller::t_states::state_help,
@@ -192,6 +193,7 @@ void state_driver::prepare_state(int _next, int _current) {
 							case decltype(session_data)::file_browser_action::background:
 								session_data.set_texture_by_path(fbrowser.get_choice());
 								main.set_message(std::string{"loaded background "}+fbrowser.get_choice());
+								main.adjust_camera_limits();
 							break;
 							case decltype(session_data)::file_browser_action::load:
 								session_data.load_sprites_by_path(fbrowser.get_choice());
@@ -255,7 +257,7 @@ void state_driver::process_parameters(const tools::arg_manager& _argman) {
 			main.set_message(std::string{"using session "}+session_file);
 		}
 		catch(std::exception &e) {
-		
+
 			lm::log(log, lm::lvl::warning)<<"could not load session "<<session_file<<" : "<<e.what()<<std::endl;
 			main.set_message("failed to load command line session");
 		}
@@ -267,9 +269,10 @@ void state_driver::process_parameters(const tools::arg_manager& _argman) {
 		try {
 			session_data.set_texture_by_path(image_file);
 			main.set_message(std::string{"using background "}+image_file);
+			main.adjust_camera_limits();
 		}
 		catch(std::exception &e) {
-		
+
 			lm::log(log, lm::lvl::warning)<<"could not load background "<<image_file<<" : "<<e.what()<<std::endl;
 			main.set_message("failed to load command line background");
 		}

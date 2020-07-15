@@ -16,6 +16,7 @@
 		"right":[0, 0, 79],
 		"up":[0, 0, 82],
 		"enter":[0, 0, 40],
+		"left_control":[0, 0, 224],
 		"pageup":[0, 0, 75],
 		"pagedown":[0, 0, 78],
 		"help":[0,0, 58],
@@ -25,7 +26,9 @@
 		"mode_presentation": [0,0,33],
 		"background_selection":[0,0,12],
 		"save":[0,0,22],
-		"load":[0,0,15]
+		"load":[0,0,15],
+		"zoom_in":[0,0,86],
+		"zoom_out":[0,0,87]
 	},
 	"meta":{
 		"v":1

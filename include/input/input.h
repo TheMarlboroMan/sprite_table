@@ -10,6 +10,7 @@ down,
 left,
 right,
 enter,
+left_control,
 pageup,
 pagedown,
 help,
@@ -19,7 +20,9 @@ mode_align,
 mode_presentation,
 background_selection,
 save,
-load
+load,
+zoom_in,
+zoom_out
 };
 
 }

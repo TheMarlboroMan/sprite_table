@@ -11,52 +11,53 @@ f1: Shows this help.
 
 ==== mode selection ====
 
-1: move camera mode
-2: move selection mode
-3: align selection mode
-4: presentation mode
+? 1: move camera mode
+? 2: move selection mode
+? 3: align selection mode
 
 ==== file manipulation ====
 
 i: open the background image selector
-s: save the current session
-ctrl+s: save the current session with a new name
+? s: save the current session
+? ctrl+s: save the current session with a new name
 l: load a session
 
 ==== workspace ====
 
+arrows: move camera (hold left ctrl for more control)
 +/- : zoom in/out
-left click: select frame
-next/prev page: select frame
-delete: remove selected frame
-insert: create new frame
-ctrl+insert: duplicate selected frame
-/ enter console tool
+? left click: select frame
+? next/prev page: select frame
+? delete: remove selected frame
+? insert: create new frame
+? left ctrl+insert: duplicate selected frame
+? / enter console tool
+? p : enter presentation mode
 
 ===== console tool =====
 
 number: an integer value, such as 10 or 5.
 range: a range of integers, lesser to greater as in 5-10.
 
-new [number:index] 
+? new [number:index]
 	creates new, empty frame with the given index
 
-delete [number:index] 
+? delete [number:index]
 	deletes the frame with the given index
 
-move [number:from] [number:to] 
+? move [number:from] [number:to]
 	moves from the index "from" to "to".
 
-move [range:from] [number:to] 
+? move [range:from] [number:to]
 	moves the range from so its first item has the index "to"
 
-swap [number:a] [number:b] 
+? swap [number:a] [number:b]
 	swaps frames a and b
 
-copy [number:origin] [number:destination] 
+? copy [number:origin] [number:destination]
 	copies the frame with a new index
 
-exit 
+? exit
 	back to the regular editing mode.
 
 == file selector ==
