@@ -1,9 +1,11 @@
 ==HELP==
 
-f1: Shows this help.
+f1: Shows this help
+arrows to scroll
 
 == command line parameters ==
 
+? -h shows this help
 -f session_file: opens the session file
 -i image_file: uses background image
 
@@ -11,6 +13,10 @@ f1: Shows this help.
 
 ==== mode selection ====
 
+NOT SURE ABOUT THIS... 
+MAYBE WE CAN ALWAYS USE ARROWS PLUS A MODIFIER,
+LIKE LCTRL IS "fine", SPACE IS move "selection" 
+LSHIFT IS "resize" AND LALT is "align"
 ? 1: move camera mode
 ? 2: move selection mode
 ? 3: align selection mode
@@ -24,11 +30,12 @@ l: load a session
 
 ==== workspace ====
 
-arrows: move camera (hold left ctrl for more control)
+arrows: move (camera)
+left ctrl: hold for fine move control
 +/- : zoom in/out
-? left click: select frame
- next/prev page: select frame
-? delete: remove selected frame
+left click: select frame
+next/prev page: select frame
+delete: remove selected frame
 ? insert: create new frame
 ? left ctrl+insert: duplicate selected frame
 ? / enter console tool

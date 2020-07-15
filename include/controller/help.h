@@ -7,6 +7,7 @@
 #include <dfw/controller_interface.h>
 #include <ldtools/ttf_manager.h>
 #include <ldv/ttf_representation.h>
+#include <ldv/camera.h>
 #include <lm/logger.h>
 
 //std
@@ -19,7 +20,7 @@ class help:
 
 	public:
 
-								help(lm::logger&, ldtools::ttf_manager& _ttfman);
+								help(lm::logger&, ldtools::ttf_manager& _ttfman, int, int);
 	virtual void 				loop(dfw::input&, const dfw::loop_iteration_data&);
 	virtual void 				draw(ldv::screen&, int);
 	virtual void 				awake(dfw::input& /*input*/) {}
@@ -32,6 +33,7 @@ class help:
 	lm::logger&					log;
 
 	//properties
+	ldv::camera					camera;
 	ldv::ttf_representation		help_txt_rep;
 };
 

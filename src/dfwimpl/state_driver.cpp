@@ -101,7 +101,8 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:load")), input::load},
 		{input_description_from_config_token(config.token_from_path("input:zoom_in")), input::zoom_in},
 		{input_description_from_config_token(config.token_from_path("input:zoom_out")), input::zoom_out},
-		{input_description_from_config_token(config.token_from_path("input:left_click")), input::left_click}
+		{input_description_from_config_token(config.token_from_path("input:left_click")), input::left_click},
+		{input_description_from_config_token(config.token_from_path("input:del")), input::del}
 	};
 
 	kernel.init_input_system(pairs);
@@ -142,8 +143,8 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 			log,
 			ttf_manager,
 			session_data,
-			config.int_from_path("video:window_w_px"),
-			config.int_from_path("video:window_h_px")
+			config.int_from_path("video:window_w_logical"),
+			config.int_from_path("video:window_h_logical")
 		)
 	);
 
@@ -152,7 +153,9 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		controller::t_states::state_help,
 		new controller::help(
 			log,
-			ttf_manager
+			ttf_manager,
+			config.int_from_path("video:window_w_logical"),
+			config.int_from_path("video:window_h_logical")
 		)
 	);
 	//[new-controller-mark]

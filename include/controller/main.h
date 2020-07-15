@@ -39,10 +39,12 @@ class main:
 	void                        zoom_out();
 	void                        select_next();
 	void                        select_prev();
+	void                        delete_current();
 
 	void                        draw_background(ldv::screen&);
 	void                        draw_messages(ldv::screen&);
 	void                        draw_sprites(ldv::screen&);
+	void                        draw_hud(ldv::screen&);
 
 	sprite_table::session_data::container::const_iterator find_by_position(int, int) const;
 

@@ -23,7 +23,8 @@ save,
 load,
 zoom_in,
 zoom_out,
-left_click
+left_click,
+del
 };
 
 }
