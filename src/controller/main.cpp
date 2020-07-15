@@ -68,10 +68,12 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 	if(_input.is_input_down(input::zoom_in)) {
 
 		zoom_in();
+		return;
 	}
 	else if(_input.is_input_down(input::zoom_out)) {
 
 		zoom_out();
+		return;
 	}
 
 	if(_input.is_input_down(input::left_click)) {
@@ -87,8 +89,19 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 
 		//TODO: Now search for a box with the given position!!!
 		//TODO: if a box exist, the current selection index should go to its
-		//index, else should go to -1.l
+		//index, else should go to -1.
+		//TODO: The interesting thing here should be tu return an iterator....
 		//set_message(std::string{"LEFT CLICK!!! ON "}+std::to_string(pos.x)+","+std::to_string(pos.y));
+		return;
+	}
+
+	if(_input.is_input_down(input::pagedown)) {
+
+		select_next();
+	}
+	else if(_input.is_input_down(input::pageup)) {
+
+		select_prev();
 	}
 
 	const int movement_factor=_input.is_input_pressed(input::left_control)
@@ -165,15 +178,22 @@ void main::draw_sprites(ldv::screen& _screen) {
 	for(const auto pair : session_data.get_sprites()) {
 
 		const auto& sprite=pair.second;
-		const auto color=ldv::rgba8(0, 255, 0, 255);
+		const auto color=pair.first==selected_index
+			? ldv::rgba8(0, 0, 255, 32)
+			: ldv::rgba8(0, 255, 0, 32);
 
 		//Draw the block...
 		ldv::box_representation box{
 			{{sprite.x, sprite.y}, sprite.w, sprite.h},
 			color,
-			ldv::polygon_representation::type::line
+			ldv::polygon_representation::type::fill
 		};
+		box.set_blend(ldv::representation::blends::alpha);
+		box.draw(_screen, camera);
 
+		//Draw a solid border...
+		box.set_filltype(ldv::polygon_representation::type::line);
+		box.set_color(ldv::rgba8(255, 255, 0, 192));
 		box.draw(_screen, camera);
 
 		//Add the axes... first the horizontal one...
@@ -195,7 +215,7 @@ void main::draw_sprites(ldv::screen& _screen) {
 		//And the id...
 		ldv::ttf_representation id_rep{
 			ttfman.get("consola-mono", 14),
-			color,
+			ldv::rgba8(255, 255, 255, 192),
 			std::to_string(pair.first)
 		};
 
@@ -253,4 +273,66 @@ void main::adjust_camera_limits() {
 		const auto& tex=*(session_data.get_texture());
 		camera.set_limits({ {0,0}, tex.get_w(), tex.get_h()});
 	}
+}
+
+void main::select_first_index() {
+
+	const auto& sprites=session_data.get_sprites();
+	if(std::empty(sprites)) {
+
+		selected_index=-1;
+		return;
+	}
+
+	selected_index=std::begin(sprites)->first;
+}
+
+void main::select_prev() {
+
+	const auto& sprites=session_data.get_sprites();
+	if(std::empty(sprites)) {
+
+		selected_index=-1;
+		return;
+	}
+
+	const auto current=sprites.find(selected_index);
+	if(current==std::begin(sprites)) {
+		//turns out that the previous to the last is... the first.
+
+		return;
+	}
+
+	selected_index=std::prev(current)->first;
+	set_message(std::string{"selected (previous) index "}+std::to_string(selected_index));
+}
+
+void main::select_next() {
+
+	const auto& sprites=session_data.get_sprites();
+	if(std::empty(sprites)) {
+
+		selected_index=-1;
+		return;
+	}
+
+	const auto current=sprites.find(selected_index);
+	selected_index=std::next(current)->first; //the next of the last seems to be the last.
+	set_message(std::string{"selected (next) index "}+std::to_string(selected_index));
+}
+
+sprite_table::session_data::container::const_iterator main::find_by_position(int _x, int _y) const {
+
+	const auto& sprites=session_data.get_sprites();
+	return std::find_if(
+		std::begin(sprites),
+		std::end(sprites),
+		[_x, _y](const std::pair<size_t, ldtools::sprite_frame> _pair) {
+
+			//TODO: make a rect.
+			//TODO: use our own calculations.
+
+			return false;
+		}
+	);
 }

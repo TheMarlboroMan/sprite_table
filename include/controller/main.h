@@ -31,15 +31,20 @@ class main:
 
 	void                        set_message(const std::string&);
 	void                        adjust_camera_limits();
+	void                        select_first_index();
 
 	private:
 
 	void                        zoom_in();
 	void                        zoom_out();
+	void                        select_next();
+	void                        select_prev();
 
 	void                        draw_background(ldv::screen&);
 	void                        draw_messages(ldv::screen&);
 	void                        draw_sprites(ldv::screen&);
+
+	sprite_table::session_data::container::const_iterator find_by_position(int, int) const;
 
 	struct {
 		std::string             message;
@@ -54,6 +59,7 @@ class main:
 	//properties
 	ldv::camera                 camera;
 	ldv::ttf_representation     last_message_rep;
+	int                         selected_index=-1;
 };
 
 }

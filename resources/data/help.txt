@@ -27,7 +27,7 @@ l: load a session
 arrows: move camera (hold left ctrl for more control)
 +/- : zoom in/out
 ? left click: select frame
-? next/prev page: select frame
+ next/prev page: select frame
 ? delete: remove selected frame
 ? insert: create new frame
 ? left ctrl+insert: duplicate selected frame
