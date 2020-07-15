@@ -74,6 +74,23 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 		zoom_out();
 	}
 
+	if(_input.is_input_down(input::left_click)) {
+
+		//Of course, the camera position also has something to say...
+		auto pos=_input().get_mouse_position();
+		pos.x+=camera.get_x();
+		pos.y+=camera.get_y();
+
+		//...and so does the camera zoom...
+		pos.x/=camera.get_zoom();
+		pos.y/=camera.get_zoom();
+
+		//TODO: Now search for a box with the given position!!!
+		//TODO: if a box exist, the current selection index should go to its
+		//index, else should go to -1.l
+		//set_message(std::string{"LEFT CLICK!!! ON "}+std::to_string(pos.x)+","+std::to_string(pos.y));
+	}
+
 	const int movement_factor=_input.is_input_pressed(input::left_control)
 		? 1
 		: 10;

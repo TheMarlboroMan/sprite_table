@@ -100,7 +100,8 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:save")), input::save},
 		{input_description_from_config_token(config.token_from_path("input:load")), input::load},
 		{input_description_from_config_token(config.token_from_path("input:zoom_in")), input::zoom_in},
-		{input_description_from_config_token(config.token_from_path("input:zoom_out")), input::zoom_out}
+		{input_description_from_config_token(config.token_from_path("input:zoom_out")), input::zoom_out},
+		{input_description_from_config_token(config.token_from_path("input:left_click")), input::left_click}
 	};
 
 	kernel.init_input_system(pairs);

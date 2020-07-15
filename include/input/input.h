@@ -22,7 +22,8 @@ background_selection,
 save,
 load,
 zoom_in,
-zoom_out
+zoom_out,
+left_click
 };
 
 }
