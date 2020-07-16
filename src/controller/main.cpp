@@ -160,7 +160,7 @@ void main::set_message(const std::string& _message) {
 
 	//TODO: as crazy as it sounds, we should have a "fit to width" thing for the
 	//strings: this shit is crazy as it is, with long lines. I am not sure of
-	//how would it even work... I guess we could call "fit_to_width" and the 
+	//how would it even work... I guess we could call "fit_to_width" and the
 	//text would be recomposed, a word at a time, calculating the current w
 	//until it does not fit (unless it is a single, long word in the line).
 
@@ -246,13 +246,20 @@ void main::draw_hud(ldv::screen& _screen) {
 	ldv::ttf_representation txt_hud{
 		ttfman.get("consola-mono", 12),
 		ldv::rgba8(255, 255, 255, 192),
-		std::to_string(mouse_pos.x)+","+std::to_string(mouse_pos.y)
+		""
 	};
 
-	txt_hud.go_to({0,0});
-	txt_hud.draw(_screen);
+	std::string txt=std::to_string(mouse_pos.x)+","+std::to_string(mouse_pos.y);
+	txt+=" total: "+std::to_string(session_data.get_sprites().size());
+	txt+=" current: "+(
+		-1==selected_index
+			? "none"
+			: std::to_string(selected_index)
+	);
 
-	//TODO: Draw current index, total items.
+	txt_hud.go_to({0,0});
+	txt_hud.set_text(txt);
+	txt_hud.draw(_screen);
 }
 
 void main::draw_messages(ldv::screen& _screen) {
@@ -355,9 +362,7 @@ sprite_table::session_data::container::const_iterator main::find_by_position(ldt
 		std::end(sprites),
 		[_pos](const std::pair<size_t, ldtools::sprite_frame> _pair) {
 
-//TODO: When zoomed in, something' s wrong.
-
-			ldt::box<int, int> box{ 
+			ldt::box<int, int> box{
 				{_pair.second.x, _pair.second.y},
 				_pair.second.w,
 				_pair.second.h
@@ -383,11 +388,12 @@ void main::delete_current() {
 ldt::point_2d<int> main::get_mouse_position(dfw::input& _input) const {
 
 	auto pos=_input().get_mouse_position();
-	pos.x+=camera.get_x();
-	pos.y+=camera.get_y();
 
 	pos.x/=camera.get_zoom();
 	pos.y/=camera.get_zoom();
+
+	pos.x+=camera.get_x();
+	pos.y+=camera.get_y();
 
 	return {pos.x, pos.y};
 }
