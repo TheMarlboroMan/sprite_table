@@ -31,7 +31,8 @@ main::main(
 	},
 	mouse_pos{0,0} {
 
-	set_message("welcome");
+	last_message_rep.set_max_width(_cw);
+	set_message("welcome, let's see if this thing really breaks down the text into chunks or if it is all a big fucking and stinking lie");
 }
 
 void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
@@ -157,16 +158,8 @@ void main::set_message(const std::string& _message) {
 
 	last_message.message=_message;
 	last_message.time=30.0f;
-
-	//TODO: as crazy as it sounds, we should have a "fit to width" thing for the
-	//strings: this shit is crazy as it is, with long lines. I am not sure of
-	//how would it even work... I guess we could call "fit_to_width" and the
-	//text would be recomposed, a word at a time, calculating the current w
-	//until it does not fit (unless it is a single, long word in the line).
-
 	last_message_rep.set_text(last_message.message);
 }
-
 
 void main::draw_background(ldv::screen& _screen) {
 
