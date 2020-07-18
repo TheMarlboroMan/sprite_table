@@ -10,6 +10,7 @@ down,
 left,
 right,
 enter,
+space,
 left_control,
 pageup,
 pagedown,
@@ -24,7 +25,10 @@ load,
 zoom_in,
 zoom_out,
 left_click,
-del
+del,
+insert,
+resize,
+align
 };
 
 }

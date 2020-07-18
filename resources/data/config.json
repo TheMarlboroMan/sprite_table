@@ -1,6 +1,9 @@
 {
 	"app":{
-		"dummy":true
+		"dummy":true,
+		"default_sprite_w" : 32,
+		"default_sprite_h" : 32,
+		"movement_factor": 4
 	},
 	"audio":{
 		"audio_buffers":1024,
@@ -16,6 +19,7 @@
 		"right":[0, 0, 79],
 		"up":[0, 0, 82],
 		"enter":[0, 0, 40],
+		"space":[0, 0, 44],
 		"left_control":[0, 0, 224],
 		"pageup":[0, 0, 75],
 		"pagedown":[0, 0, 78],
@@ -30,7 +34,10 @@
 		"zoom_in":[0,0,86],
 		"zoom_out":[0,0,87],
 		"left_click":[1,0,1],
-		"del":[0,0,76]
+		"del":[0,0,76],
+		"insert":[0,0,73],
+		"resize":[0, 0, 21],
+		"align":[0, 0, 4]
 	},
 	"meta":{
 		"v":1

@@ -6,19 +6,21 @@
 #include <ldv/bitmap_representation.h>
 #include <ldv/box_representation.h>
 #include <ldv/line_representation.h>
+#include <lm/sentry.h>
 
 #include <functional>
 
 using namespace controller;
 
 main::main(
-	lm::logger& plog,
+	lm::logger& _log,
+	dfwimpl::config& _config,
 	ldtools::ttf_manager& _ttfman,
 	sprite_table::session_data& _sesd,
 	int _cw,
 	int _ch
 ):
-	log{plog},
+	log{_log},
 	ttfman{_ttfman},
 	session_data(_sesd),
 	camera{
@@ -29,7 +31,11 @@ main::main(
 		_ttfman.get("consola-mono", 12),
 		ldv::rgba8(255, 255, 255, 255),
 	},
-	mouse_pos{0,0} {
+	mouse_pos{0,0},
+	default_w{_config.get_default_sprite_w()},
+	default_h{_config.get_default_sprite_h()},
+	movement_factor{_config.get_movement_factor()}
+{
 
 	last_message_rep.set_max_width(_cw);
 	set_message("welcome, let's see if this thing really breaks down the text into chunks or if it is all a big fucking and stinking lie");
@@ -55,6 +61,22 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 		return;
 	}
 
+	if(_input.is_input_down(input::save)) {
+
+		//These two cases have to be handled separatedly.
+		if(_input.is_input_pressed(input::left_control)) {
+
+			session_data.set_file_browser_action(sprite_table::session_data::file_browser_action::save);
+			//Unfortunately, there's no way to jump now to the state and flow down to save below...
+			//save must be called from the state_driver.
+			//TODO: could there be a way of recursively calling the main loop, but let's leave it for now.
+			push_state(state_file_browser);
+		}
+		else {
+			save();
+		}
+	}
+
 	if(_input.is_input_down(input::background_selection)) {
 
 		session_data.set_file_browser_action(sprite_table::session_data::file_browser_action::background);
@@ -77,6 +99,25 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 	else if(_input.is_input_down(input::zoom_out)) {
 
 		zoom_out();
+		return;
+	}
+
+	if(_input.is_input_down(input::space)) {
+
+		clear_selection();
+		return;
+	}
+
+	if(_input.is_input_down(input::insert)) {
+
+		if(_input.is_input_pressed(input::left_control)) {
+
+			duplicate_current();
+		}
+		else {
+
+			create_sprite();
+		}
 		return;
 	}
 
@@ -112,35 +153,45 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 		delete_current();
 	}
 
-	const int movement_factor=_input.is_input_pressed(input::left_control)
-		? 1
-		: 10;
+/*
 
+*/
 	typedef  bool (dfw::input::*input_fn)(int) const;
 	input_fn movement_fn=_input.is_input_pressed(input::left_control)
 		? &dfw::input::is_input_down
 		: &dfw::input::is_input_pressed;
 
-	/*(_input.*camera_movement_fn)(input::up);*/
-
-	//TODO: actually, the camera is only in "camera mode"
+	const int factor=_input.is_input_pressed(input::left_control) ? 1 : movement_factor;
+	int movement_x=0,
+		movement_y=0;
 
 	if(std::invoke(movement_fn, _input, input::up)) {
 
-		camera.move_by(0,-1*movement_factor);
+		movement_y=-1*factor;
 	}
 	if(std::invoke(movement_fn, _input, input::down)) {
 
-		camera.move_by(0, 1*movement_factor);
+		movement_y=1*factor;
 	}
 
 	if(std::invoke(movement_fn, _input, input::left)) {
 
-		camera.move_by(-1*movement_factor, 0);
+		movement_x=-1*factor;
 	}
 	if(std::invoke(movement_fn, _input, input::right)) {
 
-		camera.move_by(1*movement_factor, 0);
+		movement_x=1*factor;
+	}
+
+	if(movement_x || movement_y) {
+
+		perform_movement(
+			movement_x,
+			movement_y,
+			_input.is_input_pressed(input::resize),
+			_input.is_input_pressed(input::align)
+		);
+		return;
 	}
 }
 
@@ -201,17 +252,21 @@ void main::draw_sprites(ldv::screen& _screen) {
 		box.draw(_screen, camera);
 
 		//Add the axes... first the horizontal one...
+		ldt::point_2d<int>  pt{sprite.x+sprite.disp_x, sprite.y+sprite.disp_y},
+		                    hor_pt{pt.x+(sprite.w / 2), pt.y},
+		                    ver_pt{pt.x, pt.y+(sprite.h/2)};
+
 		auto hor_axis=ldv::line_representation{
-			{sprite.x, sprite.y},
-			{sprite.x+(sprite.w / 2), sprite.y},
+			pt,
+			hor_pt,
 			ldv::rgba8(255,0,0, 255)
 		};
 		hor_axis.draw(_screen, camera);
 
 		//Then the vertical.
 		auto ver_axis=ldv::line_representation{
-			{sprite.x, sprite.y},
-			{sprite.x, sprite.y+(sprite.h/2)},
+			pt,
+			ver_pt,
 			ldv::rgba8(0,0, 255, 255)
 		};
 		ver_axis.draw(_screen, camera);
@@ -389,4 +444,123 @@ ldt::point_2d<int> main::get_mouse_position(dfw::input& _input) const {
 	pos.y+=camera.get_y();
 
 	return {pos.x, pos.y};
+}
+
+void main::create_sprite() {
+
+	auto& sprites=session_data.get_sprites();
+
+	ldtools::sprite_frame fr{0, 0, default_w, default_h, 0, 0};
+	auto id=get_next_index();
+	sprites.insert({id, fr});
+
+	set_message(std::string{"created new index "}+std::to_string(id));
+}
+
+void main::clear_selection() {
+
+	selected_index=-1;
+	set_message("selection clear");
+}
+
+void main::save() {
+
+	if(!session_data.is_session_open()) {
+
+		set_message("no session is currently open, use ctrl+s to save");
+		return;
+	}
+
+	lm::log(log, lm::lvl::info)<<"will attempt to save into '"<<session_data.get_session_filename()<<"'"<<std::endl;
+
+	std::ofstream file{session_data.get_session_filename()};
+	if(!file) {
+
+		lm::log(log, lm::lvl::warning)<<"attempt failed"<<std::endl;
+		set_message("error, could not open output file");
+		return;
+	}
+
+	for(const auto& pair : session_data.get_sprites()) {
+
+		const auto& sprite=pair.second;
+		file<<pair.first<<"\t"<<sprite.x<<"\t"<<sprite.y<<"\t"<<sprite.w<<"\t"<<sprite.h<<"\t"<<sprite.disp_x<<"\t"<<sprite.disp_y<<std::endl;
+	}
+
+	set_message(std::string{"saved "}+std::to_string(session_data.get_sprites().size())+" entries into "+session_data.get_session_filename());;
+}
+
+std::size_t main::get_next_index() const {
+
+	auto& sprites=session_data.get_sprites();
+	return sprites.size()
+		? sprites.rbegin()->first+1
+		: 1;
+}
+
+void main::duplicate_current() {
+
+	if(-1==selected_index) {
+
+		set_message("cannot duplicate without an active selection");
+		return;
+	}
+
+	try {
+		auto& sprites=session_data.get_sprites();
+		auto copy=sprites.at(selected_index);
+		auto next_index=get_next_index();
+		sprites.insert({next_index, copy});
+
+		set_message(std::string{"duplicated "}+std::to_string(selected_index)+" into "+std::to_string(next_index)+", current selection changed");
+		selected_index=next_index;
+
+	}
+	catch(std::exception& e) {
+
+		lm::log(log, lm::lvl::error)<<"error duplicating current: "<<e.what()<<std::endl;
+	}
+
+}
+
+void main::perform_movement(int _x, int _y, bool _resize, bool _align) {
+
+	//Move camera.
+	if(-1==selected_index) {
+		camera.move_by(_x, _y);
+		return;
+	}
+
+	ldtools::sprite_frame& sprite=session_data.get_sprites().at(selected_index);
+
+	if(_resize) {
+
+		auto perform=[](int _factor, unsigned int& _target) {
+
+			if(_factor > 0) {
+
+				_target+=_factor;
+			}
+			else if(_factor < 0 && _target > -_factor) {
+
+				_target+=_factor; //factor comes in negative, so to substract, we add.
+			}
+		};
+
+		perform(_x, sprite.w);
+		perform(_y, sprite.h);
+
+		return;
+	}
+
+	if(_align) {
+
+		sprite.disp_x+=_x;
+		sprite.disp_y+=_y;
+		return;
+	}
+
+	//Move.
+	sprite.x+=_x;
+	sprite.y+=_y;
 }

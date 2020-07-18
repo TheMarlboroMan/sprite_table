@@ -11,33 +11,28 @@ arrows to scroll
 
 == main editor ==
 
-==== mode selection ====
-
-NOT SURE ABOUT THIS... 
-MAYBE WE CAN ALWAYS USE ARROWS PLUS A MODIFIER,
-LIKE LCTRL IS "fine", SPACE IS move "selection" 
-LSHIFT IS "resize" AND LALT is "align"
-? 1: move camera mode
-? 2: move selection mode
-? 3: align selection mode
-
 ==== file manipulation ====
 
 i: open the background image selector
-? s: save the current session
-? ctrl+s: save the current session with a new name
+s: save the current session
+ctrl+s: save the current session with a new name
 l: load a session
 
 ==== workspace ====
 
-arrows: move (camera)
-left ctrl: hold for fine move control
-+/- : zoom in/out
+arrows:
+	with no selection: move camera
+	with selection: move selection
+	hold r: resize selection
+	hold a: align
+	hold lctrl: fine control
+space: clear current selection
 left click: select frame
 next/prev page: select frame
 delete: remove selected frame
-? insert: create new frame
-? left ctrl+insert: duplicate selected frame
+insert: create new frame
+left ctrl+insert: duplicate selected frame
++/- : zoom in/out
 ? / enter console tool
 ? p : enter presentation mode
 
@@ -67,10 +62,10 @@ range: a range of integers, lesser to greater as in 5-10.
 ? exit
 	back to the regular editing mode.
 
-== file selector ==
+== file browser ==
 
 esc: Go back
 cursors up-down: select file
 next/prev page: select file
 enter: choose option
-keys: enter new filename after choosing "new".
+keys: enter new filename after choosing "new", finish with enter.

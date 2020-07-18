@@ -16,6 +16,11 @@ class config:
 
 	config();
 
+	//Application specifics.
+	int                 get_default_sprite_w() const {return token_from_path("app:default_sprite_w").GetInt();}
+	int                 get_default_sprite_h() const {return token_from_path("app:default_sprite_h").GetInt();}
+	int                 get_movement_factor() const {return token_from_path("app:movement_factor").GetInt();}
+
 	//Fullfillment of the kernel interface.
 
 	virtual std::string generate_file_version() const {return "1";}

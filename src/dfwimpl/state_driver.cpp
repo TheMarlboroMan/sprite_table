@@ -88,6 +88,7 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:up")), input::up},
 		{input_description_from_config_token(config.token_from_path("input:down")), input::down},
 		{input_description_from_config_token(config.token_from_path("input:enter")), input::enter},
+		{input_description_from_config_token(config.token_from_path("input:space")), input::space},
 		{input_description_from_config_token(config.token_from_path("input:left_control")), input::left_control},
 		{input_description_from_config_token(config.token_from_path("input:pageup")), input::pageup},
 		{input_description_from_config_token(config.token_from_path("input:pagedown")), input::pagedown},
@@ -102,7 +103,10 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:zoom_in")), input::zoom_in},
 		{input_description_from_config_token(config.token_from_path("input:zoom_out")), input::zoom_out},
 		{input_description_from_config_token(config.token_from_path("input:left_click")), input::left_click},
-		{input_description_from_config_token(config.token_from_path("input:del")), input::del}
+		{input_description_from_config_token(config.token_from_path("input:del")), input::del},
+		{input_description_from_config_token(config.token_from_path("input:insert")), input::insert},
+		{input_description_from_config_token(config.token_from_path("input:resize")), input::resize},
+		{input_description_from_config_token(config.token_from_path("input:align")), input::align}
 	};
 
 	kernel.init_input_system(pairs);
@@ -141,6 +145,7 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		controller::t_states::state_main,
 		new controller::main(
 			log,
+			config,
 			ttf_manager,
 			session_data,
 			config.int_from_path("video:window_w_logical"),
@@ -173,9 +178,7 @@ void state_driver::prepare_state(int _next, int _current) {
 
 			switch(_current) {
 				case controller::t_states::state_main:
-
-					lm::log(log, lm::lvl::debug)<<"starting file browser in selection mode"<<std::endl;
-					fbrowser.set_allow_create(false);
+					fbrowser.set_allow_create(session_data.get_file_browser_action()==decltype(session_data)::file_browser_action::save);
 				break;
 			}
 		break;
@@ -191,9 +194,12 @@ void state_driver::prepare_state(int _next, int _current) {
 				if(fbrowser.get_result()) {
 
 					try {
-
 						switch(session_data.get_file_browser_action()) {
 
+							case decltype(session_data)::file_browser_action::save:
+								session_data.set_session_filename(fbrowser.get_choice());
+								main.save();
+							break;
 							case decltype(session_data)::file_browser_action::background:
 								session_data.set_texture_by_path(fbrowser.get_choice());
 								main.set_message(std::string{"loaded background "}+fbrowser.get_choice());
@@ -201,6 +207,7 @@ void state_driver::prepare_state(int _next, int _current) {
 							break;
 							case decltype(session_data)::file_browser_action::load:
 								session_data.load_sprites_by_path(fbrowser.get_choice());
+								session_data.set_session_filename(fbrowser.get_choice());
 								main.set_message(std::string{"loaded "}+std::to_string(session_data.get_sprites().size())+ " entries from "+fbrowser.get_choice());
 								main.select_first_index();
 							break;
@@ -259,6 +266,7 @@ void state_driver::process_parameters(const tools::arg_manager& _argman) {
 		const auto& session_file=_argman.get_following("-f");
 		try {
 			session_data.load_sprites_by_path(session_file);
+			session_data.set_session_filename(session_file);
 			main.set_message(std::string{"using session "}+session_file);
 			main.select_first_index();
 		}

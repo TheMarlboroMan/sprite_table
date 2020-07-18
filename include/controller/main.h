@@ -3,6 +3,7 @@
 //local
 #include "states.h"
 #include "../sprite_table/session_data.h"
+#include "../dfwimpl/config.h"
 
 //framework
 #include <dfw/controller_interface.h>
@@ -22,7 +23,7 @@ class main:
 
 	public:
 
-								main(lm::logger&, ldtools::ttf_manager&, sprite_table::session_data&, int, int);
+								main(lm::logger&, dfwimpl::config&, ldtools::ttf_manager&, sprite_table::session_data&, int, int);
 	virtual void 				loop(dfw::input&, const dfw::loop_iteration_data&);
 	virtual void 				draw(ldv::screen&, int);
 	virtual void 				awake(dfw::input& /*input*/) {}
@@ -32,15 +33,20 @@ class main:
 	void                        set_message(const std::string&);
 	void                        adjust_camera_limits();
 	void                        select_first_index();
+	void                        save();
 
 	private:
 
+	void                        create_sprite();
 	void                        zoom_in();
 	void                        zoom_out();
 	void                        select_next();
 	void                        select_prev();
 	void                        delete_current();
-
+	void                        duplicate_current();
+	void                        clear_selection();
+	std::size_t                 get_next_index() const;
+	void                        perform_movement(int, int, bool, bool);
 	void                        draw_background(ldv::screen&);
 	void                        draw_messages(ldv::screen&);
 	void                        draw_sprites(ldv::screen&);
@@ -55,7 +61,7 @@ class main:
 	}                           last_message{"", 0.0f};
 
 	//references...
-	lm::logger&					log;
+	lm::logger&                 log;
 	ldtools::ttf_manager&       ttfman;
 	sprite_table::session_data& session_data;
 
@@ -64,6 +70,9 @@ class main:
 	ldv::ttf_representation     last_message_rep;
 	ldt::point_2d<int>			mouse_pos;
 	int                         selected_index=-1;
+	const unsigned int          default_w,
+	                            default_h,
+	                            movement_factor;
 };
 
 }

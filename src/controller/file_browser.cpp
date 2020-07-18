@@ -2,6 +2,7 @@
 
 #include <tools/json.h>
 #include <tools/file_utils.h>
+#include <tools/string_utils.h>
 
 #include <ldv/ttf_representation.h>
 
@@ -287,7 +288,8 @@ void file_browser::input_create(dfw::input& _input) {
 
 		result=true;
 		auto path=current_directory;
-		path/={_input().get_text_input()};
+
+		path/=tools::str_trim({_input().get_text_input()});
 		choice=path.string();
 
 		_input().stop_text_input();
@@ -298,10 +300,10 @@ void file_browser::input_create(dfw::input& _input) {
 }
 
 void file_browser::set_allow_create(bool _v) {
-	
-	allow_create=_v; 
+
+	allow_create=_v;
 	extract_entries();
 	refresh_list_view();
 	position_selector();
-	compose_title();	
+	compose_title();
 }
