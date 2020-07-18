@@ -5,7 +5,7 @@ arrows to scroll
 
 == command line parameters ==
 
-? -h shows this help
+-h shows this help
 -f session_file: opens the session file
 -i image_file: uses background image
 
