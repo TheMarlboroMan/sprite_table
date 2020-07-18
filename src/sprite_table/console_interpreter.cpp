@@ -39,6 +39,11 @@ bool console_interpreter::perform(const std::string& _command) {
 		return move(ss.str());
 	}
 
+	if(command=="move_range") {
+
+		return move_range(ss.str());
+	}
+
 	if(command=="swap") {
 
 		return swap(ss.str());
@@ -167,6 +172,60 @@ bool console_interpreter::move(const std::string& _parameters) {
 	sprites.insert({to, sprite});
 
 	message="frame moved";
+	return true;
+}
+
+bool console_interpreter::move_range(const std::string& _parameters) {
+
+	std::stringstream ss{_parameters};
+	std::string dummystr;
+	ss>>dummystr;
+
+	std::size_t from=0;
+	ss>>from;
+
+	std::size_t to=0;
+	ss>>to;
+
+	std::size_t first_new_index=0;
+	ss>>first_new_index;
+
+	if(ss.fail()) {
+
+		message="invalid syntax, use f1 for help";
+		return false;
+	}
+
+	//First, check that the ranges are in order...
+	if(from >= to) {
+
+		message="invalid range, use f1 for help";
+		return false;
+	}
+
+	//Next, make sure the destination is free...
+	std::size_t length=to-from,
+	            search=first_new_index,
+	            limit=search+length;
+
+	for(; search < limit; search++) {
+
+		if(sprites.count(search)) {
+
+			message=std::string{"invalid destination, index "}+std::to_string(search)+" is not free";
+			return false;
+		}
+	}
+
+	//And then, just move...
+	for(; from < to; from++) {
+
+		auto sprite=sprites.at(from);
+		sprites.erase(from);
+		sprites.insert({first_new_index++, sprite});
+	}
+
+	message="range moved";
 	return true;
 }
 

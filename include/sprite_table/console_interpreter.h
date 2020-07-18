@@ -24,6 +24,7 @@ class console_interpreter {
 	bool                    create(const std::string&);
 	bool                    erase(const std::string&);
 	bool                    move(const std::string&);
+	bool                    move_range(const std::string&);
 	bool                    swap(const std::string&);
 	bool                    copy(const std::string&);
 	bool                    set(const std::string&);

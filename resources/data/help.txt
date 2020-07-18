@@ -53,7 +53,7 @@ delete number:index
 move number:from number:to
 	moves from the index "from" to "to".
 
-? range_move number:from_start number:from_end number:to_start number:to_end
+move_range number:from_start number:from_end number:to
 	moves the range from so its first item has the index "to"
 
 swap number:a number:b
