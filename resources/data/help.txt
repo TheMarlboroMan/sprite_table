@@ -1,4 +1,4 @@
-==HELP==
+== HELP ==
 
 f1: Shows this help
 arrows to scroll
