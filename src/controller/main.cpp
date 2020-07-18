@@ -38,7 +38,7 @@ main::main(
 {
 
 	last_message_rep.set_max_width(_cw);
-	set_message("welcome, let's see if this thing really breaks down the text into chunks or if it is all a big fucking and stinking lie");
+	set_message("welcome, f1 for help, esc to exit");
 }
 
 void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
@@ -299,11 +299,20 @@ void main::draw_hud(ldv::screen& _screen) {
 
 	std::string txt=std::to_string(mouse_pos.x)+","+std::to_string(mouse_pos.y);
 	txt+=" total: "+std::to_string(session_data.get_sprites().size());
-	txt+=" current: "+(
-		-1==selected_index
-			? "none"
-			: std::to_string(selected_index)
-	);
+	txt+=" current: ";
+
+	if(-1==selected_index) {
+
+		txt+="none";
+	}
+	else {
+		const auto& sprite=session_data.get_sprites().at(selected_index);
+		txt+=std::to_string(selected_index)
+			+" at "
+			+std::to_string(sprite.x)+","+std::to_string(sprite.y)
+			+" ("+std::to_string(sprite.w)+" x "+std::to_string(sprite.h)
+			+") displaced by "+std::to_string(sprite.disp_x)+","+std::to_string(sprite.disp_y);
+	}
 
 	txt_hud.go_to({0,0});
 	txt_hud.set_text(txt);
