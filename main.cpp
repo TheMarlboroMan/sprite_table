@@ -7,18 +7,25 @@
 #include <dfw/kernel.h>
 
 #include <tools/arg_manager.h>
+#include <tools/file_utils.h>
 
 #include <ldt/sdl_tools.h>
 #include <ldt/log.h>
 
 int main(int argc, char ** argv)
 {
+	//Argument controller.
+	tools::arg_manager carg(argc, argv);
+
+	if(carg.exists("-h")) {
+
+		std::cout<<tools::dump_file("data/help.txt")<<std::endl;
+		return 0;
+	}
+
 	//Init libdansdl2 log.
 	ldt::log_lsdl::set_type(ldt::log_lsdl::types::file);
 	ldt::log_lsdl::set_filename("logs/libdansdl2.log");
-
-	//Argument controller.
-	tools::arg_manager carg(argc, argv);
 
 	//Init application log.
 	lm::file_logger log_app("logs/app.log");
@@ -30,7 +37,7 @@ int main(int argc, char ** argv)
 		if(!ldt::sdl_init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK)) {
 			throw std::runtime_error("unable to init sdl2");
 		}
-		
+
 		lm::log(log_app, lm::lvl::info)<<"creating kernel..."<<std::endl;
 		dfw::kernel kernel(log_app, carg);
 
