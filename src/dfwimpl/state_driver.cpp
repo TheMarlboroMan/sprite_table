@@ -106,7 +106,8 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:del")), input::del},
 		{input_description_from_config_token(config.token_from_path("input:insert")), input::insert},
 		{input_description_from_config_token(config.token_from_path("input:resize")), input::resize},
-		{input_description_from_config_token(config.token_from_path("input:align")), input::align}
+		{input_description_from_config_token(config.token_from_path("input:align")), input::align},
+		{input_description_from_config_token(config.token_from_path("input:tab")), input::tab}
 	};
 
 	kernel.init_input_system(pairs);

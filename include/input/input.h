@@ -28,7 +28,8 @@ left_click,
 del,
 insert,
 resize,
-align
+align,
+tab
 };
 
 }

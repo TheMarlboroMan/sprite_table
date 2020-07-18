@@ -33,33 +33,38 @@ delete: remove selected frame
 insert: create new frame
 left ctrl+insert: duplicate selected frame
 +/- : zoom in/out
-? / enter console tool
+tab : enter / exit console tool
 ? p : enter presentation mode
 
 ===== console tool =====
 
 number: an integer value, such as 10 or 5.
 range: a range of integers, lesser to greater as in 5-10.
+string: a string
+parameters in brackes indicate optional parameters.
 
-? new [number:index]
+new number:index [number:x] [number:y] [number:w] [number:h] [number:disp_x] [number:disp_y]
 	creates new, empty frame with the given index
 
-? delete [number:index]
+delete number:index
 	deletes the frame with the given index
 
-? move [number:from] [number:to]
+move number:from number:to
 	moves from the index "from" to "to".
 
-? move [range:from] [number:to]
+? range_move [range:from] [number:to]
 	moves the range from so its first item has the index "to"
 
-? swap [number:a] [number:b]
+swap number:a number:b
 	swaps frames a and b
 
-? copy [number:origin] [number:destination]
+copy number:origin number:destination
 	copies the frame with a new index
 
-? exit
+set number:index string:property number:value
+	sets a value for the given index. Property can be x, y, w, h, dx or dy.
+
+exit
 	back to the regular editing mode.
 
 == file browser ==

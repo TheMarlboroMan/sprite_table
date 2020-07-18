@@ -2,6 +2,7 @@
 
 //local
 #include "../../include/input/input.h"
+#include "../../include/sprite_table/console_interpreter.h"
 
 #include <ldv/bitmap_representation.h>
 #include <ldv/box_representation.h>
@@ -60,6 +61,20 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 		push_state(state_help);
 		return;
 	}
+
+	if(_input.is_input_down(input::tab)) {
+
+		console_mode=true;
+		_input().set_keydown_control_text_filter(true);
+		_input().start_text_input();
+	}
+
+	console_mode
+		? console_input(_input)
+		: workspace_input(_input);
+}
+
+void main::workspace_input(dfw::input& _input) {
 
 	if(_input.is_input_down(input::save)) {
 
@@ -153,9 +168,6 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 		delete_current();
 	}
 
-/*
-
-*/
 	typedef  bool (dfw::input::*input_fn)(int) const;
 	input_fn movement_fn=_input.is_input_pressed(input::left_control)
 		? &dfw::input::is_input_down
@@ -195,6 +207,39 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 	}
 }
 
+void main::console_input(dfw::input& _input) {
+
+	if(_input().is_event_text()) {
+
+		console_txt=_input().get_text_input();
+		return;
+	}
+
+	if(_input.is_input_down(input::enter)) {
+
+		_input().clear_text_input();
+
+		if(!console_txt.size()) {
+
+			return;
+		}
+
+		if(console_txt=="exit") {
+
+			_input().stop_text_input();
+			console_mode=false;
+			console_txt.clear();
+			return;
+		}
+
+		sprite_table::console_interpreter ci{session_data.get_sprites(), default_w, default_h};
+		ci.perform(console_txt);
+
+		console_txt.clear();
+		set_message(ci.get_message());
+	}
+}
+
 void main::draw(ldv::screen& _screen, int /*fps*/) {
 
 	_screen.clear(ldv::rgba8(0, 0, 0, 255));
@@ -202,7 +247,10 @@ void main::draw(ldv::screen& _screen, int /*fps*/) {
 	draw_background(_screen);
 	draw_sprites(_screen);
 	draw_messages(_screen);
-	draw_hud(_screen);
+
+	console_mode
+		? draw_console(_screen)
+		: draw_hud(_screen);
 }
 
 void main::set_message(const std::string& _message) {
@@ -333,6 +381,27 @@ void main::draw_messages(ldv::screen& _screen) {
 
 		last_message_rep.draw(_screen);
 	}
+}
+
+void main::draw_console(ldv::screen& _screen) {
+
+	//Draw background...
+	ldv::box_representation box(
+		{0, 0, _screen.get_w(), 40},
+		ldv::rgba8(0, 0, 0, 128),
+		ldv::polygon_representation::type::fill
+	);
+
+	box.draw(_screen);
+
+	//Draw current command...
+	ldv::ttf_representation command{
+		ttfman.get("consola-mono", 14),
+		ldv::rgba8(255, 255, 255, 255),
+		std::string{">"}+console_txt
+	};
+
+	command.draw(_screen);
 }
 
 void main::zoom_in() {

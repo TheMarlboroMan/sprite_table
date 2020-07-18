@@ -37,6 +37,8 @@ class main:
 
 	private:
 
+	void                        workspace_input(dfw::input&);
+	void                        console_input(dfw::input&);
 	void                        create_sprite();
 	void                        zoom_in();
 	void                        zoom_out();
@@ -51,6 +53,7 @@ class main:
 	void                        draw_messages(ldv::screen&);
 	void                        draw_sprites(ldv::screen&);
 	void                        draw_hud(ldv::screen&);
+	void                        draw_console(ldv::screen&);
 
 	sprite_table::session_data::container::const_iterator find_by_position(ldt::point_2d<int>) const;
 	ldt::point_2d<int>			get_mouse_position(dfw::input&) const;
@@ -73,6 +76,8 @@ class main:
 	const unsigned int          default_w,
 	                            default_h,
 	                            movement_factor;
+	bool                        console_mode=false;
+	std::string                 console_txt; //we cannot drag the ldv::input to the view to draw this...
 };
 
 }
