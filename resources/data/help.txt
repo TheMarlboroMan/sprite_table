@@ -2,6 +2,7 @@
 
 f1: Shows this help
 arrows to scroll
+? indicates items not yet implemented
 
 == command line parameters ==
 
@@ -39,9 +40,9 @@ tab : enter / exit console tool
 ===== console tool =====
 
 number: an integer value, such as 10 or 5.
-range: a range of integers, lesser to greater as in 5-10.
 string: a string
-parameters in brackes indicate optional parameters.
+
+parameters in brackets indicate optional parameters.
 
 new number:index [number:x] [number:y] [number:w] [number:h] [number:disp_x] [number:disp_y]
 	creates new, empty frame with the given index
@@ -52,7 +53,7 @@ delete number:index
 move number:from number:to
 	moves from the index "from" to "to".
 
-? range_move [range:from] [number:to]
+? range_move number:from_start number:from_end number:to_start number:to_end
 	moves the range from so its first item has the index "to"
 
 swap number:a number:b
