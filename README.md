@@ -1,8 +1,8 @@
-#Sprite sheet editor.
+# Sprite sheet editor.
 
 Graphical interface to create rectangular sections on a sprite sheet. Those rectangular sections are later saved to a text file. The format of said text file is compatible with other tools in these repositories.
 
-##Building
+## Building
 
 Make sure to have:
 
@@ -18,17 +18,32 @@ Download, build and install the following repos from github.com/themarlboroman
 
 The do the usual cmake dance.
 
-##Help
+## Help
 
 Press f1 in the application main screen or run with -h.
 
-##command line parameters
+## Command line parameters
 
 -h shows the help file.
 -f session_file: opens the session file
 -i image_file: uses background image
 
-##History.
+## Configuration
+
+Upon building, the configuration file will be in data/config.json. Values that
+can be useful to change are:
+
+- default_sprite_w: the default width of a new sprite.
+- default_sprite_h: the default height of a new sprite.
+- movement_factor: how many pixels per tic are moved in an arrow keypress.
+- window_w_px: width of the window
+- window_w_logical: logical width of the window. If you are so inclined, you
+	could set it to half of the window width and have a zoomed view. In most
+	cases, this must be kept in sync with the above value.
+- window_h_px: height of the window
+- window_h_logical: logical height of the window
+
+## History.
 
 - As of July 2020 the project has been rewritten.
 - As of November 5th 2015 the code has been patched with a compatibility layer to support many radical changes to the libdansdl2. Should the code be updated, the compatibility layer will be removed.
