@@ -22,7 +22,7 @@ class main:
 
 	public:
 
-								main(lm::logger&, ldtools::ttf_manager&, sprite_table::session_data&, int, int, int, int, int);
+								main(lm::logger&, ldtools::ttf_manager&, sprite_table::session_data&, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int);
 	virtual void 				loop(dfw::input&, const dfw::loop_iteration_data&);
 	virtual void 				draw(ldv::screen&, int);
 	virtual void 				awake(dfw::input& /*input*/) {}

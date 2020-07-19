@@ -14,8 +14,8 @@ presentation::presentation(
 	lm::logger& plog,
 	ldtools::ttf_manager& _ttfman,
 	sprite_table::session_data& _session_data,
-	int _screen_w,
-	int _screen_h
+	unsigned int _screen_w,
+	unsigned int _screen_h
 ):
 	log(plog),
 	ttfman{_ttfman},
@@ -75,7 +75,7 @@ void presentation::draw(ldv::screen& _screen, int /*fps*/) {
 	}
 }
 
-void presentation::draw_item(ldv::screen& _screen, const item& _item) {
+void presentation::draw_item(ldv::screen& _screen, const presentation_item& _item) {
 
 	const auto& tex=*(session_data.get_texture());
 
@@ -141,7 +141,9 @@ void presentation::calculate() {
 	}
 
 	camera.set_limits({
-		{0,0}, screen_w, max_y
+		{0,0},
+		screen_w,
+		static_cast<unsigned int>(max_y)
 	});
 
 	camera.go_to({0,0});

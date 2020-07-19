@@ -130,11 +130,12 @@ void file_browser::extract_entries() {
 void file_browser::refresh_list_view() {
 
 	std::string files;
-	auto it=std::begin(contents)+(pager.get_current_page() * pager.get_items_per_page());
+	long int ipp=pager.get_items_per_page();
+	auto it=std::begin(contents)+(pager.get_current_page() * ipp);
 	auto begin=it;
 
 	//Read the next N items...
-	for(; it!=std::end(contents) && std::distance(begin, it) < pager.get_items_per_page(); ++it) {
+	for(; it!=std::end(contents) && std::distance(begin, it) < ipp; ++it) {
 
 		files+=it->is_dir()
 			? "["+it->path_name+"]\n"

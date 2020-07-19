@@ -8,12 +8,12 @@
 using namespace controller;
 
 help::help(
-	lm::logger& plog, 
+	lm::logger& plog,
 	ldtools::ttf_manager& _ttfman,
-	int _w,
-	int _h
+	unsigned int _w,
+	unsigned int _h
 ):
-	log(plog), 
+	log(plog),
 	camera{
 		{0,0, _w, _h},
 		{0,0}

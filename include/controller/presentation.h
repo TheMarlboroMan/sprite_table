@@ -25,7 +25,7 @@ class presentation:
 
 	using container=std::map<std::size_t, ldtools::sprite_frame>;
 
-								presentation(lm::logger&, ldtools::ttf_manager&, sprite_table::session_data&, int, int);
+								presentation(lm::logger&, ldtools::ttf_manager&, sprite_table::session_data&, unsigned int, unsigned int);
 	virtual void 				loop(dfw::input&, const dfw::loop_iteration_data&);
 	virtual void 				draw(ldv::screen&, int);
 	virtual void 				awake(dfw::input& /*input*/);
@@ -34,7 +34,7 @@ class presentation:
 
 	private:
 
-	struct item {
+	struct presentation_item {
 		size_t                  index;
 		ldtools::sprite_frame   frame;
 		int                     x,
@@ -42,7 +42,7 @@ class presentation:
 	};
 
 	void                        calculate();
-	void                        draw_item(ldv::screen&, const item&);
+	void                        draw_item(ldv::screen&, const presentation_item&);
 
 	//references...
 	lm::logger&					log;
@@ -51,11 +51,11 @@ class presentation:
 
 	//properties
 	ldv::camera                 camera;
-	const int                   screen_w,
+	const unsigned int          screen_w,
 	                            screen_h;
 	bool                        display_ids=true;
 
-	std::vector<item>           items;
+	std::vector<presentation_item> items;
 };
 
 }

@@ -103,7 +103,14 @@ bool console_interpreter::create(const std::string& _parameters) {
 	extract(disp_x);
 	extract(disp_y);
 
-	ldtools::sprite_frame fr{x, y, w, h, disp_x, disp_y};
+	ldtools::sprite_frame fr{
+		x,
+		y,
+		static_cast<unsigned int>(w),
+		static_cast<unsigned int>(h),
+		disp_x,
+		disp_y
+	};
 	sprites.insert({index, fr});
 
 	message="frame created";

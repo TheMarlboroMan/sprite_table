@@ -1,3 +1,2 @@
-- implement everything in the help file (lol)
 - implement strings as i8n
 - allow for more than one message

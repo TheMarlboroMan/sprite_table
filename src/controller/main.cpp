@@ -17,11 +17,11 @@ main::main(
 	lm::logger& _log,
 	ldtools::ttf_manager& _ttfman,
 	sprite_table::session_data& _sesd,
-	int _cw,
-	int _ch,
-	int _dsw,
-	int _dsh,
-	int _mf
+	unsigned int _cw,
+	unsigned int _ch,
+	unsigned int _dsw,
+	unsigned int _dsh,
+	unsigned int _mf
 ):
 	log{_log},
 	ttfman{_ttfman},
@@ -289,7 +289,7 @@ void main::draw_sprites(ldv::screen& _screen) {
 	for(const auto pair : session_data.get_sprites()) {
 
 		const auto& sprite=pair.second;
-		const auto color=pair.first==selected_index
+		const auto color=static_cast<int>(pair.first)==selected_index
 			? ldv::rgba8(0, 0, 255, 32)
 			: ldv::rgba8(0, 255, 0, 32);
 
@@ -308,9 +308,12 @@ void main::draw_sprites(ldv::screen& _screen) {
 		box.draw(_screen, camera);
 
 		//Add the axes... first the horizontal one...
+		int sprite_w=static_cast<int>(sprite.w),
+			sprite_h=static_cast<int>(sprite.h);
+
 		ldt::point_2d<int>  pt{sprite.x+sprite.disp_x, sprite.y+sprite.disp_y},
-		                    hor_pt{pt.x+(sprite.w / 2), pt.y},
-		                    ver_pt{pt.x, pt.y+(sprite.h/2)};
+		                    hor_pt{pt.x+(sprite_w / 2), pt.y},
+		                    ver_pt{pt.x, pt.y+(sprite_h/2)};
 
 		auto hor_axis=ldv::line_representation{
 			pt,
@@ -496,7 +499,7 @@ sprite_table::session_data::container::const_iterator main::find_by_position(ldt
 		std::end(sprites),
 		[_pos](const std::pair<size_t, ldtools::sprite_frame> _pair) {
 
-			ldt::box<int, int> box{
+			ldt::box<int, unsigned int> box{
 				{_pair.second.x, _pair.second.y},
 				_pair.second.w,
 				_pair.second.h
@@ -627,7 +630,7 @@ void main::perform_movement(int _x, int _y, bool _resize, bool _align) {
 
 				_target+=_factor;
 			}
-			else if(_factor < 0 && _target > -_factor) {
+			else if(_factor < 0 && static_cast<int>(_target) > -_factor) {
 
 				_target+=_factor; //factor comes in negative, so to substract, we add.
 			}

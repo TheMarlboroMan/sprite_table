@@ -128,8 +128,8 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		register_controller(_i, *_ptr);
 	};
 
-	int screen_w=config.int_from_path("video:window_w_logical"),
-		screen_h=config.int_from_path("video:window_h_logical");
+	unsigned int    screen_w=config.int_from_path("video:window_w_logical"),
+					screen_h=config.int_from_path("video:window_h_logical");
 
 	reg(
 		c_file_browser,
