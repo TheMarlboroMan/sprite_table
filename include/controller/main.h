@@ -3,7 +3,6 @@
 //local
 #include "states.h"
 #include "../sprite_table/session_data.h"
-#include "../dfwimpl/config.h"
 
 //framework
 #include <dfw/controller_interface.h>
@@ -23,7 +22,7 @@ class main:
 
 	public:
 
-								main(lm::logger&, dfwimpl::config&, ldtools::ttf_manager&, sprite_table::session_data&, int, int);
+								main(lm::logger&, ldtools::ttf_manager&, sprite_table::session_data&, int, int, int, int, int);
 	virtual void 				loop(dfw::input&, const dfw::loop_iteration_data&);
 	virtual void 				draw(ldv::screen&, int);
 	virtual void 				awake(dfw::input& /*input*/) {}

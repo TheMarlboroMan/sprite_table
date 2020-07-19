@@ -2,7 +2,6 @@
 
 f1: Shows this help
 arrows to scroll
-? indicates items not yet implemented
 
 == command line parameters ==
 
@@ -35,7 +34,7 @@ insert: create new frame
 left ctrl+insert: duplicate selected frame
 +/- : zoom in/out
 tab : enter / exit console tool
-? p : enter presentation mode
+p : enter presentation mode
 
 ===== console tool =====
 
@@ -71,7 +70,13 @@ exit
 == file browser ==
 
 esc: Go back
-cursors up-down: select file
+arrows up-down: select file
 next/prev page: select file
 enter: choose option
 keys: enter new filename after choosing "new", finish with enter.
+
+== presentation mode ==
+
+esc: go back
+space: toggle ids
+arrows up-down: move

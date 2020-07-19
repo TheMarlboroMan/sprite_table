@@ -15,11 +15,13 @@ using namespace controller;
 
 main::main(
 	lm::logger& _log,
-	dfwimpl::config& _config,
 	ldtools::ttf_manager& _ttfman,
 	sprite_table::session_data& _sesd,
 	int _cw,
-	int _ch
+	int _ch,
+	int _dsw,
+	int _dsh,
+	int _mf
 ):
 	log{_log},
 	ttfman{_ttfman},
@@ -33,9 +35,9 @@ main::main(
 		ldv::rgba8(255, 255, 255, 255),
 	},
 	mouse_pos{0,0},
-	default_w{_config.get_default_sprite_w()},
-	default_h{_config.get_default_sprite_h()},
-	movement_factor{_config.get_movement_factor()}
+	default_w{_dsw},
+	default_h{_dsh},
+	movement_factor{_mf}
 {
 
 	last_message_rep.set_max_width(_cw);
@@ -59,6 +61,12 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 	if(_input.is_input_down(input::help)) {
 
 		push_state(state_help);
+		return;
+	}
+
+	if(_input.is_input_down(input::mode_presentation)) {
+
+		set_state(state_presentation);
 		return;
 	}
 

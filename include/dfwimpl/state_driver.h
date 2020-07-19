@@ -12,6 +12,7 @@
 #include "../../include/controller/file_browser.h"
 #include "../../include/controller/main.h"
 #include "../../include/controller/help.h"
+#include "../../include/controller/presentation.h"
 //[new-controller-header-mark]
 
 //Specific app_config
@@ -55,6 +56,7 @@ class state_driver:
 	ptr_controller					c_file_browser;
 	ptr_controller					c_main;
 	ptr_controller					c_help;
+	ptr_controller					c_presentation;
 	//[new-controller-property-mark]
 };
 

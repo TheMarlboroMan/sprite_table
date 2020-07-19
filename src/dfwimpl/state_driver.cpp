@@ -93,9 +93,6 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:pageup")), input::pageup},
 		{input_description_from_config_token(config.token_from_path("input:pagedown")), input::pagedown},
 		{input_description_from_config_token(config.token_from_path("input:help")), input::help},
-		{input_description_from_config_token(config.token_from_path("input:mode_camera")), input::mode_camera},
-		{input_description_from_config_token(config.token_from_path("input:mode_move")), input::mode_move},
-		{input_description_from_config_token(config.token_from_path("input:mode_align")), input::mode_align},
 		{input_description_from_config_token(config.token_from_path("input:mode_presentation")), input::mode_presentation},
 		{input_description_from_config_token(config.token_from_path("input:background_selection")), input::background_selection},
 		{input_description_from_config_token(config.token_from_path("input:save")), input::save},
@@ -131,13 +128,16 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		register_controller(_i, *_ptr);
 	};
 
+	int screen_w=config.int_from_path("video:window_w_logical"),
+		screen_h=config.int_from_path("video:window_h_logical");
+
 	reg(
 		c_file_browser,
 		controller::t_states::state_file_browser,
 		new controller::file_browser(
 			log,
 			ttf_manager,
-			config.int_from_path("video:window_h_logical")
+			screen_h
 		)
 	);
 
@@ -146,11 +146,13 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		controller::t_states::state_main,
 		new controller::main(
 			log,
-			config,
 			ttf_manager,
 			session_data,
-			config.int_from_path("video:window_w_logical"),
-			config.int_from_path("video:window_h_logical")
+			screen_w,
+			screen_h,
+			config.get_default_sprite_w(),
+			config.get_default_sprite_h(),
+			config.get_movement_factor()
 		)
 	);
 
@@ -160,8 +162,19 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		new controller::help(
 			log,
 			ttf_manager,
-			config.int_from_path("video:window_w_logical"),
-			config.int_from_path("video:window_h_logical")
+			screen_w,
+			screen_h
+		)
+	);
+	reg(
+		c_presentation,
+		controller::t_states::state_presentation,
+		new controller::presentation(
+			log,
+			ttf_manager,
+			session_data,
+			screen_w,
+			screen_h
 		)
 	);
 	//[new-controller-mark]
