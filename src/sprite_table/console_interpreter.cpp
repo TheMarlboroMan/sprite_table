@@ -104,10 +104,11 @@ bool console_interpreter::create(const std::string& _parameters) {
 	extract(disp_y);
 
 	ldtools::sprite_frame fr{
-		x,
-		y,
-		static_cast<unsigned int>(w),
-		static_cast<unsigned int>(h),
+		{
+			{x, y},
+			static_cast<unsigned int>(w),
+			static_cast<unsigned int>(h),
+		},
 		disp_x,
 		disp_y
 	};
@@ -363,19 +364,19 @@ bool console_interpreter::set(const std::string& _parameters) {
 
 	if(prop=="x") {
 
-		sprite.x=new_value;
+		sprite.box.origin.x=new_value;
 	}
 	else if(prop=="y") {
 
-		sprite.y=new_value;
+		sprite.box.origin.y=new_value;
 	}
 	else if(prop=="w") {
 
-		sprite.w=new_value;
+		sprite.box.w=new_value;
 	}
 	else if(prop=="h") {
 
-		sprite.h=new_value;
+		sprite.box.h=new_value;
 	}
 	else if(prop=="dx") {
 

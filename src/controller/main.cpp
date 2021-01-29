@@ -295,7 +295,7 @@ void main::draw_sprites(ldv::screen& _screen) {
 
 		//Draw the block...
 		ldv::box_representation box{
-			{{sprite.x, sprite.y}, sprite.w, sprite.h},
+			sprite.box,
 			color,
 			ldv::polygon_representation::type::fill
 		};
@@ -308,10 +308,10 @@ void main::draw_sprites(ldv::screen& _screen) {
 		box.draw(_screen, camera);
 
 		//Add the axes... first the horizontal one...
-		int sprite_w=static_cast<int>(sprite.w),
-			sprite_h=static_cast<int>(sprite.h);
+		int sprite_w=static_cast<int>(sprite.box.w),
+			sprite_h=static_cast<int>(sprite.box.h);
 
-		ldt::point_2d<int>  pt{sprite.x+sprite.disp_x, sprite.y+sprite.disp_y},
+		ldt::point_2d<int>  pt{sprite.box.origin.x+sprite.disp_x, sprite.box.origin.y+sprite.disp_y},
 		                    hor_pt{pt.x+(sprite_w / 2), pt.y},
 		                    ver_pt{pt.x, pt.y+(sprite_h/2)};
 
@@ -368,8 +368,8 @@ void main::draw_hud(ldv::screen& _screen) {
 		const auto& sprite=session_data.get_sprites().at(selected_index);
 		txt+=std::to_string(selected_index)
 			+" at "
-			+std::to_string(sprite.x)+","+std::to_string(sprite.y)
-			+" ("+std::to_string(sprite.w)+" x "+std::to_string(sprite.h)
+			+std::to_string(sprite.box.origin.x)+","+std::to_string(sprite.box.origin.y)
+			+" ("+std::to_string(sprite.box.w)+" x "+std::to_string(sprite.box.h)
 			+") displaced by "+std::to_string(sprite.disp_x)+","+std::to_string(sprite.disp_y);
 	}
 
@@ -500,9 +500,9 @@ sprite_table::session_data::container::const_iterator main::find_by_position(ldt
 		[_pos](const std::pair<size_t, ldtools::sprite_frame> _pair) {
 
 			ldt::box<int, unsigned int> box{
-				{_pair.second.x, _pair.second.y},
-				_pair.second.w,
-				_pair.second.h
+				{_pair.second.box.origin.x, _pair.second.box.origin.y},
+				_pair.second.box.w,
+				_pair.second.box.h
 			};
 
 			return box.point_inside(_pos);
@@ -539,7 +539,7 @@ void main::create_sprite() {
 
 	auto& sprites=session_data.get_sprites();
 
-	ldtools::sprite_frame fr{0, 0, default_w, default_h, 0, 0};
+	ldtools::sprite_frame fr{ {{0, 0}, default_w, default_h}, 0, 0};
 	auto id=get_next_index();
 	sprites.insert({id, fr});
 
@@ -573,7 +573,7 @@ void main::save() {
 	for(const auto& pair : session_data.get_sprites()) {
 
 		const auto& sprite=pair.second;
-		file<<pair.first<<"\t"<<sprite.x<<"\t"<<sprite.y<<"\t"<<sprite.w<<"\t"<<sprite.h<<"\t"<<sprite.disp_x<<"\t"<<sprite.disp_y<<std::endl;
+		file<<pair.first<<"\t"<<sprite.box.origin.x<<"\t"<<sprite.box.origin.y<<"\t"<<sprite.box.w<<"\t"<<sprite.box.h<<"\t"<<sprite.disp_x<<"\t"<<sprite.disp_y<<std::endl;
 	}
 
 	set_message(std::string{"saved "}+std::to_string(session_data.get_sprites().size())+" entries into "+session_data.get_session_filename());;
@@ -636,8 +636,8 @@ void main::perform_movement(int _x, int _y, bool _resize, bool _align) {
 			}
 		};
 
-		perform(_x, sprite.w);
-		perform(_y, sprite.h);
+		perform(_x, sprite.box.w);
+		perform(_y, sprite.box.h);
 
 		return;
 	}
@@ -650,6 +650,6 @@ void main::perform_movement(int _x, int _y, bool _resize, bool _align) {
 	}
 
 	//Move.
-	sprite.x+=_x;
-	sprite.y+=_y;
+	sprite.box.origin.x+=_x;
+	sprite.box.origin.y+=_y;
 }

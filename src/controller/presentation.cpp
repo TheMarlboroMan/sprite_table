@@ -81,8 +81,8 @@ void presentation::draw_item(ldv::screen& _screen, const presentation_item& _ite
 
 	ldv::bitmap_representation bmp{
 		tex,
-		{_item.x, _item.y, _item.frame.w, _item.frame.h},
-		{_item.frame.x, _item.frame.y, _item.frame.w, _item.frame.h}
+		{_item.x, _item.y, _item.frame.box.w, _item.frame.box.h},
+		_item.frame.box
 	};
 
 	bmp.draw(_screen, camera);
@@ -120,10 +120,10 @@ void presentation::calculate() {
 	for(const auto& pair : session_data.get_sprites()) {
 
 		const auto& sprite{pair.second};
-		int bottom_y=y+sprite.h;
+		int bottom_y=y+sprite.box.h;
 		max_y=std::max(bottom_y, max_y);
 
-		if(x+sprite.w > screen_w) {
+		if(x+sprite.box.w > screen_w) {
 
 			x=0;
 			y=max_y+margin_y;
@@ -137,7 +137,7 @@ void presentation::calculate() {
 			y
 		});
 
-		x+=sprite.w+margin_x;
+		x+=sprite.box.w+margin_x;
 	}
 
 	camera.set_limits({
