@@ -36,6 +36,8 @@ class main:
 
 	private:
 
+	enum class duplicate_pos {same, up, down, left, right};
+
 	void                        workspace_input(dfw::input&);
 	void                        console_input(dfw::input&);
 	void                        create_sprite();
@@ -44,9 +46,10 @@ class main:
 	void                        select_next();
 	void                        select_prev();
 	void                        delete_current();
-	void                        duplicate_current();
+	void                        duplicate_current(duplicate_pos);
 	void                        clear_selection();
 	std::size_t                 get_next_index() const;
+	std::size_t                 get_next_index_from_selection() const;
 	void                        perform_movement(int, int, bool, bool);
 	void                        draw_background(ldv::screen&);
 	void                        draw_messages(ldv::screen&);
@@ -75,7 +78,8 @@ class main:
 	const unsigned int          default_w,
 	                            default_h,
 	                            movement_factor;
-	bool                        console_mode=false;
+	bool                        console_mode=false,
+	                            show_ids=true;
 	std::string                 console_txt; //we cannot drag the ldv::input to the view to draw this...
 };
 

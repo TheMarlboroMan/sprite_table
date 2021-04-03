@@ -107,6 +107,12 @@ void main::workspace_input(dfw::input& _input) {
 		return;
 	}
 
+
+	if(_input.is_input_down(input::toggle_ids)) {
+
+		show_ids=!show_ids;
+	}
+
 	if(_input.is_input_down(input::load)) {
 
 		session_data.set_file_browser_action(sprite_table::session_data::file_browser_action::load);
@@ -135,7 +141,29 @@ void main::workspace_input(dfw::input& _input) {
 
 		if(_input.is_input_pressed(input::left_control)) {
 
-			duplicate_current();
+			if(_input.is_input_pressed(input::up)) {
+
+				duplicate_current(duplicate_pos::up);
+			}
+			else if(_input.is_input_pressed(input::down)) {
+
+				duplicate_current(duplicate_pos::down);
+			}
+			else if(_input.is_input_pressed(input::left)) {
+
+				duplicate_current(duplicate_pos::left);
+			}
+			else if(_input.is_input_pressed(input::right)) {
+
+				//duplicate_current(duplicate_pos::right);
+				duplicate_current(duplicate_pos::right);
+			}
+			else {
+
+				//Pointless to duplicate in the same position, right???
+				//duplicate_current(duplicate_pos::same);
+				duplicate_current(duplicate_pos::right);
+			}
 		}
 		else {
 
@@ -176,42 +204,45 @@ void main::workspace_input(dfw::input& _input) {
 		delete_current();
 	}
 
-	typedef  bool (dfw::input::*input_fn)(int) const;
-	input_fn movement_fn=_input.is_input_pressed(input::left_control)
-		? &dfw::input::is_input_down
-		: &dfw::input::is_input_pressed;
+	if(!_input.is_input_pressed(input::left_control)) {
 
-	const int factor=_input.is_input_pressed(input::left_control) ? 1 : movement_factor;
-	int movement_x=0,
-		movement_y=0;
+		typedef  bool (dfw::input::*input_fn)(int) const;
+		input_fn movement_fn=_input.is_input_pressed(input::left_shift)
+			? &dfw::input::is_input_down
+			: &dfw::input::is_input_pressed;
 
-	if(std::invoke(movement_fn, _input, input::up)) {
+		const int factor=_input.is_input_pressed(input::left_shift) ? 1 : movement_factor;
+		int movement_x=0,
+			movement_y=0;
 
-		movement_y=-1*factor;
-	}
-	if(std::invoke(movement_fn, _input, input::down)) {
+		if(std::invoke(movement_fn, _input, input::up)) {
 
-		movement_y=1*factor;
-	}
+			movement_y=-1*factor;
+		}
+		if(std::invoke(movement_fn, _input, input::down)) {
 
-	if(std::invoke(movement_fn, _input, input::left)) {
+			movement_y=1*factor;
+		}
 
-		movement_x=-1*factor;
-	}
-	if(std::invoke(movement_fn, _input, input::right)) {
+		if(std::invoke(movement_fn, _input, input::left)) {
 
-		movement_x=1*factor;
-	}
+			movement_x=-1*factor;
+		}
+		if(std::invoke(movement_fn, _input, input::right)) {
 
-	if(movement_x || movement_y) {
+			movement_x=1*factor;
+		}
 
-		perform_movement(
-			movement_x,
-			movement_y,
-			_input.is_input_pressed(input::resize),
-			_input.is_input_pressed(input::align)
-		);
-		return;
+		if(movement_x || movement_y) {
+
+			perform_movement(
+				movement_x,
+				movement_y,
+				_input.is_input_pressed(input::resize),
+				_input.is_input_pressed(input::align)
+			);
+			return;
+		}
 	}
 }
 
@@ -331,20 +362,23 @@ void main::draw_sprites(ldv::screen& _screen) {
 		ver_axis.draw(_screen, camera);
 
 		//And the id...
-		ldv::ttf_representation id_rep{
-			ttfman.get("consola-mono", 14),
-			ldv::rgba8(255, 255, 255, 192),
-			std::to_string(pair.first)
-		};
+		if(show_ids) {
 
-		id_rep.align(
-			box,
-			ldv::representation_alignment{
-				ldv::representation_alignment::h::center,
-				ldv::representation_alignment::v::center
-			}
-		);
-		id_rep.draw(_screen, camera);
+			ldv::ttf_representation id_rep{
+				ttfman.get("consola-mono", 14),
+				ldv::rgba8(255, 255, 255, 192),
+				std::to_string(pair.first)
+			};
+
+			id_rep.align(
+				box,
+				ldv::representation_alignment{
+					ldv::representation_alignment::h::center,
+					ldv::representation_alignment::v::center
+				}
+			);
+			id_rep.draw(_screen, camera);
+		}
 	}
 }
 
@@ -486,6 +520,13 @@ void main::select_next() {
 	}
 
 	const auto current=sprites.find(selected_index);
+
+	const auto last=std::end(sprites);
+	if(std::prev(last)==current) {
+
+		return;
+	}
+
 	selected_index=std::next(current)->first; //the next of the last seems to be the last.
 	set_message(std::string{"selected (next) index "}+std::to_string(selected_index));
 }
@@ -540,7 +581,11 @@ void main::create_sprite() {
 	auto& sprites=session_data.get_sprites();
 
 	ldtools::sprite_frame fr{ {{0, 0}, default_w, default_h}, 0, 0};
-	auto id=get_next_index();
+
+	auto id=-1==selected_index
+		? get_next_index()
+		: get_next_index_from_selection();
+
 	sprites.insert({id, fr});
 
 	set_message(std::string{"created new index "}+std::to_string(id));
@@ -587,7 +632,22 @@ std::size_t main::get_next_index() const {
 		: 1;
 }
 
-void main::duplicate_current() {
+std::size_t main::get_next_index_from_selection() const {
+
+	auto next=selected_index+1;
+	auto& sprites=session_data.get_sprites();
+
+	if(!sprites.count(next)) {
+
+		return next;
+	}
+
+	return get_next_index();
+}
+
+void main::duplicate_current(
+	duplicate_pos _pos
+) {
 
 	if(-1==selected_index) {
 
@@ -598,7 +658,20 @@ void main::duplicate_current() {
 	try {
 		auto& sprites=session_data.get_sprites();
 		auto copy=sprites.at(selected_index);
-		auto next_index=get_next_index();
+
+		switch(_pos) {
+
+			case duplicate_pos::same: break;
+			case duplicate_pos::up:     copy.box.origin.y-=copy.box.h; break;
+			case duplicate_pos::down:   copy.box.origin.y+=copy.box.h; break;
+			case duplicate_pos::left:   copy.box.origin.x-=copy.box.w; break;
+			case duplicate_pos::right:  copy.box.origin.x+=copy.box.w; break;
+		}
+
+		auto next_index=-1==selected_index
+			? get_next_index()
+			: get_next_index_from_selection();
+
 		sprites.insert({next_index, copy});
 
 		set_message(std::string{"duplicated "}+std::to_string(selected_index)+" into "+std::to_string(next_index)+", current selection changed");

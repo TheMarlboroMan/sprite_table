@@ -90,6 +90,7 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:enter")), input::enter},
 		{input_description_from_config_token(config.token_from_path("input:space")), input::space},
 		{input_description_from_config_token(config.token_from_path("input:left_control")), input::left_control},
+		{input_description_from_config_token(config.token_from_path("input:left_shift")), input::left_shift},
 		{input_description_from_config_token(config.token_from_path("input:pageup")), input::pageup},
 		{input_description_from_config_token(config.token_from_path("input:pagedown")), input::pagedown},
 		{input_description_from_config_token(config.token_from_path("input:help")), input::help},
@@ -104,7 +105,8 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:insert")), input::insert},
 		{input_description_from_config_token(config.token_from_path("input:resize")), input::resize},
 		{input_description_from_config_token(config.token_from_path("input:align")), input::align},
-		{input_description_from_config_token(config.token_from_path("input:tab")), input::tab}
+		{input_description_from_config_token(config.token_from_path("input:tab")), input::tab},
+		{input_description_from_config_token(config.token_from_path("input:toggle_ids")), input::toggle_ids}
 	};
 
 	kernel.init_input_system(pairs);

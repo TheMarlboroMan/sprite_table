@@ -216,7 +216,7 @@ bool console_interpreter::move_range(const std::string& _parameters) {
 	            search=first_new_index,
 	            limit=search+length;
 
-	for(; search < limit; search++) {
+	for(; search <= limit; search++) {
 
 		if(sprites.count(search)) {
 
@@ -226,7 +226,7 @@ bool console_interpreter::move_range(const std::string& _parameters) {
 	}
 
 	//And then, just move...
-	for(; from < to; from++) {
+	for(; from <= to; from++) {
 
 		auto sprite=sprites.at(from);
 		sprites.erase(from);

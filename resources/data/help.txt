@@ -25,16 +25,18 @@ arrows:
 	with selection: move selection
 	hold r: resize selection
 	hold a: align
-	hold lctrl: fine control
+	hold lshift: fine control
 space: clear current selection
 left click: select frame
 next/prev page: select frame
 delete: remove selected frame
 insert: create new frame
 left ctrl+insert: duplicate selected frame
+left ctrl+insert+arrow: duplicate selected frame at position
 +/- : zoom in/out
 tab : enter / exit console tool
 p : enter presentation mode
+n : toggle show/hide ids
 
 ===== console tool =====
 

@@ -12,6 +12,7 @@ right,
 enter,
 space,
 left_control,
+left_shift,
 pageup,
 pagedown,
 help,
@@ -26,7 +27,8 @@ del,
 insert,
 resize,
 align,
-tab
+tab,
+toggle_ids
 };
 
 }
