@@ -2,6 +2,7 @@
 
 //local
 #include "states.h"
+#include "../../include/env/env.h"
 
 //framework
 #include <dfw/controller_interface.h>
@@ -23,7 +24,7 @@ class file_browser:
 
 	public:
 
-	                            file_browser(lm::logger&, ldtools::ttf_manager&, int);
+	                            file_browser(lm::logger&, ldtools::ttf_manager&, const env::env_interface&, int);
 	virtual void                loop(dfw::input&, const dfw::loop_iteration_data&);
 	virtual void                draw(ldv::screen&, int);
 	virtual void                awake(dfw::input& /*input*/) {}

@@ -11,11 +11,13 @@ using namespace dfwimpl;
 
 state_driver::state_driver(
 	dfw::kernel& kernel,
-	dfwimpl::config& c
+	dfwimpl::config& c,
+	const env::env_interface& _env
 ):
 	state_driver_interface(controller::t_states::state_main),
 	config(c),
-	log(kernel.get_log()) {
+	log(kernel.get_log()),
+	env{_env} {
 
 	lm::log(log, lm::lvl::info)<<"setting state check function..."<<std::endl;
 
@@ -61,8 +63,8 @@ void state_driver::prepare_video(dfw::kernel& kernel) {
 	auto& screen=kernel.get_screen();
 	screen.set_fullscreen(config.bool_from_path("video:fullscreen"));
 
-	ttf_manager.insert("consola-mono", 12, "data/ttf/consola-mono.ttf");
-	ttf_manager.insert("consola-mono", 14, "data/ttf/consola-mono.ttf");
+	ttf_manager.insert("consola-mono", 12, env.build_data_path("ttf/consola-mono.ttf"));
+	ttf_manager.insert("consola-mono", 14, env.build_data_path("ttf/consola-mono.ttf"));
 }
 
 void state_driver::prepare_audio(dfw::kernel& kernel) {
@@ -139,6 +141,7 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		new controller::file_browser(
 			log,
 			ttf_manager,
+			env,
 			screen_h
 		)
 	);
@@ -164,6 +167,7 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 		new controller::help(
 			log,
 			ttf_manager,
+			env,
 			screen_w,
 			screen_h
 		)

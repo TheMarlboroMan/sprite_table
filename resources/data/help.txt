@@ -6,6 +6,7 @@ arrows to scroll
 == command line parameters ==
 
 -h shows this help
+-v shows software version
 -f session_file: opens the session file
 -i image_file: uses background image
 

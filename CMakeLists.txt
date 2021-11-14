@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.5.1)
 project(sprite_table)
 
 option(BUILD_DEBUG "Build a debug release" OFF)
+option(BUILD_APPIMAGE "Build for appimage" OFF)
+option(BUILD_REGULAR "Regular build" OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -31,8 +33,25 @@ set_target_properties(dansdl2 PROPERTIES IMPORTED_LOCATION /usr/local/lib/libdan
 set_target_properties(ldtools PROPERTIES IMPORTED_LOCATION /usr/local/lib/libldtools.so)
 set_target_properties(dfw PROPERTIES IMPORTED_LOCATION /usr/local/lib/libdfw.so)
 
+if(${BUILD_APPIMAGE})
+
+	message("will build as AppImage")
+	add_compile_definitions(AS_APPIMAGE=1)
+endif()
+
+if(${BUILD_REGULAR})
+
+
+	message("will build as regular app")
+	add_compile_definitions(AS_REGULAR=1)
+endif()
+
+add_compile_definitions(MAJOR_VERSION=1)
+add_compile_definitions(MINOR_VERSION=1)
+add_compile_definitions(PATCH_VERSION=0)
+
 #Configure the executable, we want it into the "build directory" and we want all resources copied
-#to the build directory.
+#to the build directory. If we need to make an appdir, we will move our stuff around
 add_executable(sprite_table main.cpp ${SOURCE})
 set_target_properties(sprite_table PROPERTIES RUNTIME_OUTPUT_DIRECTORY build)
 add_custom_command(TARGET sprite_table POST_BUILD COMMAND cp -r ../resources/* ./build)

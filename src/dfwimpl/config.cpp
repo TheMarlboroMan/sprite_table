@@ -2,9 +2,12 @@
 
 using namespace dfwimpl;
 
-config::config(): dfw::base_config(get_file_path()) {
-}
-
+config::config(
+	const env::env_interface& _env
+):
+	dfw::base_config(get_file_path(_env)),
+	env{_env}
+{}
 
 dfw::input_description dfwimpl::input_description_from_config_token(const rapidjson::Value& tok)
 {
@@ -24,7 +27,7 @@ dfw::input_description dfwimpl::input_description_from_config_token(const rapidj
 }
 
 std::vector<int> dfwimpl::config_token_from_input_description(const dfw::input_description& _id) {
-	
+
 	return std::vector<int>{
 		input_description_int_from_type(_id.type),
 		_id.device,

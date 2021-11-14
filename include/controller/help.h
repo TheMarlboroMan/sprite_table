@@ -2,6 +2,7 @@
 
 //local
 #include "states.h"
+#include "../../include/env/env.h"
 
 //external
 #include <dfw/controller_interface.h>
@@ -20,7 +21,7 @@ class help:
 
 	public:
 
-								help(lm::logger&, ldtools::ttf_manager& _ttfman, unsigned int, unsigned int);
+								help(lm::logger&, ldtools::ttf_manager& _ttfman, const env::env_interface&, unsigned int, unsigned int);
 	virtual void 				loop(dfw::input&, const dfw::loop_iteration_data&);
 	virtual void 				draw(ldv::screen&, int);
 	virtual void 				awake(dfw::input& /*input*/) {}

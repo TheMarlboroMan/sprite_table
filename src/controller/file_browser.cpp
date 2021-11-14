@@ -1,5 +1,6 @@
 #include "../../include/controller/file_browser.h"
 
+
 #include <tools/json.h>
 #include <tools/file_utils.h>
 #include <tools/string_utils.h>
@@ -16,6 +17,7 @@ using namespace controller;
 file_browser::file_browser(
 	lm::logger& plog,
 	ldtools::ttf_manager& _ttfman,
+	const env::env_interface& _env,
 	int _window_height
 ):
 log(plog),
@@ -29,7 +31,7 @@ pager{0, 0} {
 
 	auto root=tools::parse_json_string(
 		tools::dump_file(
-			"data/layouts.json"
+			_env.build_data_path("layouts.json")
 		)
 	);
 

@@ -10,6 +10,7 @@ using namespace controller;
 help::help(
 	lm::logger& plog,
 	ldtools::ttf_manager& _ttfman,
+	const env::env_interface& _env,
 	unsigned int _w,
 	unsigned int _h
 ):
@@ -23,7 +24,7 @@ help::help(
 		ldv::rgba8(255, 255, 255, 255)
 	}
 {
-	help_txt_rep.set_text(tools::dump_file("data/help.txt"));
+	help_txt_rep.set_text(tools::dump_file(_env.build_data_path("help.txt")));
 	help_txt_rep.go_to({0,0});
 	camera.set_limits(help_txt_rep.get_view_position());
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../include/env/env.h"
+
 #include <dfw/base_config.h>
 #include <dfw/input.h>
 
@@ -14,7 +16,7 @@ class config:
 
 	public:
 
-	config();
+	config(const env::env_interface&);
 
 	//Application specifics.
 	int                 get_default_sprite_w() const {return token_from_path("app:default_sprite_w").GetInt();}
@@ -39,7 +41,13 @@ class config:
 
 	private:
 
-	std::string get_file_path() const {return "data/config.json";}
+	const env::env_interface& env;
+
+	std::string get_file_path() const {return env.build_data_path("config.json");}
+	//Hacky constructor version, because the base constructor will need the
+	//result of this call.
+	std::string get_file_path(const env::env_interface& _env) const {return _env.build_data_path("config.json");}
+
 };
 
 dfw::input_description          input_description_from_config_token(const rapidjson::Value&);

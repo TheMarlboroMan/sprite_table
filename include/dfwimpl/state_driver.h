@@ -8,6 +8,8 @@
 
 #include <memory>
 
+#include "../../include/env/env.h"
+
 //Controllers.
 #include "../../include/controller/file_browser.h"
 #include "../../include/controller/main.h"
@@ -24,7 +26,7 @@ class state_driver:
 	public dfw::state_driver_interface {
 
 	public:
-							state_driver(dfw::kernel& kernel, dfwimpl::config& config);
+							state_driver(dfw::kernel& kernel, dfwimpl::config& config, const env::env_interface&);
 
 	virtual void					common_pre_loop_input(dfw::input& input, float delta);
 	virtual void					common_pre_loop_step(float delta);
@@ -46,6 +48,7 @@ class state_driver:
 	//references
 	dfwimpl::config&            config;
 	lm::logger&                 log;
+	const env::env_interface&	env;
 
 	//Application wide properties...
 	ldtools::ttf_manager        ttf_manager;
