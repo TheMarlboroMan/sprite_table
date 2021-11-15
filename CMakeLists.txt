@@ -46,9 +46,15 @@ if(${BUILD_REGULAR})
 	add_compile_definitions(AS_REGULAR=1)
 endif()
 
-add_compile_definitions(MAJOR_VERSION=1)
-add_compile_definitions(MINOR_VERSION=1)
-add_compile_definitions(PATCH_VERSION=0)
+if(${CMAKE_VERSION} VERSION_LESS "3.22.0") 
+	add_definitions(-DMAJOR_VERSION=1)
+	add_definitions(-DMINOR_VERSION=1)
+	add_definitions(-DPATCH_VERSION=0)
+else()
+	add_compile_definitions(MAJOR_VERSION=1)
+	add_compile_definitions(MINOR_VERSION=1)
+	add_compile_definitions(PATCH_VERSION=0)
+endif()
 
 #Configure the executable, we want it into the "build directory" and we want all resources copied
 #to the build directory. If we need to make an appdir, we will move our stuff around
