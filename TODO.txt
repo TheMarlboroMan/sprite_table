@@ -1,2 +1,0 @@
-- implement strings as i8n
-- allow for more than one message

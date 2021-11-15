@@ -1,4 +1,18 @@
-# CHANGELOG
+# Changelog
 
-v1.0.0: Ported to DFW.
-v1.1.0: Added AppImage and run-from-anywhere support.
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog] and this project attempts to adhere to [Semantic Versioning].
+
+Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or Security headers.
+
+## Unreleased
+### Added
+- Added run-from-anywhere support.
+- Added AppImage build.
+- Background color selection through console.
+
+## [v1.0.0]: Somewhere around 2021
+### Added
+- Ported to DFW.
+

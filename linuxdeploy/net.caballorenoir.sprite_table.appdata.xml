@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>net.caballorenoir.sprite_table</id>
+  
+  <name>Sprite Table</name>
+  <summary>Small application to generate sprite sheets from images</summary>
+  
+  <metadata_license>MIT</metadata_license>
+  <project_license>Beerware</project_license>
+  
+  <description>
+    <p>
+	Application to generate sprite sheets files from images. Outputs to a simple, plain text format.
+    </p>
+    <p>
+	Supports numbered indexes, zoom, offsets, duplication, batch operations via a console. Only keyboard input.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">sprite_table.desktop</launchable>
+  <screenshots>
+	<!--
+    <screenshot type="default">
+      <image>http://caballorenoir.net/hosted/games/images/pigsncows-title.png</image>
+    </screenshot>
+    <screenshot>
+      <image>http://caballorenoir.net/hosted/games/images/pigsncows-gameplay1.png</image>
+    </screenshot>
+    <screenshot>
+      <image>http://caballorenoir.net/hosted/games/images/pigsncows-gameplay2.png</image>
+    </screenshot>
+  </screenshots>
+	-->
+</component>

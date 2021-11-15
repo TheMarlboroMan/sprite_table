@@ -1,0 +1,8 @@
+[Desktop Entry]
+Categories=Game;
+Icon=sprite_table
+Name=Sprite Table
+Type=Application
+Exec=sprite_table
+
+Name[en_US]=sprite_table.desktop
