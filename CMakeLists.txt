@@ -36,21 +36,36 @@ set_target_properties(dfw PROPERTIES IMPORTED_LOCATION /usr/local/lib/libdfw.so)
 if(${BUILD_APPIMAGE})
 
 	message("will build as AppImage")
-	add_compile_definitions(AS_APPIMAGE=1)
+
+	if(${CMAKE_VERSION} VERSION_LESS "3.22.0") 
+
+		add_definitions(-DAS_APPIMAGE=1)
+	else()
+
+		add_compile_definitions(AS_APPIMAGE=1)
+	endif()
 endif()
 
 if(${BUILD_REGULAR})
 
-
 	message("will build as regular app")
-	add_compile_definitions(AS_REGULAR=1)
+
+	if(${CMAKE_VERSION} VERSION_LESS "3.22.0") 
+
+		add_definitions(-DAS_REGULAR=1)
+	else()
+
+		add_compile_definitions(AS_REGULAR=1)
+	endif()
 endif()
 
 if(${CMAKE_VERSION} VERSION_LESS "3.22.0") 
+
 	add_definitions(-DMAJOR_VERSION=1)
 	add_definitions(-DMINOR_VERSION=1)
 	add_definitions(-DPATCH_VERSION=0)
 else()
+
 	add_compile_definitions(MAJOR_VERSION=1)
 	add_compile_definitions(MINOR_VERSION=1)
 	add_compile_definitions(PATCH_VERSION=0)
