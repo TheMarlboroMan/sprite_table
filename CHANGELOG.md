@@ -12,6 +12,10 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 - Added AppImage build.
 - Background color selection through console.
 
+## [v1.0.1]: 27 jul 2022
+### Added
+- Log module compatibility.
+
 ## [v1.0.0]: Somewhere around 2021
 ### Added
 - Ported to DFW.

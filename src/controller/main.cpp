@@ -7,7 +7,7 @@
 #include <ldv/bitmap_representation.h>
 #include <ldv/box_representation.h>
 #include <ldv/line_representation.h>
-#include <lm/sentry.h>
+#include <lm/log.h>
 
 #include <functional>
 
@@ -605,12 +605,12 @@ void main::save() {
 		return;
 	}
 
-	lm::log(log, lm::lvl::info)<<"will attempt to save into '"<<session_data.get_session_filename()<<"'"<<std::endl;
+	lm::log(log).info()<<"will attempt to save into '"<<session_data.get_session_filename()<<"'"<<std::endl;
 
 	std::ofstream file{session_data.get_session_filename()};
 	if(!file) {
 
-		lm::log(log, lm::lvl::warning)<<"attempt failed"<<std::endl;
+		lm::log(log).warning()<<"attempt failed"<<std::endl;
 		set_message("error, could not open output file");
 		return;
 	}
@@ -680,7 +680,7 @@ void main::duplicate_current(
 	}
 	catch(std::exception& e) {
 
-		lm::log(log, lm::lvl::error)<<"error duplicating current: "<<e.what()<<std::endl;
+		lm::log(log).error()<<"error duplicating current: "<<e.what()<<std::endl;
 	}
 
 }
