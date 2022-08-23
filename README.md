@@ -16,7 +16,18 @@ Download, build and install the following repos from github.com/themarlboroman
 - lm
 - dfw
 
-The do the usual cmake dance.
+You will need to define one of the possible build environments, either the AppImage build (if you have the necessary deps to build one) or the standalone build:
+
+mkdir -p build
+cd build
+cmake .. -D BUILD_REGULAR=YES/NO
+cmake .. -D BUILD_APPIMAGE=YES/NO
+
+You can also opt to build a debug or production environment, which can greatly break the application depending on the libdansdl2 library that has been built!
+
+cmake .. -D BUILD_DEBUG=YES/NO
+
+Then just do the usual make dance.
 
 ## Help
 
