@@ -1,6 +1,6 @@
-#include "include/dfwimpl/config.h"
-#include "include/dfwimpl/state_driver.h"
-#include "include/env/env.h"
+#include "../include/dfwimpl/config.h"
+#include "../include/dfwimpl/state_driver.h"
+#include "../include/env/env.h"
 
 #include <lm/file_logger.h>
 #include <lm/log.h>
@@ -12,7 +12,9 @@
 
 #include <ldt/sdl_tools.h>
 #include <ldt/log.h>
-
+#include <ldt/lib.h>
+#include <ldtools/lib.h>
+#include <dfw/lib.h>
 #include <memory>
 #include <stdexcept>
 
@@ -31,7 +33,7 @@ int main(int argc, char ** argv)
 	if(carg.exists("-h")) {
 
 		std::cout<<"sprite_table "
-			<<MAJOR_VERSION<<"."<<MINOR_VERSION<<"."<<PATCH_VERSION
+			<<MAJOR_VERSION<<"."<<MINOR_VERSION<<"."<<PATCH_VERSION<<"-"<<BUILD_VERSION
 			<<" built on "<<__DATE__<<" "<<__TIME__
 			<<std::endl<<std::endl
 			<<tools::dump_file(env->build_data_path("help.txt"))<<std::endl;
@@ -41,8 +43,11 @@ int main(int argc, char ** argv)
 	if(carg.exists("-v")) {
 
 		std::cout<<"sprite_table "
-			<<MAJOR_VERSION<<"."<<MINOR_VERSION<<"."<<PATCH_VERSION
-			<<" built on "<<__DATE__<<" "<<__TIME__<<std::endl;
+			<<MAJOR_VERSION<<"."<<MINOR_VERSION<<"."<<PATCH_VERSION<<"-"<<BUILD_VERSION
+			<<" built on "<<__DATE__<<" "<<__TIME__<<std::endl
+			<<"libdsdl2 version: "<<ldt::get_lib_version()<<std::endl
+			<<"libdtools version: "<<ldtools::get_lib_version()<<std::endl
+			<<"libdfw version: "<<dfw::get_lib_version()<<std::endl;
 		return 0;
 	}
 
