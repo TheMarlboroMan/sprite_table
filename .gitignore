@@ -3,3 +3,6 @@ objects/*
 data/logs/*
 build
 .vscode
+AppDir
+*.AppImage
+*.un~

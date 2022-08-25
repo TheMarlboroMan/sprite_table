@@ -135,5 +135,15 @@ std::unique_ptr<env::env_interface> make_env() {
 		tools::filesystem::create_directory(result->build_user_path(""));
 	}
 
+	//Check if we need to copy the config file...
+	if(!tools::filesystem::exists(result->build_user_path("config.json"))) {
+
+		std::cout<<"will create the .sprite_table/config.json file"<<std::endl;
+		tools::filesystem::copy(
+			result->build_data_path("config.json"),
+			result->build_user_path("config.json")
+		);
+	}
+
 	return result;
 }

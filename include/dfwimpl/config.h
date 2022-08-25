@@ -43,10 +43,10 @@ class config:
 
 	const env::env_interface& env;
 
-	std::string get_file_path() const {return env.build_data_path("config.json");}
+	std::string get_file_path() const {return env.build_user_path("config.json");}
 	//Hacky constructor version, because the base constructor will need the
 	//result of this call.
-	std::string get_file_path(const env::env_interface& _env) const {return _env.build_data_path("config.json");}
+	std::string get_file_path(const env::env_interface& _env) const {return _env.build_user_path("config.json");}
 
 };
 

@@ -41,8 +41,7 @@ Press f1 in the application main screen or run with -h.
 
 ## Configuration
 
-Upon building, the configuration file will be in data/config.json. Values that
-can be useful to change are:
+Upon first running the configuration in data/config.json will be copied straight to $HOME/.config.json. Values that can be useful to change are:
 
 - default_sprite_w: the default width of a new sprite.
 - default_sprite_h: the default height of a new sprite.

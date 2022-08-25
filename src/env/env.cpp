@@ -6,7 +6,7 @@ dir_env::dir_env(
 	const std::string& _path,
 	const std::string& _userpath
 )
-	:exec_dir{_path}, user_dir{_userpath+"/.sprite_table"}
+	:exec_dir{_path+"/../share/"}, user_dir{_userpath+"/.sprite_table"}
 {}
 
 const std::string dir_env::build_data_path(const std::string& _file) const {
