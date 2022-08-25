@@ -16,12 +16,6 @@ class env_interface {
 	virtual const std::string build_data_path(const std::string& _file) const=0;
 
 /**
-* Must return a string representing a filesystem path for log stuff.
-*/
-
-	virtual const std::string build_log_path(const std::string& _file) const=0;
-
-/**
 * Must return a string representing a filesystem path for user data.
 */
 
@@ -39,14 +33,14 @@ class dir_env:
 
 	public:
 
-				dir_env(const std::string&);
+				dir_env(const std::string&, const std::string&);
 	virtual const std::string build_data_path(const std::string& _file) const;
-	virtual const std::string build_log_path(const std::string& _file) const;
 	virtual const std::string build_user_path(const std::string& _file) const;
 
 	private:
 
-	const std::string exec_dir;
+	const std::string   exec_dir,
+	                    user_dir;
 };
 
 /**
@@ -58,14 +52,14 @@ class appimage_env:
 
 	public:
 
-				appimage_env(const std::string&);
+				appimage_env(const std::string&, const std::string&);
 	virtual const std::string build_data_path(const std::string& _file) const;
-	virtual const std::string build_log_path(const std::string& _file) const;
 	virtual const std::string build_user_path(const std::string& _file) const;
 
 	private:
 
-	const std::string exec_dir;
+	const std::string   exec_dir,
+	                    user_dir;
 };
 
 } //end of namespace

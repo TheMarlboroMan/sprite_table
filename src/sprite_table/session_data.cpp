@@ -2,14 +2,14 @@
 
 #include <ldv/image.h>
 
-#include <filesystem>
+#include <tools/file_utils.h>
 #include <stdexcept>
 
 using namespace sprite_table;
 
 void session_data::set_texture_by_path(const std::string& _path) {
 
-	if(!std::filesystem::exists(_path)) {
+	if(!tools::filesystem::exists(_path)) {
 
 		throw std::runtime_error("file "+_path+" does not exist");
 	}
@@ -26,14 +26,14 @@ void session_data::set_texture_by_path(const std::string& _path) {
 
 void session_data::load_sprites_by_path(const std::string& _path) {
 
-	if(!std::filesystem::exists(_path)) {
+	if(!tools::filesystem::exists(_path)) {
 
 		throw std::runtime_error("file "+_path+" does not exist");
 	}
 
 	try {
 		ldtools::sprite_table st{};
-		st.load(_path); 
+		st.load(_path);
 		for(const auto& pair : st) {
 			table[pair.first]=pair.second;
 		}

@@ -19,12 +19,12 @@
 #include <stdexcept>
 
 #include <unistd.h>
+#include <cstdlib>
 
 std::unique_ptr<env::env_interface> make_env();
 
 int main(int argc, char ** argv)
 {
-	//TODO: prepare the log dirs, if need be!
 	auto env=make_env();
 
 	//Argument controller.
@@ -53,11 +53,11 @@ int main(int argc, char ** argv)
 
 	//Init libdansdl2 log.
 	ldt::log_lsdl::set_type(ldt::log_lsdl::types::file);
-	const std::string lsdl_log_path{env->build_log_path("libdansdl2.log")};
+	const std::string lsdl_log_path{env->build_user_path("libdansdl2.log")};
 	ldt::log_lsdl::set_filename(lsdl_log_path.c_str());
 
 	//Init application log.
-	const std::string app_log_path{env->build_log_path("app.log")};
+	const std::string app_log_path{env->build_user_path("app.log")};
 	lm::file_logger log_app(app_log_path.c_str());
 	lm::log(log_app).info()<<"starting main process..."<<std::endl;
 
@@ -115,16 +115,25 @@ std::unique_ptr<env::env_interface> make_env() {
 	executable_dir=executable_path.substr(0, last_slash)+"/";
 
 	#ifdef AS_APPIMAGE
-		return std::unique_ptr<env::env_interface>(
-			new env::appimage_env(executable_dir)
+		auto result=std::unique_ptr<env::env_interface>(
+			new env::appimage_env(executable_dir, getenv("HOME"))
 		);
 	#else
 		#ifdef AS_REGULAR
-			return std::unique_ptr<env::env_interface>(
-				new env::dir_env(executable_dir)
+			auto result=std::unique_ptr<env::env_interface>(
+				new env::dir_env(executable_dir, getenv("HOME"))
 		);
 		#else
 			#error "AS_APPIMAGE or AS_STANDALONE must be defined"
 		#endif
 	#endif
+
+	//create user homedir...
+	if(!tools::filesystem::exists(result->build_user_path(""))) {
+
+		std::cout<<"will create the .sprite_table directory under user home"<<std::endl;
+		tools::filesystem::create_directory(result->build_user_path(""));
+	}
+
+	return result;
 }

@@ -12,9 +12,9 @@
 #include <ldtools/view_composer.h>
 #include <ldtools/ttf_manager.h>
 #include <tools/pager.h>
+#include <tools/file_utils.h>
 
 //std
-#include <filesystem>
 #include <cmath>
 
 namespace controller {
@@ -93,7 +93,7 @@ class file_browser:
 
 	//properties
 	working_modes				mode;
-	std::filesystem::path       current_directory;
+	tools::filesystem::path     current_directory;
 	std::string                 title;
 	std::vector<entry>          contents;
 	int                         first_selection_y{0},

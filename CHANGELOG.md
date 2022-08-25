@@ -10,8 +10,13 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 ### To be added...
 - Added run-from-anywhere support.
 - Background color selection through console.
-### Added:
+
+## [v1.0.2]: 27 jul 2022
+### Added
 - AppImage build
+
+### Changed
+- Logs will be stored in the $HOME/.sprite_table directory
 
 ## [v1.0.1]: 27 jul 2022
 ### Added

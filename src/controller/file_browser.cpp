@@ -12,6 +12,10 @@
 
 #include <algorithm>
 
+#ifndef WITH_LEXICAL_NORMAL
+#include <cstdlib>
+#endif
+
 using namespace controller;
 
 file_browser::file_browser(
@@ -23,7 +27,7 @@ file_browser::file_browser(
 log(plog),
 ttf_manager{_ttfman},
 mode{working_modes::navigate},
-current_directory{std::filesystem::current_path()},
+current_directory{tools::filesystem::current_path()},
 pager{0, 0} {
 
 	//Mount layout...
@@ -99,19 +103,19 @@ void file_browser::extract_entries() {
 		});
 	}
 
-	for(const auto& dir_entry : std::filesystem::directory_iterator(current_directory)) {
+	for(const auto& dir_entry : tools::filesystem::directory_iterator(current_directory)) {
 
 		const auto& path=dir_entry.path();
 		std::string filename=path.filename();
 
-		if(std::filesystem::is_directory(path)) {
+		if(tools::filesystem::is_directory(path)) {
 
 			contents.push_back({
 				filename,
 				entry::entry_type::dir
 			});
 		}
-		else if(std::filesystem::is_regular_file(path)){
+		else if(tools::filesystem::is_regular_file(path)){
 
 			contents.push_back({
 				filename,
@@ -234,7 +238,20 @@ void file_browser::input_navigation(dfw::input& _input) {
 		if(item.is_dir()) {
 
 			current_directory/={item.path_name};
+#ifdef WITH_LEXICAL_NORMAL
 			current_directory=current_directory.lexically_normal();
+#else
+			//with gcc7.5 we don't have lexically_normal, so we hack something
+			//together and look the other way...
+			char buffer[PATH_MAX];
+			char * rpath=realpath(current_directory.c_str(), buffer);
+			if(nullptr==rpath) {
+
+				throw std::runtime_error("unable to normalize path");
+			}
+
+			current_directory=rpath;
+#endif
 
 			extract_entries();
 			refresh_list_view();
