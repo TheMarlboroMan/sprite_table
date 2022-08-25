@@ -9,7 +9,7 @@ fi;
 #export SIGN=1
 #export SIGN_KEY=0xLAST8CHARSOFGPGKEYID
 
-./build.sh appimage
+rm -rf AppDir
 $2 --appdir AppDir
 cp -r resources/data AppDir/usr/share
 mkdir -p AppDir/usr/share/metainfo

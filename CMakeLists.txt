@@ -48,6 +48,8 @@ else()
 	add_compile_definitions(BUILD_VERSION=${BUILD_VERSION})
 endif()
 
+message("will build ${MAJOR_VERSION}.${MINOR_VERSION}.${PATCH_VERSION}-${BUILD_VERSION}")
+
 #compiler flags
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
