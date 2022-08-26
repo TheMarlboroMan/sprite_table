@@ -44,6 +44,7 @@ class state_driver:
 	void						register_controllers(dfw::kernel&);
 	void 						virtualize_input(dfw::input& input);
 	void						process_parameters(const tools::arg_manager&);
+	void						ready_config();
 
 	//references
 	dfwimpl::config&            config;

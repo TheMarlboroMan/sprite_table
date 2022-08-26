@@ -29,7 +29,8 @@ state_driver::state_driver(
 		return v > controller::state_min && v < controller::state_max;
 	});
 
-	//TODO: check config, add values that may be missing!!!
+	lm::log(log).info()<<"ready configuration file..."<<std::endl;
+	ready_config();
 
 	lm::log(log).info()<<"init state driver building: preparing video..."<<std::endl;
 	prepare_video(kernel);
@@ -322,4 +323,12 @@ void state_driver::process_parameters(const tools::arg_manager& _argman) {
 			main.set_message("failed to load command line background");
 		}
 	}
+}
+
+void state_driver::ready_config() {
+
+	//TODO: check if the configuration file has r g and b
+	//bg_color_X
+	//if not present, leave log line and add it with a default value.
+	//if any changes were made, save the configuration file and log it.
 }
