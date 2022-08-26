@@ -6,7 +6,7 @@
 #include <tools/string_utils.h>
 
 #include <algorithm>
-#include <stringstream>
+#include <sstream>
 #include <string>
 
 using namespace dfwimpl;

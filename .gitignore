@@ -6,3 +6,4 @@ build
 AppDir
 *.AppImage
 *.un~
+*~
