@@ -15,7 +15,8 @@ presentation::presentation(
 	ldtools::ttf_manager& _ttfman,
 	sprite_table::session_data& _session_data,
 	unsigned int _screen_w,
-	unsigned int _screen_h
+	unsigned int _screen_h,
+	rgba_color& _background_color
 ):
 	log(plog),
 	ttfman{_ttfman},
@@ -25,7 +26,8 @@ presentation::presentation(
 		{0,0}
 	},
 	screen_w{_screen_w},
-	screen_h{_screen_h}
+	screen_h{_screen_h},
+	background_color{_background_color}
 {
 
 }
@@ -67,6 +69,7 @@ void presentation::awake(dfw::input& /*input*/) {
 
 void presentation::draw(ldv::screen& _screen, int /*fps*/) {
 
+	//TODO: Here...
 	_screen.clear(ldv::rgba8(0, 0, 0, 255));
 
 	for(const auto& item : items) {

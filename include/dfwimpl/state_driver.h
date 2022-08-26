@@ -53,6 +53,7 @@ class state_driver:
 	//Application wide properties...
 	ldtools::ttf_manager        ttf_manager;
 	sprite_table::session_data  session_data;
+	ldv::rgba_color             background_color;
 
 	typedef std::unique_ptr<dfw::controller_interface>	ptr_controller;
 	//TODO: WTF, NO!!!!!! This should NOT be pointers to the base class!!!

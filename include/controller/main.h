@@ -22,7 +22,7 @@ class main:
 
 	public:
 
-								main(lm::logger&, ldtools::ttf_manager&, sprite_table::session_data&, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int);
+								main(lm::logger&, ldtools::ttf_manager&, sprite_table::session_data&, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, ldv::rgba_color&);
 	virtual void 				loop(dfw::input&, const dfw::loop_iteration_data&);
 	virtual void 				draw(ldv::screen&, int);
 	virtual void 				awake(dfw::input& /*input*/) {}
@@ -69,6 +69,7 @@ class main:
 	lm::logger&                 log;
 	ldtools::ttf_manager&       ttfman;
 	sprite_table::session_data& session_data;
+	ldv::rgba_color&            background_color;
 
 	//properties
 	ldv::camera                 camera;

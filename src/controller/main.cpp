@@ -21,7 +21,8 @@ main::main(
 	unsigned int _ch,
 	unsigned int _dsw,
 	unsigned int _dsh,
-	unsigned int _mf
+	unsigned int _mf,
+	rgba_color& _background_color
 ):
 	log{_log},
 	ttfman{_ttfman},
@@ -37,7 +38,8 @@ main::main(
 	mouse_pos{0,0},
 	default_w{_dsw},
 	default_h{_dsh},
-	movement_factor{_mf}
+	movement_factor{_mf},
+	background_color{_background_color}
 {
 
 	last_message_rep.set_max_width(_cw);
@@ -281,6 +283,7 @@ void main::console_input(dfw::input& _input) {
 
 void main::draw(ldv::screen& _screen, int /*fps*/) {
 
+	//TODO: Here...
 	_screen.clear(ldv::rgba8(0, 0, 0, 255));
 
 	draw_background(_screen);

@@ -22,9 +22,11 @@ class config:
 	int                 get_default_sprite_w() const {return token_from_path("app:default_sprite_w").GetInt();}
 	int                 get_default_sprite_h() const {return token_from_path("app:default_sprite_h").GetInt();}
 	int                 get_movement_factor() const {return token_from_path("app:movement_factor").GetInt();}
+	int                 get_bg_color_r() const {return token_from_path("app:bg_color_r").GetInt();}
+	int                 get_bg_color_g() const {return token_from_path("app:bg_color_g").GetInt();}
+	int                 get_bg_color_b() const {return token_from_path("app:bg_color_b").GetInt();}
 
 	//Fullfillment of the kernel interface.
-
 	virtual std::string generate_file_version() const {return "1";}
 	virtual std::string get_key_file_version() const {return "meta:v";}
 	virtual std::string get_key_screen_double_buffer() const {return "video:double_buffer";}

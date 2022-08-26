@@ -19,13 +19,17 @@ state_driver::state_driver(
 	state_driver_interface(controller::t_states::state_main),
 	config(c),
 	log(kernel.get_log()),
-	env{_env} {
+	env{_env},
+	background_color{0,0,0,0}
+{
 
 	lm::log(log).info()<<"setting state check function..."<<std::endl;
 
 	states.set_function([](int v){
 		return v > controller::state_min && v < controller::state_max;
 	});
+
+	//TODO: check config, add values that may be missing!!!
 
 	lm::log(log).info()<<"init state driver building: preparing video..."<<std::endl;
 	prepare_video(kernel);
@@ -162,7 +166,8 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 			screen_h,
 			config.get_default_sprite_w(),
 			config.get_default_sprite_h(),
-			config.get_movement_factor()
+			config.get_movement_factor(),
+			background_color
 		)
 	);
 
@@ -185,7 +190,8 @@ void state_driver::register_controllers(dfw::kernel& /*kernel*/) {
 			ttf_manager,
 			session_data,
 			screen_w,
-			screen_h
+			screen_h,
+			background_color
 		)
 	);
 	//[new-controller-mark]
