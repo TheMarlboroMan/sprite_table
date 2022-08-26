@@ -22,7 +22,7 @@ main::main(
 	unsigned int _dsw,
 	unsigned int _dsh,
 	unsigned int _mf,
-	rgba_color& _background_color
+	ldv::rgba_color& _background_color
 ):
 	log{_log},
 	ttfman{_ttfman},

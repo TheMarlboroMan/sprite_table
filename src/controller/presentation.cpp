@@ -16,7 +16,7 @@ presentation::presentation(
 	sprite_table::session_data& _session_data,
 	unsigned int _screen_w,
 	unsigned int _screen_h,
-	rgba_color& _background_color
+	ldv::rgba_color& _background_color
 ):
 	log(plog),
 	ttfman{_ttfman},
