@@ -8,9 +8,11 @@ using namespace sprite_table;
 console_interpreter::console_interpreter(
 	container& _container,
 	unsigned int _default_w,
-	unsigned int _default_h
+	unsigned int _default_h,
+	ldv::rgba_color& _background_color
 )
 	:sprites{_container},
+	background_color{_background_color},
 	default_w{_default_w},
 	default_h{_default_h}
 {
@@ -57,6 +59,11 @@ bool console_interpreter::perform(const std::string& _command) {
 	if(command=="set") {
 
 		return set(ss.str());
+	}
+
+	if(command=="bgcolor") {
+
+		return bg_color(ss.str());
 	}
 
 	message=std::string{"unknown command '"}+command+"', try f1 for help";
@@ -391,3 +398,34 @@ bool console_interpreter::set(const std::string& _parameters) {
 	return true;
 }
 
+
+bool console_interpreter::bg_color(const std::string& _parameters) {
+
+	std::stringstream ss(_parameters);
+	std::string dummy;
+	ss>>dummy; //TODO: This is horrible.
+
+	int colors[3]={0,0,0};
+	
+	for(int i=0; i<3; i++) {
+
+		ss>>colors[i];
+		if(ss.fail()) {
+
+			message="syntax error, use bgcolor r g b where r, g and b are between 0 and 255 (read fail)";
+			return false;
+		}
+
+		if(colors[i] < 0 || colors[i] > 255) {
+
+			message="syntax error, use bgcolor r g b where r, g and b are between 0 and 255 (invalid values)";
+			return false;
+		}
+	}
+
+	background_color.r=colors[0];
+	background_color.g=colors[1];
+	background_color.b=colors[2];
+	message="background color updated";
+	return true;
+}

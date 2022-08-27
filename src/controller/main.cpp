@@ -27,6 +27,7 @@ main::main(
 	log{_log},
 	ttfman{_ttfman},
 	session_data(_sesd),
+	background_color{_background_color},
 	camera{
 		{0,0, _cw, _ch}, //pointing at world 0,0.
 		{0,0}           //at 0.0 in the screen...
@@ -38,8 +39,7 @@ main::main(
 	mouse_pos{0,0},
 	default_w{_dsw},
 	default_h{_dsh},
-	movement_factor{_mf},
-	background_color{_background_color}
+	movement_factor{_mf}
 {
 
 	last_message_rep.set_max_width(_cw);
@@ -273,7 +273,7 @@ void main::console_input(dfw::input& _input) {
 			return;
 		}
 
-		sprite_table::console_interpreter ci{session_data.get_sprites(), default_w, default_h};
+		sprite_table::console_interpreter ci{session_data.get_sprites(), default_w, default_h, background_color};
 		ci.perform(console_txt);
 
 		console_txt.clear();
@@ -283,8 +283,7 @@ void main::console_input(dfw::input& _input) {
 
 void main::draw(ldv::screen& _screen, int /*fps*/) {
 
-	//TODO: Here...
-	_screen.clear(ldv::rgba8(0, 0, 0, 255));
+	_screen.clear(background_color);
 
 	draw_background(_screen);
 	draw_sprites(_screen);

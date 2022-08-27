@@ -67,6 +67,9 @@ copy number:origin number:destination
 set number:index string:property number:value
 	sets a value for the given index. Property can be x, y, w, h, dx or dy.
 
+bgcolor number:r number:g number:b
+	sets the background color for the current session, will be reset upon restarting.
+
 exit
 	back to the regular editing mode.
 

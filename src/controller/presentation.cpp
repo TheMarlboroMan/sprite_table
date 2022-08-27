@@ -69,8 +69,7 @@ void presentation::awake(dfw::input& /*input*/) {
 
 void presentation::draw(ldv::screen& _screen, int /*fps*/) {
 
-	//TODO: Here...
-	_screen.clear(ldv::rgba8(0, 0, 0, 255));
+	_screen.clear(background_color);
 
 	for(const auto& item : items) {
 

@@ -8,11 +8,11 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 
 ## Unreleased
 ### To be added...
-- Background color selection through console.
 
 ## [v1.1.0]: 2022-08-26
 ### Added
 - Background color stored in config file.
+- Background color selection through console.
 - Run from anywhere support.
 
 ## [v1.0.2]: 27 jul 2022

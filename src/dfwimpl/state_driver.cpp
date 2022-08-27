@@ -327,8 +327,37 @@ void state_driver::process_parameters(const tools::arg_manager& _argman) {
 
 void state_driver::ready_config() {
 
-	//TODO: check if the configuration file has r g and b
-	//bg_color_X
+	lm::log(log).info()<<"checking configuration file"<<std::endl;
+	//check if the configuration contains the background color keys, add
+	//default values if not.
+	std::vector<std::string> keys={"bg_color_r", "bg_color_g", "bg_color_b"};
+	bool added=false;
+	for(const auto& key : keys) {
+
+		std::string fullkey="app:"+key;
+		lm::log(log).info()<<"checking configuration key "<<fullkey<<std::endl;
+		
+		if(!config.has_path(fullkey)) {
+	
+			config.add(fullkey, 0);
+			lm::log(log).info()<<"adding missing configuration key "<<fullkey<<std::endl;
+			added=true;
+		}
+	}
+
 	//if not present, leave log line and add it with a default value.
-	//if any changes were made, save the configuration file and log it.
+	if(added) {
+		
+		lm::log(log).info()<<"saving configuration file"<<std::endl;
+		config.save();
+		config.reload();
+	}
+
+	background_color=ldv::rgba8(
+		config.int_from_path("app:bg_color_r"),
+		config.int_from_path("app:bg_color_g"),
+		config.int_from_path("app:bg_color_b"),
+		0
+	);
 }
+

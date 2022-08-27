@@ -6,6 +6,7 @@
 
 #include <string>
 #include <map>
+#include <ldv/color.h>
 
 namespace sprite_table {
 
@@ -15,7 +16,7 @@ class console_interpreter {
 
 	using container=std::map<std::size_t, ldtools::sprite_frame>;
 
-	                        console_interpreter(container&, unsigned int, unsigned int);
+	                        console_interpreter(container&, unsigned int, unsigned int, ldv::rgba_color&);
 	bool                    perform(const std::string&);
 	const std::string&      get_message() const {return message;}
 
@@ -28,8 +29,10 @@ class console_interpreter {
 	bool                    swap(const std::string&);
 	bool                    copy(const std::string&);
 	bool                    set(const std::string&);
+	bool					bg_color(const std::string&);
 
 	container&              sprites;
+	ldv::rgba_color&		background_color;
 	std::string             message;
 	const unsigned int      default_w,
 	                        default_h;
