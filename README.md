@@ -20,8 +20,9 @@ You will need to define one of the possible build environments, either the AppIm
 
 mkdir -p build
 cd build
-cmake .. -D BUILD_REGULAR=YES/NO
-cmake .. -D BUILD_APPIMAGE=YES/NO
+cmake .. -D BUILD_REGULAR=YES/NO or cmake .. -D BUILD_APPIMAGE=YES/NO
+
+Be wary that both can't be built at the same time. Yes, I know it is confusing. Yes, I know I can work around it.
 
 You can also opt to build a debug or production environment, which can greatly break the application depending on the libdansdl2 library that has been built!
 
@@ -31,7 +32,7 @@ Then just do the usual make dance.
 
 ## Help
 
-Press f1 in the application main screen or run with -h.
+Press f1 in the application main screen or run with -h. Or even read the help.txt file.
 
 ## Command line parameters
 
@@ -54,6 +55,8 @@ Upon first running the configuration in data/config.json will be copied straight
 - window_h_logical: logical height of the window
 
 ## History.
+
+Nothing more will be added here, the CHANGELOG.md file will suffice.
 
 - As of July 2020 the project has been rewritten.
 - As of November 5th 2015 the code has been patched with a compatibility layer to support many radical changes to the libdansdl2. Should the code be updated, the compatibility layer will be removed.

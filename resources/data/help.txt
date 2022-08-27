@@ -47,7 +47,7 @@ string: a string
 parameters in brackets indicate optional parameters.
 
 new number:index [number:x] [number:y] [number:w] [number:h] [number:disp_x] [number:disp_y]
-	creates new, empty frame with the given index
+	creates a new, empty frame with the given index
 
 delete number:index
 	deletes the frame with the given index
