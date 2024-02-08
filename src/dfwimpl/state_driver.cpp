@@ -55,6 +55,8 @@ state_driver::state_driver(
 	lm::log(log).info()<<"state driver fully constructed"<<std::endl;
 }
 
+void state_driver::init(dfw::kernel&) {}
+
 void state_driver::prepare_video(dfw::kernel& kernel) {
 
 	std::stringstream ss;

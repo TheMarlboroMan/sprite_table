@@ -9,6 +9,10 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 ## Unreleased
 ### To be added...
 
+## [v1.1.1]: 2022-08-26
+### Changes
+- Adapt to changes in dfw
+
 ## [v1.1.0]: 2022-08-26
 ### Added
 - Background color stored in config file.
