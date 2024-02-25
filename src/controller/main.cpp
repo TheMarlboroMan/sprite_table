@@ -319,7 +319,7 @@ void main::draw_background(ldv::screen& _screen) {
 
 void main::draw_sprites(ldv::screen& _screen) {
 
-	for(const auto pair : session_data.get_sprites()) {
+	for(const auto& pair : session_data.get_sprites()) {
 
 		const auto& sprite=pair.second;
 		const auto color=static_cast<int>(pair.first)==selected_index

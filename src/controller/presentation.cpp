@@ -21,13 +21,13 @@ presentation::presentation(
 	log(plog),
 	ttfman{_ttfman},
 	session_data{_session_data},
+	background_color{_background_color},
 	camera{
 		{0,0, _screen_w, _screen_h},
 		{0,0}
 	},
 	screen_w{_screen_w},
-	screen_h{_screen_h},
-	background_color{_background_color}
+	screen_h{_screen_h}
 {
 
 }
