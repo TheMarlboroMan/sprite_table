@@ -14,6 +14,10 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 - Added the "c" command to center the camera on the current selection.
 - Added the ability to flip frames with "f"
 - Selection is empty when loading a new file.
+- Added zoom to presentation mode.
+- Changed max zoom.
+### Fixed
+- Fixes definition of zoom in and out, keys were inverted.
 
 ## [v1.1.1]: 2022-08-26
 ### Changes

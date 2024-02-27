@@ -43,6 +43,8 @@ class presentation:
 
 	void                        calculate();
 	void                        draw_item(ldv::screen&, const presentation_item&);
+	void                        zoom_in();
+	void                        zoom_out();
 
 	//references...
 	lm::logger&					log;

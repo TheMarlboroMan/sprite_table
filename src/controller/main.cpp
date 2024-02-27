@@ -496,21 +496,21 @@ void main::draw_console(ldv::screen& _screen) {
 	command.draw(_screen);
 }
 
-void main::zoom_in() {
+void main::zoom_out() {
 
 	auto zoom=camera.get_zoom();
 
-	if(zoom > 0.1) {
+	if(zoom > 0.05) {
 
 		camera.set_zoom(zoom/2.);
 	}
 }
 
-void main::zoom_out() {
+void main::zoom_in() {
 
 	auto zoom=camera.get_zoom();
 
-	if(zoom < 4) {
+	if(zoom < 8) {
 
 		camera.set_zoom(zoom*2.);
 	}

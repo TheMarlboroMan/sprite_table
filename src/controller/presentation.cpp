@@ -52,6 +52,15 @@ void presentation::loop(dfw::input& _input, const dfw::loop_iteration_data& /*li
 		return;
 	}
 
+	if(_input.is_input_pressed(input::left)) {
+
+		camera.move_by(-5, 0);
+	}
+	else if(_input.is_input_pressed(input::right)) {
+
+		camera.move_by(5, 0);
+	}
+
 	if(_input.is_input_pressed(input::down)) {
 
 		camera.move_by(0, 5);
@@ -59,6 +68,17 @@ void presentation::loop(dfw::input& _input, const dfw::loop_iteration_data& /*li
 	else if(_input.is_input_pressed(input::up)) {
 
 		camera.move_by(0, -5);
+	}
+
+	if(_input.is_input_down(input::zoom_in)) {
+
+		zoom_in();
+		return;
+	}
+	else if(_input.is_input_down(input::zoom_out)) {
+
+		zoom_out();
+		return;
 	}
 }
 
@@ -86,6 +106,9 @@ void presentation::draw_item(ldv::screen& _screen, const presentation_item& _ite
 		{_item.x, _item.y, _item.frame.box.w, _item.frame.box.h},
 		_item.frame.box
 	};
+
+	bmp.set_invert_horizontal(_item.frame.flags & 1);
+	bmp.set_invert_vertical(_item.frame.flags & 2);
 
 	bmp.draw(_screen, camera);
 
@@ -149,4 +172,24 @@ void presentation::calculate() {
 	});
 
 	camera.go_to({0,0});
+}
+
+void presentation::zoom_out() {
+
+	auto zoom=camera.get_zoom();
+
+	if(zoom > 0.1) {
+
+		camera.set_zoom(zoom/2.);
+	}
+}
+
+void presentation::zoom_in() {
+
+	auto zoom=camera.get_zoom();
+
+	if(zoom < 8) {
+
+		camera.set_zoom(zoom*2.);
+	}
 }
