@@ -66,10 +66,18 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 		return;
 	}
 
-	if(_input.is_input_down(input::mode_presentation)) {
+	if(!console_mode) {
 
-		set_state(state_presentation);
-		return;
+		if(_input.is_input_down(input::mode_presentation)) {
+
+			set_state(state_presentation);
+			return;
+		}
+
+		if(_input.is_input_down(input::center_camera)) {
+
+			center_camera();
+		}
 	}
 
 	if(_input.is_input_down(input::tab)) {
@@ -684,7 +692,6 @@ void main::duplicate_current(
 
 		lm::log(log).error()<<"error duplicating current: "<<e.what()<<std::endl;
 	}
-
 }
 
 void main::perform_movement(int _x, int _y, bool _resize, bool _align) {
@@ -727,4 +734,15 @@ void main::perform_movement(int _x, int _y, bool _resize, bool _align) {
 	//Move.
 	sprite.box.origin.x+=_x;
 	sprite.box.origin.y+=_y;
+}
+
+void main::center_camera() {
+
+	if(-1==selected_index) {
+
+		return;
+	}
+
+	const auto& sprite=session_data.get_sprites().at(selected_index);
+	camera.center_on(sprite.box);
 }

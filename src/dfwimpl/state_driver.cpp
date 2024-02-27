@@ -120,7 +120,8 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:resize")), input::resize},
 		{input_description_from_config_token(config.token_from_path("input:align")), input::align},
 		{input_description_from_config_token(config.token_from_path("input:tab")), input::tab},
-		{input_description_from_config_token(config.token_from_path("input:toggle_ids")), input::toggle_ids}
+		{input_description_from_config_token(config.token_from_path("input:toggle_ids")), input::toggle_ids},
+		{input_description_from_config_token(config.token_from_path("input:center_camera")), input::center_camera}
 	};
 
 	kernel.init_input_system(pairs);
@@ -243,7 +244,8 @@ void state_driver::prepare_state(int _next, int _current) {
 								session_data.load_sprites_by_path(fbrowser.get_choice());
 								session_data.set_session_filename(fbrowser.get_choice());
 								main.set_message(std::string{"loaded "}+std::to_string(session_data.get_sprites().size())+ " entries from "+fbrowser.get_choice());
-								main.select_first_index();
+								//main.select_first_index();
+								main.clear_selection();
 							break;
 						}
 					}
@@ -302,7 +304,8 @@ void state_driver::process_parameters(const tools::arg_manager& _argman) {
 			session_data.load_sprites_by_path(session_file);
 			session_data.set_session_filename(session_file);
 			main.set_message(std::string{"using session "}+session_file);
-			main.select_first_index();
+			//main.select_first_index();
+			main.clear_selection();
 		}
 		catch(std::exception &e) {
 

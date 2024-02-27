@@ -38,6 +38,7 @@ left ctrl+insert+arrow: duplicate selected frame at position
 tab : enter / exit console tool
 p : enter presentation mode
 n : toggle show/hide ids
+c : center the view in the current selection
 
 ===== console tool =====
 

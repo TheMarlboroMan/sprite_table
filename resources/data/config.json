@@ -40,7 +40,8 @@
 		"resize":[0, 0, 21],
 		"align":[0, 0, 4],
 		"tab":[0, 0, 43],
-		"toggle_ids":[0,0,17]
+		"toggle_ids":[0,0,17],
+		"center_camera":[0, 0, 6]
 
 	},
 	"meta":{

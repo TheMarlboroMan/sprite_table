@@ -32,6 +32,7 @@ class main:
 	void                        set_message(const std::string&);
 	void                        adjust_camera_limits();
 	void                        select_first_index();
+	void                        clear_selection();
 	void                        save();
 
 	private:
@@ -47,7 +48,6 @@ class main:
 	void                        select_prev();
 	void                        delete_current();
 	void                        duplicate_current(duplicate_pos);
-	void                        clear_selection();
 	std::size_t                 get_next_index() const;
 	std::size_t                 get_next_index_from_selection() const;
 	void                        perform_movement(int, int, bool, bool);
@@ -56,6 +56,7 @@ class main:
 	void                        draw_sprites(ldv::screen&);
 	void                        draw_hud(ldv::screen&);
 	void                        draw_console(ldv::screen&);
+	void                        center_camera();
 
 	sprite_table::session_data::container::const_iterator find_by_position(ldt::point_2d<int>) const;
 	ldt::point_2d<int>			get_mouse_position(dfw::input&) const;

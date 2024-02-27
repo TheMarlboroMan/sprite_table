@@ -28,7 +28,8 @@ insert,
 resize,
 align,
 tab,
-toggle_ids
+toggle_ids,
+center_camera
 };
 
 }
