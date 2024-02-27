@@ -121,7 +121,8 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:align")), input::align},
 		{input_description_from_config_token(config.token_from_path("input:tab")), input::tab},
 		{input_description_from_config_token(config.token_from_path("input:toggle_ids")), input::toggle_ids},
-		{input_description_from_config_token(config.token_from_path("input:center_camera")), input::center_camera}
+		{input_description_from_config_token(config.token_from_path("input:center_camera")), input::center_camera},
+		{input_description_from_config_token(config.token_from_path("input:flip")), input::flip}
 	};
 
 	kernel.init_input_system(pairs);

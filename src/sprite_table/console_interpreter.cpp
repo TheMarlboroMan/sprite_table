@@ -117,7 +117,8 @@ bool console_interpreter::create(const std::string& _parameters) {
 			static_cast<unsigned int>(h),
 		},
 		disp_x,
-		disp_y
+		disp_y,
+		0
 	};
 	sprites.insert({index, fr});
 

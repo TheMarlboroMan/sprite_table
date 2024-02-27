@@ -12,6 +12,7 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 ## [v1.1.2]: 2024-02-27
 ### Added
 - Added the "c" command to center the camera on the current selection.
+- Added the ability to flip frames with "f"
 - Selection is empty when loading a new file.
 
 ## [v1.1.1]: 2022-08-26

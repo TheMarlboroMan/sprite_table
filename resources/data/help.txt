@@ -39,6 +39,8 @@ tab : enter / exit console tool
 p : enter presentation mode
 n : toggle show/hide ids
 c : center the view in the current selection
+f : flip the frame horizontally
+left ctrl + f : flip the frame vertically
 
 ===== console tool =====
 

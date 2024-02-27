@@ -214,6 +214,11 @@ void main::workspace_input(dfw::input& _input) {
 		delete_current();
 	}
 
+	if(_input.is_input_down(input::flip)) {
+
+		flip_frame(_input.is_input_pressed(input::left_control));
+	}
+
 	if(!_input.is_input_pressed(input::left_control)) {
 
 		typedef  bool (dfw::input::*input_fn)(int) const;
@@ -388,6 +393,38 @@ void main::draw_sprites(ldv::screen& _screen) {
 				}
 			);
 			id_rep.draw(_screen, camera);
+		}
+
+		//If flipped, add some mark to the frame...
+		if(sprite.flags) {
+
+			std::string flag_text="";
+
+			if(sprite.flags & 1) {
+
+				flag_text+="h";
+			}
+
+			if(sprite.flags & 2) {
+
+				flag_text+="v";
+			}
+
+			ldv::ttf_representation flag_rep{
+				ttfman.get("consola-mono", 12),
+				ldv::rgba8(255, 255, 255, 192),
+				flag_text
+			};
+
+			flag_rep.align(
+				box,
+				ldv::representation_alignment{
+					ldv::representation_alignment::h::center,
+					ldv::representation_alignment::v::inner_bottom
+				}
+			);
+
+			flag_rep.draw(_screen, camera);
 		}
 	}
 }
@@ -590,7 +627,7 @@ void main::create_sprite() {
 
 	auto& sprites=session_data.get_sprites();
 
-	ldtools::sprite_frame fr{ {{0, 0}, default_w, default_h}, 0, 0};
+	ldtools::sprite_frame fr{ {{0, 0}, default_w, default_h}, 0, 0, 0};
 
 	auto id=-1==selected_index
 		? get_next_index()
@@ -628,7 +665,7 @@ void main::save() {
 	for(const auto& pair : session_data.get_sprites()) {
 
 		const auto& sprite=pair.second;
-		file<<pair.first<<"\t"<<sprite.box.origin.x<<"\t"<<sprite.box.origin.y<<"\t"<<sprite.box.w<<"\t"<<sprite.box.h<<"\t"<<sprite.disp_x<<"\t"<<sprite.disp_y<<std::endl;
+		file<<pair.first<<"\t"<<sprite.box.origin.x<<"\t"<<sprite.box.origin.y<<"\t"<<sprite.box.w<<"\t"<<sprite.box.h<<"\t"<<sprite.disp_x<<"\t"<<sprite.disp_y<<"\t"<<sprite.flags<<std::endl;
 	}
 
 	set_message(std::string{"saved "}+std::to_string(session_data.get_sprites().size())+" entries into "+session_data.get_session_filename());;
@@ -745,4 +782,37 @@ void main::center_camera() {
 
 	const auto& sprite=session_data.get_sprites().at(selected_index);
 	camera.center_on(sprite.box);
+}
+
+void main::flip_frame(bool _vertical) {
+
+	if(-1==selected_index) {
+
+		return;
+	}
+
+	ldtools::sprite_frame& sprite=session_data.get_sprites().at(selected_index);
+
+	if(_vertical) {
+
+		if(sprite.flags & 2) {
+
+			sprite.flags &= ~2;
+		}
+		else {
+
+			sprite.flags |= 2;
+		}
+	}
+	else {
+
+		if(sprite.flags & 1) {
+
+			sprite.flags &= ~1;
+		}
+		else {
+
+			sprite.flags |= 1;
+		}
+	}
 }

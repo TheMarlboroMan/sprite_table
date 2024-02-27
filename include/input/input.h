@@ -29,7 +29,8 @@ resize,
 align,
 tab,
 toggle_ids,
-center_camera
+center_camera,
+flip
 };
 
 }
