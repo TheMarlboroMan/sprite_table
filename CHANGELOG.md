@@ -9,6 +9,12 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 ## Unreleased
 ### To be added...
 
+## [v1.1.3]: 2024-03-02
+### Added
+- Added lshift+f to change font size.
+- Added alternate insert with the "m" key, for laptops.
+- Added lctrl and + - to change to next/prev frame as alternate inputs.
+
 ## [v1.1.2]: 2024-02-27
 ### Added
 - Added the "c" command to center the camera on the current selection.

@@ -75,6 +75,8 @@ void state_driver::prepare_video(dfw::kernel& kernel) {
 	auto& screen=kernel.get_screen();
 	screen.set_fullscreen(config.bool_from_path("video:fullscreen"));
 
+	ttf_manager.insert("consola-mono", 8, env.build_data_path("ttf/consola-mono.ttf"));
+	ttf_manager.insert("consola-mono", 10, env.build_data_path("ttf/consola-mono.ttf"));
 	ttf_manager.insert("consola-mono", 12, env.build_data_path("ttf/consola-mono.ttf"));
 	ttf_manager.insert("consola-mono", 14, env.build_data_path("ttf/consola-mono.ttf"));
 }
@@ -117,6 +119,7 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 		{input_description_from_config_token(config.token_from_path("input:left_click")), input::left_click},
 		{input_description_from_config_token(config.token_from_path("input:del")), input::del},
 		{input_description_from_config_token(config.token_from_path("input:insert")), input::insert},
+		{input_description_from_config_token(config.token_from_path("input:insert_alt")), input::insert_alt},
 		{input_description_from_config_token(config.token_from_path("input:resize")), input::resize},
 		{input_description_from_config_token(config.token_from_path("input:align")), input::align},
 		{input_description_from_config_token(config.token_from_path("input:tab")), input::tab},

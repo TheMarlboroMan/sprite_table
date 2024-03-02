@@ -94,10 +94,13 @@ void main::loop(dfw::input& _input, const dfw::loop_iteration_data& lid) {
 
 void main::workspace_input(dfw::input& _input) {
 
+	bool lctrl=_input.is_input_pressed(input::left_control);
+	bool lshift=_input.is_input_pressed(input::left_shift);
+
 	if(_input.is_input_down(input::save)) {
 
 		//These two cases have to be handled separatedly.
-		if(_input.is_input_pressed(input::left_control)) {
+		if(lctrl) {
 
 			session_data.set_file_browser_action(sprite_table::session_data::file_browser_action::save);
 			//Unfortunately, there's no way to jump now to the state and flow down to save below...
@@ -132,12 +135,17 @@ void main::workspace_input(dfw::input& _input) {
 
 	if(_input.is_input_down(input::zoom_in)) {
 
-		zoom_in();
-		return;
+		lctrl
+			? select_next()
+			: zoom_in();
+
+		return; 
 	}
 	else if(_input.is_input_down(input::zoom_out)) {
 
-		zoom_out();
+		lctrl
+			? select_prev()
+			: zoom_out();
 		return;
 	}
 
@@ -147,9 +155,11 @@ void main::workspace_input(dfw::input& _input) {
 		return;
 	}
 
-	if(_input.is_input_down(input::insert)) {
+	if(_input.is_input_down(input::insert)
+		|| _input.is_input_down(input::insert_alt)
+	) {
 
-		if(_input.is_input_pressed(input::left_control)) {
+		if(lctrl) {
 
 			if(_input.is_input_pressed(input::up)) {
 
@@ -198,7 +208,7 @@ void main::workspace_input(dfw::input& _input) {
 		return;
 	}
 
-	if(_input.is_input_down(input::pagedown)) {
+	if(_input.is_input_down(input::pagedown) ) {
 
 		select_next();
 		return;
@@ -216,17 +226,19 @@ void main::workspace_input(dfw::input& _input) {
 
 	if(_input.is_input_down(input::flip)) {
 
-		flip_frame(_input.is_input_pressed(input::left_control));
+		lshift
+			? cycle_font_size()
+			: flip_frame(lctrl);
 	}
 
-	if(!_input.is_input_pressed(input::left_control)) {
+	if(!lctrl) {
 
 		typedef  bool (dfw::input::*input_fn)(int) const;
-		input_fn movement_fn=_input.is_input_pressed(input::left_shift)
+		input_fn movement_fn=lshift
 			? &dfw::input::is_input_down
 			: &dfw::input::is_input_pressed;
 
-		const int factor=_input.is_input_pressed(input::left_shift) ? 1 : movement_factor;
+		const int factor=lshift ? 1 : movement_factor;
 		int movement_x=0,
 			movement_y=0;
 
@@ -380,7 +392,7 @@ void main::draw_sprites(ldv::screen& _screen) {
 		if(show_ids) {
 
 			ldv::ttf_representation id_rep{
-				ttfman.get("consola-mono", 14),
+				ttfman.get("consola-mono", font_size),
 				ldv::rgba8(255, 255, 255, 192),
 				std::to_string(pair.first)
 			};
@@ -411,7 +423,7 @@ void main::draw_sprites(ldv::screen& _screen) {
 			}
 
 			ldv::ttf_representation flag_rep{
-				ttfman.get("consola-mono", 12),
+				ttfman.get("consola-mono", font_size),
 				ldv::rgba8(255, 255, 255, 192),
 				flag_text
 			};
@@ -814,5 +826,24 @@ void main::flip_frame(bool _vertical) {
 
 			sprite.flags |= 1;
 		}
+	}
+}
+
+void main::cycle_font_size() {
+
+	switch(font_size) {
+
+		case 8:
+			font_size=10;
+			return;
+		case 10:
+			font_size=12;
+			return;
+		case 12:
+			font_size=14;
+			return;
+		case 14:
+			font_size=8;
+			return;
 	}
 }

@@ -45,6 +45,7 @@ class presentation:
 	void                        draw_item(ldv::screen&, const presentation_item&);
 	void                        zoom_in();
 	void                        zoom_out();
+	void                        cycle_font_size();
 
 	//references...
 	lm::logger&					log;
@@ -57,6 +58,7 @@ class presentation:
 	const unsigned int          screen_w,
 	                            screen_h;
 	bool                        display_ids=true;
+	int                         font_size=14;
 
 	std::vector<presentation_item> items;
 };

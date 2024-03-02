@@ -34,6 +34,8 @@ presentation::presentation(
 
 void presentation::loop(dfw::input& _input, const dfw::loop_iteration_data& /*lid*/) {
 
+	bool lshift=_input.is_input_pressed(input::left_shift);
+
 	if(_input().is_exit_signal()) {
 
 		set_leave(true);
@@ -50,6 +52,11 @@ void presentation::loop(dfw::input& _input, const dfw::loop_iteration_data& /*li
 
 		display_ids=!display_ids;
 		return;
+	}
+
+	if(lshift && _input.is_input_down(input::flip)) {
+
+		cycle_font_size();
 	}
 
 	if(_input.is_input_pressed(input::left)) {
@@ -115,7 +122,7 @@ void presentation::draw_item(ldv::screen& _screen, const presentation_item& _ite
 	if(display_ids) {
 
 		ldv::ttf_representation id_rep{
-			ttfman.get("consola-mono", 14),
+			ttfman.get("consola-mono", font_size),
 			ldv::rgba8(255, 255, 255, 192),
 			std::to_string(_item.index)
 		};
@@ -191,5 +198,24 @@ void presentation::zoom_in() {
 	if(zoom < 8) {
 
 		camera.set_zoom(zoom*2.);
+	}
+}
+
+void presentation::cycle_font_size() {
+
+	switch(font_size) {
+
+		case 8:
+			font_size=10;
+			return;
+		case 10:
+			font_size=12;
+			return;
+		case 12:
+			font_size=14;
+			return;
+		case 14:
+			font_size=8;
+			return;
 	}
 }

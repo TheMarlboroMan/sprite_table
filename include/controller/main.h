@@ -58,6 +58,7 @@ class main:
 	void                        draw_console(ldv::screen&);
 	void                        center_camera();
 	void                        flip_frame(bool);
+	void                        cycle_font_size();
 
 	sprite_table::session_data::container::const_iterator find_by_position(ldt::point_2d<int>) const;
 	ldt::point_2d<int>			get_mouse_position(dfw::input&) const;
@@ -84,6 +85,7 @@ class main:
 	bool                        console_mode=false,
 	                            show_ids=true;
 	std::string                 console_txt; //we cannot drag the ldv::input to the view to draw this...
+	int                         font_size{14};
 };
 
 }
