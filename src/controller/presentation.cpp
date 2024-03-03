@@ -110,7 +110,7 @@ void presentation::draw_item(ldv::screen& _screen, const presentation_item& _ite
 
 	ldv::bitmap_representation bmp{
 		tex,
-		{_item.x, _item.y, _item.frame.box.w, _item.frame.box.h},
+		{_item.x, _item.y, _item.frame.box.w+2, _item.frame.box.h+2},
 		_item.frame.box
 	};
 
@@ -130,10 +130,10 @@ void presentation::draw_item(ldv::screen& _screen, const presentation_item& _ite
 		id_rep.align(
 			bmp,
 			ldv::representation_alignment{
-				ldv::representation_alignment::h::inner_left,
-				ldv::representation_alignment::v::inner_top,
-				2,
-				2
+				ldv::representation_alignment::h::center,
+				ldv::representation_alignment::v::outer_bottom,
+				0,
+				4
 			}
 		);
 		id_rep.draw(_screen, camera);
@@ -147,7 +147,7 @@ void presentation::calculate() {
 		max_y=0;
 
 	const int   margin_x=4, //Horizontal margin between sprites.
-				margin_y=4; //Vertical margin between sprites.
+				margin_y=32; //Vertical margin between sprites.
 
 	for(const auto& pair : session_data.get_sprites()) {
 
