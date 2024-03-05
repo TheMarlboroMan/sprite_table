@@ -9,6 +9,10 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 ## Unreleased
 ### To be added...
 
+## [v1.1.4]: 2024-03-05
+### Fixed
+- Fixes crash when moving the currently selected frame from the console.
+
 ## [v1.1.3]: 2024-03-02
 ### Added
 - Added lshift+f to change font size.

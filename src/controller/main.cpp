@@ -295,6 +295,13 @@ void main::console_input(dfw::input& _input) {
 			_input().stop_text_input();
 			console_mode=false;
 			console_txt.clear();
+
+			//Did we get rid of the current frame?
+			if(!session_data.get_sprites().count(selected_index)) {
+
+				selected_index=-1;
+			}
+
 			return;
 		}
 
