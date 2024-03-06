@@ -98,35 +98,43 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 	using namespace dfw;
 
 	std::vector<input_pair> pairs{
-		{{input_description::types::keyboard, SDL_SCANCODE_ESCAPE, 0}, input::escape},
-		{input_description_from_config_token(config.token_from_path("input:left")), input::left},
-		{input_description_from_config_token(config.token_from_path("input:right")), input::right},
-		{input_description_from_config_token(config.token_from_path("input:up")), input::up},
-		{input_description_from_config_token(config.token_from_path("input:down")), input::down},
-		{input_description_from_config_token(config.token_from_path("input:enter")), input::enter},
-		{input_description_from_config_token(config.token_from_path("input:space")), input::space},
-		{input_description_from_config_token(config.token_from_path("input:left_control")), input::left_control},
-		{input_description_from_config_token(config.token_from_path("input:left_shift")), input::left_shift},
-		{input_description_from_config_token(config.token_from_path("input:pageup")), input::pageup},
-		{input_description_from_config_token(config.token_from_path("input:pagedown")), input::pagedown},
-		{input_description_from_config_token(config.token_from_path("input:help")), input::help},
-		{input_description_from_config_token(config.token_from_path("input:mode_presentation")), input::mode_presentation},
-		{input_description_from_config_token(config.token_from_path("input:background_selection")), input::background_selection},
-		{input_description_from_config_token(config.token_from_path("input:save")), input::save},
-		{input_description_from_config_token(config.token_from_path("input:load")), input::load},
-		{input_description_from_config_token(config.token_from_path("input:zoom_in")), input::zoom_in},
-		{input_description_from_config_token(config.token_from_path("input:zoom_out")), input::zoom_out},
-		{input_description_from_config_token(config.token_from_path("input:left_click")), input::left_click},
-		{input_description_from_config_token(config.token_from_path("input:del")), input::del},
-		{input_description_from_config_token(config.token_from_path("input:insert")), input::insert},
-		{input_description_from_config_token(config.token_from_path("input:insert_alt")), input::insert_alt},
-		{input_description_from_config_token(config.token_from_path("input:resize")), input::resize},
-		{input_description_from_config_token(config.token_from_path("input:align")), input::align},
-		{input_description_from_config_token(config.token_from_path("input:tab")), input::tab},
-		{input_description_from_config_token(config.token_from_path("input:toggle_ids")), input::toggle_ids},
-		{input_description_from_config_token(config.token_from_path("input:center_camera")), input::center_camera},
-		{input_description_from_config_token(config.token_from_path("input:flip")), input::flip}
+		{{input_description::types::keyboard, SDL_SCANCODE_ESCAPE, 0}, input::escape}
 	};
+
+	auto add=[&](std::string _token, int _input_type) {
+
+		for(const auto desc : dfw::input_description_from_config_token(config.token_from_path(_token))) {
+
+			pairs.push_back({desc, _input_type});
+		}
+	};
+
+	add("input:left", input::left);
+	add("input:right", input::right);
+	add("input:up", input::up);
+	add("input:down", input::down);
+	add("input:enter", input::enter);
+	add("input:space", input::space);
+	add("input:left_control", input::left_control);
+	add("input:left_shift", input::left_shift);
+	add("input:pageup", input::pageup);
+	add("input:pagedown", input::pagedown);
+	add("input:help", input::help);
+	add("input:mode_presentation", input::mode_presentation);
+	add("input:background_selection", input::background_selection);
+	add("input:save", input::save);
+	add("input:load", input::load);
+	add("input:zoom_in", input::zoom_in);
+	add("input:zoom_out", input::zoom_out);
+	add("input:left_click", input::left_click);
+	add("input:del", input::del);
+	add("input:insert", input::insert);
+	add("input:resize", input::resize);
+	add("input:align", input::align);
+	add("input:tab", input::tab);
+	add("input:toggle_ids", input::toggle_ids);
+	add("input:center_camera", input::center_camera);
+	add("input:flip", input::flip);
 
 	kernel.init_input_system(pairs);
 }

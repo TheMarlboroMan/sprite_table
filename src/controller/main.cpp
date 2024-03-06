@@ -155,9 +155,7 @@ void main::workspace_input(dfw::input& _input) {
 		return;
 	}
 
-	if(_input.is_input_down(input::insert)
-		|| _input.is_input_down(input::insert_alt)
-	) {
+	if(_input.is_input_down(input::insert)) {
 
 		if(lctrl) {
 

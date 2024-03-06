@@ -17,33 +17,84 @@
 		"sound_volume":127
 	},
 	"input":{
-		"down":[0, 0, 81],
-		"left":[0, 0, 80],
-		"right":[0, 0, 79],
-		"up":[0, 0, 82],
-		"enter":[0, 0, 40],
-		"space":[0, 0, 44],
-		"left_control":[0, 0, 224],
-		"left_shift":[0, 0, 225],
-		"pageup":[0, 0, 75],
-		"pagedown":[0, 0, 78],
-		"help":[0,0, 58],
-		"mode_presentation": [0,0,19],
-		"background_selection":[0,0,12],
-		"save":[0,0,22],
-		"load":[0,0,15],
-		"zoom_in":[0,0,87],
-		"zoom_out":[0,0,86],
-		"left_click":[1,0,1],
-		"del":[0,0,76],
-		"insert":[0,0,73],
-		"insert_alt":[0,0,16],
-		"resize":[0, 0, 21],
-		"align":[0, 0, 4],
-		"tab":[0, 0, 43],
-		"toggle_ids":[0,0,17],
-		"center_camera":[0, 0, 6],
-		"flip":[0, 0, 9]
+		"down":[
+			{"type":0, "device":0, "code":81}
+		],
+		"left":[
+			{"type":0, "device":0, "code":80}
+		],
+		"right":[
+			{"type":0, "device":0, "code":79}
+		],
+		"up":[
+			{"type":0, "device":0, "code":82}
+		],
+		"enter":[
+			{"type":0, "device":0, "code":40}
+		],
+		"space":[
+			{"type":0, "device":0, "code":44}
+		],
+		"left_control":[
+			{"type":0, "device":0, "code":224}
+		],
+		"left_shift":[
+			{"type":0, "device":0, "code":225}
+		],
+		"pageup":[
+			{"type":0, "device":0, "code":75}
+		],
+		"pagedown":[
+			{"type":0, "device":0, "code":78}
+		],
+		"help":[
+			{"type":0, "device":0, "code":58}
+		],
+		"mode_presentation":[
+			{"type":0, "device":0, "code":19}
+		],
+		"background_selection":[
+			{"type":0, "device":0, "code":12}
+		],
+		"save":[
+			{"type":0, "device":0, "code":22}
+		],
+		"load":[
+			{"type":0, "device":0, "code":15}
+		],
+		"zoom_in":[
+			{"type":0, "device":0, "code":87}
+		],
+		"zoom_out":[
+			{"type":0, "device":0, "code":86}
+		],
+		"left_click":[
+			{"type":1, "device":0, "code":1}
+		],
+		"del":[
+			{"type":0, "device":0, "code":76}
+		],
+		"insert":[
+			{"type":0, "device":0, "code":73},
+			{"type":0, "device":0, "code":16}
+		],
+		"resize":[
+			{"type":0, "device":0, "code":21}
+		],
+		"resize":[
+			{"type":0, "device":0, "code":4}
+		],
+		"tab":[
+			{"type":0, "device":0, "code":43}
+		],
+		"toggle_ids":[
+			{"type":0, "device":0, "code":17}
+		],
+		"center_camera":[
+			{"type":0, "device":0, "code":6}
+		],
+		"flip":[
+			{"type":0, "device":0, "code":9}
 	},
 	"meta":{
 		"v":1

@@ -9,6 +9,10 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 ## Unreleased
 ### To be added...
 
+## [v1.1.5]: 2024-03-06
+### Changed
+- Adapted to dfw changes.
+
 ## [v1.1.4]: 2024-03-05
 ### Fixed
 - Fixes crash when moving the currently selected frame from the console.
