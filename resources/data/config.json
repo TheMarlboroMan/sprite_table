@@ -81,7 +81,7 @@
 		"resize":[
 			{"type":0, "device":0, "code":21}
 		],
-		"resize":[
+		"align":[
 			{"type":0, "device":0, "code":4}
 		],
 		"tab":[
