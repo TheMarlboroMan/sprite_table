@@ -117,6 +117,9 @@ void presentation::draw_item(ldv::screen& _screen, const presentation_item& _ite
 	bmp.set_invert_horizontal(_item.frame.flags & 1);
 	bmp.set_invert_vertical(_item.frame.flags & 2);
 
+	bmp.center_rotation_center();
+	bmp.set_rotation(_item.frame.get_rotation());
+
 	bmp.draw(_screen, camera);
 
 	if(display_ids) {

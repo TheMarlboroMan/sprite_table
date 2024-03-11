@@ -222,6 +222,11 @@ void main::workspace_input(dfw::input& _input) {
 		delete_current();
 	}
 
+	if(_input.is_input_down(input::resize)) {
+
+		rotate_frame(lctrl);
+	}
+
 	if(_input.is_input_down(input::flip)) {
 
 		lshift
@@ -426,6 +431,8 @@ void main::draw_sprites(ldv::screen& _screen) {
 
 				flag_text+="v";
 			}
+
+			flag_text+=std::to_string(sprite.get_rotation());
 
 			ldv::ttf_representation flag_rep{
 				ttfman.get("consola-mono", font_size),
@@ -831,6 +838,46 @@ void main::flip_frame(bool _vertical) {
 
 			sprite.flags |= 1;
 		}
+	}
+}
+
+void main::rotate_frame(bool _counterclockwise) {
+
+	if(-1==selected_index) {
+
+		return;
+	}
+
+	ldtools::sprite_frame& sprite=session_data.get_sprites().at(selected_index);
+	int degrees=sprite.get_rotation()+(_counterclockwise ? -90 : 90);
+
+	if(degrees < 0) {
+
+		degrees=270;
+	}
+	else if(degrees == 360) {
+
+		degrees=0;
+	}
+
+	switch(degrees) {
+	
+		case 0:
+			sprite.flags &= ~4;
+			sprite.flags &= ~8;
+		break;
+		case 90:
+			sprite.flags |= 4;
+			sprite.flags &= ~8;
+		break;
+		case 180:
+			sprite.flags &= ~4;
+			sprite.flags |= 8;
+		break;
+		case 270:
+			sprite.flags |= 4;
+			sprite.flags |= 8;
+		break;
 	}
 }
 

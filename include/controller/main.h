@@ -58,6 +58,7 @@ class main:
 	void                        draw_console(ldv::screen&);
 	void                        center_camera();
 	void                        flip_frame(bool);
+	void                        rotate_frame(bool);
 	void                        cycle_font_size();
 
 	sprite_table::session_data::container::const_iterator find_by_position(ldt::point_2d<int>) const;
