@@ -308,7 +308,7 @@ void main::console_input(dfw::input& _input) {
 			return;
 		}
 
-		sprite_table::console_interpreter ci{session_data.get_sprites(), default_w, default_h, background_color};
+		sprite_table::console_interpreter ci{session_data.get_sprites(), default_w, default_h, background_color, selected_index};
 		ci.perform(console_txt);
 
 		console_txt.clear();

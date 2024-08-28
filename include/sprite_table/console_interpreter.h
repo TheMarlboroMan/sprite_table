@@ -16,12 +16,13 @@ class console_interpreter {
 
 	using container=std::map<std::size_t, ldtools::sprite_frame>;
 
-	                        console_interpreter(container&, unsigned int, unsigned int, ldv::rgba_color&);
+	                        console_interpreter(container&, unsigned int, unsigned int, ldv::rgba_color&, int&);
 	bool                    perform(const std::string&);
 	const std::string&      get_message() const {return message;}
 
 	private:
 
+	bool                    select(const std::string&);
 	bool                    create(const std::string&);
 	bool                    erase(const std::string&);
 	bool                    move(const std::string&);
@@ -33,6 +34,7 @@ class console_interpreter {
 
 	container&              sprites;
 	ldv::rgba_color&		background_color;
+	int&                    selected_index;
 	std::string             message;
 	const unsigned int      default_w,
 	                        default_h;

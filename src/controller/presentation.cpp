@@ -147,9 +147,10 @@ void presentation::calculate() {
 
 	int x=0,
 		y=0,
-		max_y=0;
+		max_y=0,
+		max_x=0;
 
-	const int   margin_x=4, //Horizontal margin between sprites.
+	const int   margin_x=8, //Horizontal margin between sprites.
 				margin_y=32; //Vertical margin between sprites.
 
 	for(const auto& pair : session_data.get_sprites()) {
@@ -158,7 +159,10 @@ void presentation::calculate() {
 		int bottom_y=y+sprite.box.h;
 		max_y=std::max(bottom_y, max_y);
 
-		if(x+sprite.box.w > screen_w) {
+		int right_x=x+sprite.box.w+margin_x;
+		max_x=std::max(right_x, max_x);
+
+		if(right_x >= screen_w) {
 
 			x=0;
 			y=max_y+margin_y;
@@ -177,8 +181,8 @@ void presentation::calculate() {
 
 	camera.set_limits({
 		{0,0},
-		screen_w,
-		static_cast<unsigned int>(max_y)
+		static_cast<unsigned int>(max_x+margin_x),
+		static_cast<unsigned int>(max_y+margin_y)
 	});
 
 	camera.go_to({0,0});

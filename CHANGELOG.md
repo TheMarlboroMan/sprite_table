@@ -9,6 +9,16 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 ## Unreleased
 ### To be added...
 
+## [v1.1.8]: 2024-08-28
+### Added
+- Added 'select' console command
+### Fixed
+- Fixes bad limits for view on presentation mode.
+
+## [v1.1.7]: 2024-03-11
+### Added
+- Added window size command line
+
 ## [v1.1.6]: 2024-03-11
 ### Added
 - Added sprite rotations by 90 degrees.

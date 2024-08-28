@@ -9,15 +9,42 @@ console_interpreter::console_interpreter(
 	container& _container,
 	unsigned int _default_w,
 	unsigned int _default_h,
-	ldv::rgba_color& _background_color
+	ldv::rgba_color& _background_color,
+	int& _selected_index
 )
 	:sprites{_container},
 	background_color{_background_color},
+	selected_index{_selected_index},
 	default_w{_default_w},
 	default_h{_default_h}
-{
+{ }
 
+bool console_interpreter::select(const std::string& _parameters) {
+
+	std::stringstream ss{_parameters};
+	std::string dummystr;
+	ss>>dummystr;
+
+	std::size_t index=0;
+	ss>>index;
+
+	if(ss.fail()) {
+
+		message="invalid syntax, use f1 for help";
+		return false;
+	}
+
+	if(!sprites.count(index)) {
+
+		message="index does not exist";
+		return false;
+	}
+
+	selected_index=index;
+	message="index selected";
+	return true;
 }
+
 
 bool console_interpreter::perform(const std::string& _command) {
 
@@ -25,6 +52,11 @@ bool console_interpreter::perform(const std::string& _command) {
 
 	std::string command;
 	ss>>command;
+
+	if(command=="select") {
+
+		return select(ss.str());
+	}
 
 	if(command=="new") {
 
