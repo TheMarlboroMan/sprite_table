@@ -73,6 +73,12 @@ set number:index string:property number:value
 bgcolor number:r number:g number:b
 	sets the background color for the current session, will be reset upon restarting.
 
+hflip number:index
+	performs horizontal flipping on the frame
+
+vflip number:index
+	performs vertical flipping on the frame
+
 exit
 	back to the regular editing mode.
 

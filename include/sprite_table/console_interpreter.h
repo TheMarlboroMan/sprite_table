@@ -31,6 +31,7 @@ class console_interpreter {
 	bool                    copy(const std::string&);
 	bool                    set(const std::string&);
 	bool					bg_color(const std::string&);
+	bool                    flip(const std::string&, bool=false);
 
 	container&              sprites;
 	ldv::rgba_color&		background_color;

@@ -9,6 +9,10 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 ## Unreleased
 ### To be added...
 
+## [v1.1.8]: 2024-08-30
+### Added
+- Added 'hflip' and 'vflip' console commands
+
 ## [v1.1.8]: 2024-08-28
 ### Added
 - Added 'select' console command

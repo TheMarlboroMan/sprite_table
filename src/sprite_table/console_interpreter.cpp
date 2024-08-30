@@ -1,4 +1,5 @@
-#include "../../include/sprite_table/console_interpreter.h"
+#include "sprite_table/console_interpreter.h"
+#include "sprite_table/sprite_flip.h"
 
 #include <sstream>
 #include <algorithm>
@@ -96,6 +97,16 @@ bool console_interpreter::perform(const std::string& _command) {
 	if(command=="bgcolor") {
 
 		return bg_color(ss.str());
+	}
+
+	if(command=="hflip") {
+
+		return flip(ss.str(), false);
+	}
+
+	if(command=="vflip") {
+
+		return flip(ss.str(), true);
 	}
 
 	message=std::string{"unknown command '"}+command+"', try f1 for help";
@@ -460,5 +471,38 @@ bool console_interpreter::bg_color(const std::string& _parameters) {
 	background_color.g=colors[1];
 	background_color.b=colors[2];
 	message="background color updated";
+	return true;
+}
+
+bool console_interpreter::flip(
+	const std::string& _parameters,
+	bool _vertical
+) {
+
+	std::stringstream ss{_parameters};
+	std::string dummystr;
+	ss>>dummystr;
+
+	std::size_t index=0;
+	ss>>index;
+
+	if(ss.fail()) {
+
+		message="invalid syntax, use f1 for help";
+		return false;
+	}
+
+	if(!sprites.count(index)) {
+
+		message="index does not exist";
+		return false;
+	}
+
+	sprite_flip flipper;
+	_vertical
+		? flipper.flip_vertical(sprites.at(index))
+		: flipper.flip_horizontal(sprites.at(index));
+
+	message="frame flipped";
 	return true;
 }

@@ -1,8 +1,9 @@
 #include "../../include/controller/main.h"
 
 //local
-#include "../../include/input/input.h"
-#include "../../include/sprite_table/console_interpreter.h"
+#include "input/input.h"
+#include "sprite_table/console_interpreter.h"
+#include "sprite_table/sprite_flip.h"
 
 #include <ldv/bitmap_representation.h>
 #include <ldv/box_representation.h>
@@ -817,28 +818,10 @@ void main::flip_frame(bool _vertical) {
 
 	ldtools::sprite_frame& sprite=session_data.get_sprites().at(selected_index);
 
-	if(_vertical) {
-
-		if(sprite.flags & 2) {
-
-			sprite.flags &= ~2;
-		}
-		else {
-
-			sprite.flags |= 2;
-		}
-	}
-	else {
-
-		if(sprite.flags & 1) {
-
-			sprite.flags &= ~1;
-		}
-		else {
-
-			sprite.flags |= 1;
-		}
-	}
+	sprite_table::sprite_flip flip;
+	_vertical
+		? flip.flip_vertical(sprite)
+		: flip.flip_horizontal(sprite);
 }
 
 void main::rotate_frame(bool _counterclockwise) {

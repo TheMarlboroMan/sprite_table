@@ -159,6 +159,8 @@ void presentation::calculate() {
 		int bottom_y=y+sprite.box.h;
 		max_y=std::max(bottom_y, max_y);
 
+		//This won't take into account the width of the text legend that
+		//will indicate the id, but meh.
 		int right_x=x+sprite.box.w+margin_x;
 		max_x=std::max(right_x, max_x);
 
