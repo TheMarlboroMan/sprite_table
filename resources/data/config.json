@@ -90,6 +90,9 @@
 		"toggle_ids":[
 			{"type":0, "device":0, "code":17}
 		],
+		"toggle_hud":[
+			{"type":0, "device":0, "code":11}
+		],
 		"center_camera":[
 			{"type":0, "device":0, "code":6}
 		],

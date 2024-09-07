@@ -9,6 +9,13 @@ Changes will be documented under Added, Changed, Deprecated, Removed, Fixed or S
 ## Unreleased
 ### To be added...
 
+## [v1.1.9]: 2024-09-7
+### Added
+- Added background for the hud.
+- Added ability to toggle the hud.
+### Changed
+- A sprite is not rotated my holding left control and pressing R.
+
 ## [v1.1.8]: 2024-08-30
 ### Added
 - Added 'hflip' and 'vflip' console commands

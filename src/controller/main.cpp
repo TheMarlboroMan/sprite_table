@@ -127,6 +127,11 @@ void main::workspace_input(dfw::input& _input) {
 		show_ids=!show_ids;
 	}
 
+	if(_input.is_input_down(input::toggle_hud)) {
+
+		show_hud=!show_hud;
+	}
+
 	if(_input.is_input_down(input::load)) {
 
 		session_data.set_file_browser_action(sprite_table::session_data::file_browser_action::load);
@@ -223,9 +228,10 @@ void main::workspace_input(dfw::input& _input) {
 		delete_current();
 	}
 
-	if(_input.is_input_down(input::resize)) {
+	if(lctrl && _input.is_input_down(input::resize)) {
 
-		rotate_frame(lctrl);
+		rotate_frame(true);
+		return;
 	}
 
 	if(_input.is_input_down(input::flip)) {
@@ -456,6 +462,11 @@ void main::draw_sprites(ldv::screen& _screen) {
 
 void main::draw_hud(ldv::screen& _screen) {
 
+	if(!show_hud) {
+
+		return;
+	}
+
 	ldv::ttf_representation txt_hud{
 		ttfman.get("consola-mono", 12),
 		ldv::rgba8(255, 255, 255, 192),
@@ -479,8 +490,17 @@ void main::draw_hud(ldv::screen& _screen) {
 			+") displaced by "+std::to_string(sprite.disp_x)+","+std::to_string(sprite.disp_y);
 	}
 
-	txt_hud.go_to({0,0});
 	txt_hud.set_text(txt);
+
+	ldv::box_representation box(
+		{0, 0, _screen.get_w(), txt_hud.get_text_position().h},
+		ldv::rgba8(0, 0, 0, 255),
+		ldv::polygon_representation::type::fill
+	);
+
+	box.draw(_screen);
+
+	txt_hud.go_to({0,0});
 	txt_hud.draw(_screen);
 }
 

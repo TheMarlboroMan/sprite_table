@@ -151,6 +151,7 @@ void state_driver::prepare_input(dfw::kernel& kernel) {
 	add("input:align", input::align);
 	add("input:tab", input::tab);
 	add("input:toggle_ids", input::toggle_ids);
+	add("input:toggle_hud", input::toggle_hud);
 	add("input:center_camera", input::center_camera);
 	add("input:flip", input::flip);
 

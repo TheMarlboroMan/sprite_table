@@ -29,6 +29,7 @@ resize,
 align,
 tab,
 toggle_ids,
+toggle_hud,
 center_camera,
 flip
 };

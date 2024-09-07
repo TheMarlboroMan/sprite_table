@@ -27,6 +27,7 @@ arrows:
 	hold r: resize selection
 	hold a: align
 	hold lshift: fine control
+left ctrl+r : rotate
 space: clear current selection
 left click: select frame
 next/prev page: select frame
@@ -40,6 +41,7 @@ p : enter presentation mode
 n : toggle show/hide ids
 c : center the view in the current selection
 f : flip the frame horizontally
+h : toggle hud
 left ctrl + f : flip the frame vertically
 
 ===== console tool =====

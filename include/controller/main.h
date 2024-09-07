@@ -84,7 +84,8 @@ class main:
 	                            default_h,
 	                            movement_factor;
 	bool                        console_mode=false,
-	                            show_ids=true;
+	                            show_ids=true,
+								show_hud=true;
 	std::string                 console_txt; //we cannot drag the ldv::input to the view to draw this...
 	int                         font_size{14};
 };
