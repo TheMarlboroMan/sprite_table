@@ -355,6 +355,7 @@ void main::draw_background(ldv::screen& _screen) {
 			{0, 0, tex.get_w(), tex.get_h()}
 		};
 
+		bgpic.set_blend(ldv::representation::blends::alpha);
 		bgpic.draw(_screen, camera);
 	}
 }

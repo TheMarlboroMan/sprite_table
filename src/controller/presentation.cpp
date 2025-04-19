@@ -120,6 +120,7 @@ void presentation::draw_item(ldv::screen& _screen, const presentation_item& _ite
 	bmp.center_rotation_center();
 	bmp.set_rotation(_item.frame.get_rotation());
 
+	bmp.set_blend(ldv::representation::blends::alpha);
 	bmp.draw(_screen, camera);
 
 	if(display_ids) {
