@@ -89,7 +89,10 @@ void presentation::loop(dfw::input& _input, const dfw::loop_iteration_data& /*li
 	}
 }
 
-void presentation::awake(dfw::input& /*input*/) {
+void presentation::awake(
+	dfw::input& /*input*/,
+	int
+) {
 
 	calculate();
 }
